@@ -1,0 +1,52 @@
+Dart compiler take `main` function as an entry point to the execution process
+
+Flutter starts the application with the main widget passed as argument in `runApp` function
+
+The `runApp` function is the starting point that used to determine which widget is the root view and to fill it in the screen
+
+Everything in flutter consists of widgets, so a typical flutter app is a set of composed widgets
+that forms the view and it's defined by widgets tree
+
+Widget is the basic building block of flutter application, it represents an aspect in the view
+REVIEW widgets are immutable their value cannot be changed by widgets itself can be replaced by another.
+
+Widgets are mutable that means if any of it's properties changed it will not trigger to change in the view
+but they carry a state that responsible about reflect the changes to the view
+
+There's two types of widget, stateless and state full
+Stateless means that it doesn't hold any mutable state (aka data) that needs to track
+therefore they cannot rebuild the widget in their own
+
+__ State Full widget is the widget that carry state that can update the view whenever the setState function called
+the `setState` function rebuilds the widget to apply the changes
+
+Scaffold is a widget that defines the structure of the application, like the bar, footer, body
+
+An element is the active mounted widget
+
+Element tree represents what's actually displayed in the device at any given moment,
+it's like a snapshot of the current widget tree
+
+When widget attached to the tree is called a `createElement` method, therefore a widget has a corresponding element
+
+So the app now has two trees:
+one that represents what’s actually on the screen (the elements),
+and one that holds the blueprints they were made from (the widgets).
+
+__ `BuildContext` is the position of widget in widget tree
+
+__ `didUpdatedWidget` called after `setState` called
+
+TODO read about const, final, static in dart
+TODO implement streaming and charts
+TODO implement push notification, broadcast, multicast and unicast
+
+TODO setup the starter view, it should have a boxed meals and not menus (add home button)
+
+
+
+fetch('https://reqres.in/api/users',{method:'POST', data:{
+    "name": "morpheus",
+    "job": "leader"
+}})
+.then(res=>res.json()).then(console.log);
