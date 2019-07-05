@@ -1,4 +1,4 @@
-# learning_flutter
+# A POC project to see what Flutter can do
 
 A new Flutter project.
 

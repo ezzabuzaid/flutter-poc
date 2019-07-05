@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/pages/portal/portal.service.dart';
 import 'package:learning_flutter/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -9,7 +10,9 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final service = PortalService();
   final _formKey = GlobalKey<FormState>();
+  final formValue = {'username': '', 'password': ''};
   FocusNode passwordFocusNode;
   final logoUrl =
       'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png';
@@ -61,6 +64,9 @@ class _LoginFormState extends State<LoginForm> {
                         return 'Enter some text';
                       }
                       return null;
+                    },
+                    onSaved: (value) {
+                      // this.formValue.update('username', value.toString());
                     },
                   ),
                   SizedBox(height: 25),
@@ -116,12 +122,13 @@ class _LoginFormState extends State<LoginForm> {
                           child: FlatButton(
                             color: Theme.of(context).primaryColor,
                             onPressed: () {
-                              // Validate returns true if the form is valid, or false
-                              // otherwise.
                               if (_formKey.currentState.validate()) {
-                                // If the form is valid, display a Snackbar.
+                                service.login(this.formValue);
                                 Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text('Processing Data')));
+                                  SnackBar(
+                                    content: Text('Processing Data'),
+                                  ),
+                                );
                               }
                             },
                             textColor: Colors.white,

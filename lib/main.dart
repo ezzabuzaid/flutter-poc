@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/layout/navigation.dart';
 import 'package:learning_flutter/layout/toolbar.dart';
-import 'package:learning_flutter/pages/portal/portal.dart';
+import 'package:learning_flutter/pages/portal/index.dart';
 
-void main() => runApp(new App());
+void main() {
+  runApp(new App());
+}
 
 class _App extends State<App> {
   @override

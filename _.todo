@@ -37,13 +37,22 @@ __ `BuildContext` is the position of widget in widget tree
 
 __ `didUpdatedWidget` called after `setState` called
 
-TODO read about const, final, static in dart
+# Async Widgets
+
+-- FutureBuilder Widget used when you have a future value, such as hitting the server and return an http response as Future instance.
+this widget will resolve the value automatically and everything okay but be aware of thing here that when the widget build again
+it will resolve the value again therefore our function will hit the server asking for a result and this not out typical use from FutureWidget
+
+-- StreamBuilder Widget
+
+
 TODO implement streaming and charts
 TODO implement push notification, broadcast, multicast and unicast
-
-TODO setup the starter view, it should have a boxed meals and not menus (add home button)
-
-
+TODO analytic and error service
+TODO setup multiple environment
+TODO setup file generation per screen
+TODO various interceptor {take a look into angular buildozer interceptors}
+TODO add git hocks for linting and check code healthy
 
 fetch('https://reqres.in/api/users',{method:'POST', data:{
     "name": "morpheus",
