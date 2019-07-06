@@ -12,6 +12,9 @@ class LoginModel {
   }
 
   toJson() {
-    return {'username': this.username, 'password': this.password};
+    return {
+      'username': this.username,
+      'password': this.password,
+    };
   }
 }

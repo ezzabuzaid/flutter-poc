@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:learning_flutter/layout/navigation.dart';
 import 'package:learning_flutter/layout/toolbar.dart';
-import 'package:learning_flutter/pages/meals/meal.model.dart';
-import 'package:learning_flutter/pages/meals/meals.vm.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:learning_flutter/pages/meals/meal.model.dart';
 
 class _MealsCard extends StatelessWidget {
-  final IMeal meal;
+  final MealsModel meal;
   _MealsCard(this.meal);
 
   Widget buttonBox(Widget child) {
@@ -219,19 +218,20 @@ class _MealsCard extends StatelessWidget {
 }
 
 class MealsView extends StatelessWidget {
-  final manager = MealManager();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Toolbar('Meals'),
-      body: ListView.separated(
-        itemBuilder: (BuildContext context, int index) {
-          return _MealsCard(manager.model.meals[index]);
-        },
-        itemCount: manager.model.meals.length,
-        separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 0),
-      ),
+      body: Text('context')
+      //  ListView.separated(
+      //   itemBuilder: (BuildContext context, int index) {
+      //     return _MealsCard(manager.model.meals[index]);
+      //   },
+      //   itemCount: manager.model.meals.length,
+      //   separatorBuilder: (BuildContext context, int index) =>
+      //       Divider(height: 0),
+      // )
+      ,
       drawer: Navigation(),
     );
   }

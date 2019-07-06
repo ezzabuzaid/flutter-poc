@@ -1,38 +1,47 @@
-class IMeal {
-  String name;
-  String recipe;
+class MealsModel {
+  final String _Id;
+  int price;
   String image;
-  IMeal({this.recipe, this.name, this.image});
-}
+  String recipe;
+  String name;
+  String menuId;
+  String createdAt;
+  String updatedAt;
 
-class MealModel {
-  final List<IMeal> meals = [
-    new IMeal(
-      name: 'Special Thali - Veg',
-      recipe:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s',
-      image:
-          'https://www.platingpixels.com/wp-content/uploads/2017/04/How-to-Grill-Chicken-Breast-that-are-Moist-and-Tender-recipe-6.jpg',
-    ),
-    new IMeal(
-      name: 'Delux Thali - Veg',
-      recipe:
-          'vegetables, dal makhani, 3 roti, rice, curd, sald & Paped, vegetables, dal makhani, 3 roti, rice, curd, sald & Paped',
-      image:
-          'https://girlscangrill.com/wp-content/uploads/2018/10/cast-iron-chicken.jpg',
-    ),
-    new IMeal(
-      name: 'Special Thali - Non Veg',
-      recipe:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting, vegetables, dal makhani, 3 roti, rice, curd, sald & Paped',
-      image:
-          'https://www.kaleandcaramel.com/wp-content/uploads/2018/04/citrus-avocado-salad-black-pepper-almonds-12.jpg',
-    ),
-    new IMeal(
-      name: 'Special Thali - Non Veg',
-      recipe: 'vegetables, dal makhani, 3 roti, rice, curd, sald & Paped',
-      image:
-          'https://www.kaleandcaramel.com/wp-content/uploads/2018/04/citrus-avocado-salad-black-pepper-almonds-12.jpg',
-    )
-  ];
+  MealsModel(
+    this._Id, {
+    this.price,
+    this.image,
+    this.recipe,
+    this.name,
+    this.menuId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory MealsModel.fromJson(Map<String, dynamic> json) {
+    return MealsModel(
+      json['_id'],
+      price: json['price'],
+      image: json['image'],
+      recipe: json['recipe'],
+      name: json['name'],
+      menuId: json['menu_id'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this._Id;
+    data['price'] = this.price;
+    data['image'] = this.image;
+    data['recipe'] = this.recipe;
+    data['name'] = this.name;
+    data['menu_id'] = this.menuId;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    return data;
+  }
 }

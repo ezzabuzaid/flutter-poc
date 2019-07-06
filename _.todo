@@ -44,6 +44,14 @@ this widget will resolve the value automatically and everything okay but be awar
 it will resolve the value again therefore our function will hit the server asking for a result and this not out typical use from FutureWidget
 
 -- StreamBuilder Widget
+NOTE
+
+-- Complixity of decoding and encoding of json
+Why not just make a function that will take the model and the json and parse them, here we need to make this two method in each model class
+the reason is that dart doesn't support reflection right now therefore we can optain the types and properties of dart at runtime (there are a 3rdparty libs)
+abd about `toJson` method, this don't need any props reflection!
+it didn't need a reflection, but to ensure that we hit the server without any wrong by explicity writing what the attributes that we need
+
 
 
 TODO implement streaming and charts

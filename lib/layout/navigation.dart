@@ -1,8 +1,8 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/pages/meals/melas.view.dart';
-import 'package:learning_flutter/pages/menu.view.dart';
-import 'package:learning_flutter/pages/portal/portal.dart';
+import 'package:learning_flutter/pages/menus/menu.view.dart';
+import '../pages/meals/melas.view.dart';
+import '../pages/portal/index.dart';
 
 class _Item {
   Text title;
@@ -24,9 +24,9 @@ class Navigation extends StatelessWidget {
     new _Item(title: 'My orders', icon: Icons.ac_unit),
     new _Item(title: 'Offers', icon: Icons.local_offer),
     new _Item(title: 'Support', icon: Icons.help),
+    new _Item(title: 'Portal', icon: Icons.track_changes),
     new _Item(title: 'Login', icon: EvaIcons.logInOutline, page: LoginPage()),
-    new _Item(title: 'Settings', icon: Icons.settings),
-    new _Item(title: 'Settings', icon: Icons.settings),
+    new _Item(title: 'Signup', icon: EvaIcons.square),
   ];
 
   Widget build(BuildContext context) {

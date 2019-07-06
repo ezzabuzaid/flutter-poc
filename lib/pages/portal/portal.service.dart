@@ -1,6 +1,5 @@
 import 'package:learning_flutter/core/index.dart';
-
-const URL = 'https://jsonplaceholder.typicode.com';
+import 'package:learning_flutter/pages/portal/portal.model.dart';
 
 class PortalService {
   // Future<LoginModel> fetchPost() async {
@@ -12,7 +11,7 @@ class PortalService {
   //   }
   // }
 
-  Future login(Map<String, dynamic> payload) async {
-    return await http.post('$URL/posts/1', body: payload);
+  Future login(LoginModel payload) {
+    return http.post('posts/1', body: payload.toJson());
   }
 }

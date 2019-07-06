@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/pages/portal/portal.service.dart';
+import 'package:learning_flutter/pages/portal/portal.bloc.dart';
+import 'package:learning_flutter/pages/portal/portal.model.dart';
 import 'package:learning_flutter/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -10,9 +11,10 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final service = PortalService();
-  final _formKey = GlobalKey<FormState>();
-  final formValue = {'username': '', 'password': ''};
+  final bloc = PortalBloc();
+  final formKey = GlobalKey<FormState>();
+  String username = '';
+  String password = '';
   FocusNode passwordFocusNode;
   final logoUrl =
       'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png';
@@ -20,8 +22,9 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     super.initState();
     passwordFocusNode = new FocusNode();
-    passwordFocusNode.addListener(() =>
-        print('focusNode updated: hasFocus: ${passwordFocusNode.hasFocus}'));
+    passwordFocusNode.addListener(
+      () => print('focusNode updated: hasFocus: ${passwordFocusNode.hasFocus}'),
+    );
   }
 
   void setFocus(node) {
@@ -42,7 +45,7 @@ class _LoginFormState extends State<LoginForm> {
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -66,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
                       return null;
                     },
                     onSaved: (value) {
-                      // this.formValue.update('username', value.toString());
+                      this.username = value;
                     },
                   ),
                   SizedBox(height: 25),
@@ -83,6 +86,9 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                     ),
+                    onSaved: (value) {
+                      this.password = value;
+                    },
                     obscureText: true,
                   ),
                   SizedBox(height: 25),
@@ -122,12 +128,19 @@ class _LoginFormState extends State<LoginForm> {
                           child: FlatButton(
                             color: Theme.of(context).primaryColor,
                             onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                service.login(this.formValue);
+                              if (this.formKey.currentState.validate()) {
+                                formKey.currentState.save();
+                                this.bloc.login(
+                                      LoginModel(
+                                        password: this.password,
+                                        username: this.username,
+                                      ),
+                                    );
                                 Scaffold.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('Processing Data'),
-                                  ),
+                                      content: Text(
+                                    'Username ${this.username} || password ${this.password}',
+                                  )),
                                 );
                               }
                             },
@@ -139,10 +152,7 @@ class _LoginFormState extends State<LoginForm> {
                           child: OutlineButton(
                             child: Text('Signup'),
                             onPressed: () {
-                              // Validate returns true if the form is valid, or false
-                              // otherwise.
-                              if (_formKey.currentState.validate()) {
-                                // If the form is valid, display a Snackbar.
+                              if (formKey.currentState.validate()) {
                                 Scaffold.of(context).showSnackBar(
                                     SnackBar(content: Text('Processing Data')));
                               }
