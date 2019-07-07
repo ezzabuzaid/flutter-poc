@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Response<T> {
   String name;
   String message;
@@ -5,14 +7,13 @@ class Response<T> {
   T data;
   String status;
 
-  Response({this.name, this.message, this.code, this.data, this.status});
-
-  Response.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    message = json['message'];
-    code = json['code'];
-    data = json['data'];
-    status = json['status'];
+  Response.fromJson(String undecoded) {
+    final _json = json.decode(undecoded);
+    name = _json['name'];
+    message = _json['message'];
+    code = _json['code'];
+    data = json.decode(_json['data']);
+    status = _json['status'];
   }
 
   Map<String, dynamic> toJson() {

@@ -3,5 +3,5 @@ import 'package:learning_flutter/core/interceptor.dart';
 
 final http = HttpWithInterceptor.build(interceptors: [
   UrlInterceptor(),
-  LogginInterceptor(),
+  // LogginInterceptor(),
 ]);

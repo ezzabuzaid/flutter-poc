@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http_interceptor/http_interceptor.dart';
 // NOTE get this from environment
 
@@ -27,8 +25,7 @@ class LogginInterceptor implements InterceptorContract {
 class UrlInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({RequestData data}) async {
-    print(Uri.http('10.0.2.2', '/api/${data.url}').toString());
-    data.url = Uri.http('10.0.2.2:8080', '/api/${data.url}').toString();
+    data.url = Uri.https('node-buildozer.herokuapp.com', '/api/${data.url}').toString();
     return data;
   }
 
@@ -64,11 +61,3 @@ class MutationInterceptor implements InterceptorContract {
     return data;
   }
 }
-
-// نحن نكتب لكي نغزل من الحروف عباءة تقينا زمهرير الواقع
-//  تحملنا على بساط من خيال, نحن نكتب لكي نشرب الحبر اذ نعطش و نلتهم الورق اذ نجوع نحن نكتب لكي نستحق الوجود في هذا الكون لكي نرمم الخلل بداخلنا و من حولنا نحن نكتب لكي نَنسى و لا نُنسى
-
-/* سنكون يوماً ما ذكرةً ﻷحدهما ربما ساكون انا او `انا` لا احد يعلم
- لكن حقيقة الأمر انه لطالما لم يكن تحت مظلة الحقيقة إلى اننا نكتب لأننا نحب ما نكتب عنه
- يقال ايضا هنا و كفى!
-*/

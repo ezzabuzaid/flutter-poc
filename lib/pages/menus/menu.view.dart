@@ -55,8 +55,7 @@ class _MenuPageBody extends StatelessWidget {
 }
 
 
-class MenuPage extends StatelessWidget {
-  const MenuPage({Key key}) : super(key: key);
+class MenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

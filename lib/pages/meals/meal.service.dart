@@ -1,12 +1,16 @@
-import 'dart:convert';
-import 'package:http/http.dart';
 import 'package:learning_flutter/core/index.dart';
 import 'package:learning_flutter/pages/meals/meal.model.dart';
+import 'package:learning_flutter/shared/response.dart';
 
 class MealsService {
-  Future<MealsModel> fetchMeals() async {
-    final response = await get('http://10.0.2.2:8080/api/meals');
-    print(response.body);
-    return MealsModel.fromJson(json.decode(response.body));
+  Future<Response<MealsModel>> fetchMeals() async {
+    final response = await http.get('meals');
+    return test<MealsModel>(response.body, MealsModel);
   }
+}
+
+Response<T> test<T>(body, inst) {
+  final decodedResponse = Response.fromJson(body);
+  decodedResponse.data = inst.fromJson(decodedResponse.data);
+  return decodedResponse;
 }

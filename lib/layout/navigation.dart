@@ -1,32 +1,67 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/pages/menus/menu.view.dart';
-import '../pages/meals/melas.view.dart';
-import '../pages/portal/index.dart';
+import 'package:learning_flutter/routes.dart';
 
 class _Item {
   Text title;
   Icon icon;
-  dynamic page;
-  _Item({IconData icon, String title, dynamic page}) {
+  dynamic path;
+  _Item({IconData icon, String title, dynamic path}) {
     this.title = Text(title, style: TextStyle(fontWeight: FontWeight.bold));
     this.icon = Icon(icon, size: 30);
 
     // NOTE assertion to avoid any errors
-    if (page is StatelessWidget || page is StatefulWidget) this.page = page;
+    if (path is StatelessWidget || path is StatefulWidget) this.path = path;
   }
 }
 
 class Navigation extends StatelessWidget {
   final list = [
-    new _Item(title: 'Home', icon: Icons.home, page: MealsView()),
-    new _Item(title: 'Menu', icon: Icons.mail, page: MenuPage()),
-    new _Item(title: 'My orders', icon: Icons.ac_unit),
-    new _Item(title: 'Offers', icon: Icons.local_offer),
-    new _Item(title: 'Support', icon: Icons.help),
-    new _Item(title: 'Portal', icon: Icons.track_changes),
-    new _Item(title: 'Login', icon: EvaIcons.logInOutline, page: LoginPage()),
-    new _Item(title: 'Signup', icon: EvaIcons.square),
+    new _Item(
+      title: 'Home',
+      icon: Icons.home,
+      path: RouterConstants.Home,
+    ),
+    new _Item(
+      title: 'Meals',
+      icon: Icons.home,
+      path: RouterConstants.MEALS,
+    ),
+    new _Item(
+      title: 'Menu',
+      icon: Icons.mail,
+      path: RouterConstants.MENUS,
+    ),
+    new _Item(
+      title: 'My orders',
+      icon: Icons.ac_unit,
+      path: RouterConstants.ORDERS,
+    ),
+    new _Item(
+      title: 'Offers',
+      icon: Icons.local_offer,
+      path: RouterConstants.OFFERS,
+    ),
+    new _Item(
+      title: 'Support',
+      icon: Icons.help,
+      path: RouterConstants.SUPPORT,
+    ),
+    new _Item(
+      title: 'Portal',
+      icon: Icons.track_changes,
+      path: RouterConstants.PORTAL,
+    ),
+    new _Item(
+      title: 'Login',
+      icon: EvaIcons.logIn,
+      path: RouterConstants.LOGIN,
+    ),
+    new _Item(
+      title: 'Signup',
+      icon: EvaIcons.square,
+      path: RouterConstants.REGISTER,
+    ),
   ];
 
   Widget build(BuildContext context) {
@@ -39,10 +74,7 @@ class Navigation extends StatelessWidget {
           title: item.title,
           leading: item.icon,
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => item.page),
-            );
+            Navigator.pushNamed(context, item.path);
           },
         );
       },
