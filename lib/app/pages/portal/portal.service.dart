@@ -1,5 +1,6 @@
-import 'package:learning_flutter/core/index.dart';
-import 'package:learning_flutter/pages/portal/portal.model.dart';
+
+import 'package:learning_flutter/app/core/http.dart';
+import 'package:learning_flutter/app/pages/portal/portal.model.dart';
 
 class PortalService {
   // Future<LoginModel> fetchPost() async {

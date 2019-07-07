@@ -1,12 +1,12 @@
-import 'package:learning_flutter/pages/portal/portal.model.dart';
+import 'package:learning_flutter/app/pages/portal/portal.model.dart';
 
 import 'portal.service.dart';
 
 class PortalBloc {
   final _service = PortalService();
 
-  login(LoginModel payload) {
-    this._service.login(payload);
+  login(username, password) {
+    this._service.login(LoginModel(username: username, password: password));
   }
 
 //   final _moviesFetcher = PublishSubject<portalmode>();

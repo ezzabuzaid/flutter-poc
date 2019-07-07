@@ -1,6 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/routes.dart';
+import 'package:learning_flutter/app/routes.dart';
 
 class _Item {
   Text title;
@@ -9,9 +9,7 @@ class _Item {
   _Item({IconData icon, String title, dynamic path}) {
     this.title = Text(title, style: TextStyle(fontWeight: FontWeight.bold));
     this.icon = Icon(icon, size: 30);
-
-    // NOTE assertion to avoid any errors
-    if (path is StatelessWidget || path is StatefulWidget) this.path = path;
+    this.path = path;
   }
 }
 
@@ -89,7 +87,7 @@ class Navigation extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             currentAccountPicture:
-                CircleAvatar(child: Image.asset('assets/images/profile.png')),
+                CircleAvatar(child: Image.asset('lib/assets/images/profile.png')),
             accountEmail: Text('ezzabuzaid@hotmail.com'),
             accountName: Text('Ezzabuzaid'),
             margin: EdgeInsets.all(0),

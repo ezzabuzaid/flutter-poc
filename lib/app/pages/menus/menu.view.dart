@@ -1,9 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 import '../../layout/navigation.dart';
 import '../../layout/toolbar.dart';
-
 
 class _MenuPageBody extends StatelessWidget {
   const _MenuPageBody({Key key}) : super(key: key);
@@ -24,8 +24,15 @@ class _MenuPageBody extends StatelessWidget {
                   child: ListTile(
                     contentPadding: EdgeInsets.all(10),
                     leading: CircleAvatar(
-                      radius: 25,
-                      child: Image.asset('assets/images/profile.png'),
+                      child: CachedNetworkImage(
+                        imageUrl: 'this.menu.image',
+                        colorBlendMode: BlendMode.overlay,
+                        color: Colors.black54,
+                        width: 125,
+                        fit: BoxFit.cover,
+                        // placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ),
                     title: Text(
                       ['Snacks', 'Chinese'][index],
@@ -54,9 +61,7 @@ class _MenuPageBody extends StatelessWidget {
   }
 }
 
-
 class MenuView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

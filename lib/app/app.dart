@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/layout/index.dart';
-import 'package:learning_flutter/pages/meals/meal.service.dart';
-import 'package:learning_flutter/pages/portal/index.dart';
+import 'package:learning_flutter/app/layout/index.dart';
+import 'package:learning_flutter/app/pages/meals/meal.service.dart';
+import 'package:learning_flutter/app/routes.dart';
 
 class App extends StatelessWidget {
   App({Key key}) : super(key: key) {
@@ -15,9 +15,12 @@ class App extends StatelessWidget {
           primarySwatch: Colors.pink,
           brightness: Brightness.light,
         ),
+        // builder: (s, c) {
+        //   return Scaffold();
+        // },
+        routes: routes,
         home: Scaffold(
           appBar: Toolbar('Home'),
-          body: LoginView(),
           drawer: Navigation(),
         ));
   }

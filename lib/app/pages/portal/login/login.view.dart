@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/pages/portal/portal.bloc.dart';
-import 'package:learning_flutter/pages/portal/portal.model.dart';
-import 'package:learning_flutter/widgets/full-width.dart';
+import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
+import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -130,12 +129,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                this.bloc.login(
-                                      LoginModel(
-                                        password: this.password,
-                                        username: this.username,
-                                      ),
-                                    );
+                                this.bloc.login(this.username, this.password);
                                 Scaffold.of(context).showSnackBar(
                                   SnackBar(
                                       content: Text(

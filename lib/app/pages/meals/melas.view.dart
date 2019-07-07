@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:learning_flutter/layout/navigation.dart';
-import 'package:learning_flutter/layout/toolbar.dart';
+import 'package:learning_flutter/app/layout/index.dart';
+import 'package:learning_flutter/app/layout/toolbar.dart';
+import 'package:learning_flutter/app/pages/meals/meal.model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:learning_flutter/pages/meals/meal.model.dart';
 
 class _MealsCard extends StatelessWidget {
   final MealsModel meal;
