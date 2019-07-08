@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:learning_flutter/app/layout/index.dart';
 import 'package:learning_flutter/app/layout/toolbar.dart';
+import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/meals/meal.model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -164,7 +165,6 @@ class _MealsCard extends StatelessWidget {
         ),
       ),
     );
-
     final priceWidget = Card(
       child: Container(
         child: Text('\$ 18.00'),
@@ -173,6 +173,7 @@ class _MealsCard extends StatelessWidget {
       color: Colors.green,
     );
     const double height = 190;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -222,16 +223,21 @@ class MealsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Toolbar('Meals'),
-      body: Text('context')
-      //  ListView.separated(
-      //   itemBuilder: (BuildContext context, int index) {
-      //     return _MealsCard(manager.model.meals[index]);
-      //   },
-      //   itemCount: manager.model.meals.length,
-      //   separatorBuilder: (BuildContext context, int index) =>
-      //       Divider(height: 0),
-      // )
-      ,
+      body: StreamBuilder(
+        stream: mealsBloc.fetchMeals(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
+          if (snapshot.hasError) return Text(snapshot.error.toString());
+          if (!snapshot.hasData) return const Text('Connecting...');
+          return ListView.separated(
+            itemBuilder: (BuildContext context, int index) =>
+                _MealsCard(snapshot.data[index]),
+            itemCount: snapshot.data.length,
+            separatorBuilder: (BuildContext context, int index) =>
+                Divider(height: 0),
+          );
+        },
+      ),
       drawer: Navigation(),
     );
   }

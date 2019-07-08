@@ -16,6 +16,7 @@ class RouterConstants {
 }
 
 final routes = {
+  // '/': (BuildContext context) => ,
   RouterConstants.MEALS: (BuildContext context) => MealsView(),
   RouterConstants.MENUS: (BuildContext context) => MenuView(),
   RouterConstants.LOGIN: (BuildContext context) => LoginView(),

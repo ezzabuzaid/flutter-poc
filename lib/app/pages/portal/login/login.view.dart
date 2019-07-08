@@ -148,7 +148,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () {
                               if (formKey.currentState.validate()) {
                                 Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text('Processing Data')));
+                                    SnackBar(content: Text('Signup not implemented')));
                               }
                             },
                           ),

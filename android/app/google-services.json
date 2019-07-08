@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "483016343062",
+    "firebase_url": "https://chatbase-ebaa0.firebaseio.com",
+    "project_id": "chatbase-ebaa0",
+    "storage_bucket": "chatbase-ebaa0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483016343062:android:c5dbe0b2253701c4",
+        "android_client_info": {
+          "package_name": "com.example.learning_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483016343062-sjimnpm6svi58m89ko61mai11h5seukh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4nqN1YmHc86cHbSSaP9NhEldmOpTdL5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483016343062-sjimnpm6svi58m89ko61mai11h5seukh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

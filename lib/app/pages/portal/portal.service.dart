@@ -1,4 +1,3 @@
-
 import 'package:learning_flutter/app/core/http.dart';
 import 'package:learning_flutter/app/pages/portal/portal.model.dart';
 
@@ -13,6 +12,6 @@ class PortalService {
   // }
 
   Future login(LoginModel payload) {
-    return http.post('posts/1', body: payload.toJson());
+    return http.post('portal/login', body: payload.toJson());
   }
 }
