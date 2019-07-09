@@ -8,12 +8,6 @@ class MealBloc {
   Stream<List<MealsModel>> fetchMeals() {
     return _service.fetchMeals().asStream();
   }
-
-  // fetchMeals() async {
-  //   var response = await _service.fetchMeals();
-  //   mealsSubject.sink.add(response);
-  // }
-
 }
 
 final mealsBloc = MealBloc();

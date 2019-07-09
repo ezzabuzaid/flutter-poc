@@ -2,8 +2,6 @@ import 'package:learning_flutter/app/core/http.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/shared/response.dart';
 
-var counter = 0;
-
 class MealsService {
   Future<List<MealsModel>> fetchMeals() async {
     final response = await http.get('meals');
@@ -13,9 +11,9 @@ class MealsService {
   }
 }
 
-Response<T> test<T>(response, j) {
-  final decodedResponse = Response<T>.fromJson(response.body);
-  List<T> data = decodedResponse.data.map((i) => j.fromJson(i)).toList();
-  decodedResponse.data = data;
-  return decodedResponse;
-}
+// Response<T> test<T>(response, j) {
+//   final decodedResponse = Response<T>.fromJson(response.body);
+//   List<T> data = decodedResponse.data.map((i) => j.fromJson(i)).toList();
+//   decodedResponse.data = data;
+//   return decodedResponse;
+// }

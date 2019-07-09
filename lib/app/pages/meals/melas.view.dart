@@ -230,8 +230,9 @@ class MealsView extends StatelessWidget {
           if (snapshot.hasError) return Text(snapshot.error.toString());
           if (!snapshot.hasData) return const Text('Connecting...');
           return ListView.separated(
-            itemBuilder: (BuildContext context, int index) =>
-                _MealsCard(snapshot.data[index]),
+            itemBuilder: (BuildContext context, int index) => _MealsCard(
+                  snapshot.data[index],
+                ),
             itemCount: snapshot.data.length,
             separatorBuilder: (BuildContext context, int index) =>
                 Divider(height: 0),

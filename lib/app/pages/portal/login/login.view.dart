@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
@@ -12,8 +13,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
-  String username = '';
-  String password = '';
+  final payload = LoginModel();
   FocusNode passwordFocusNode;
   final logoUrl =
       'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png';
@@ -68,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
                       return null;
                     },
                     onSaved: (value) {
-                      this.username = value;
+                      this.payload.username = value;
                     },
                   ),
                   SizedBox(height: 25),
@@ -86,7 +86,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
                     onSaved: (value) {
-                      this.password = value;
+                      this.payload.password = value;
                     },
                     obscureText: true,
                   ),
@@ -129,13 +129,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                this.bloc.login(this.username, this.password);
-                                Scaffold.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                    'Username ${this.username} || password ${this.password}',
-                                  )),
-                                );
+                                this.bloc.login(this.payload);
                               }
                             },
                             textColor: Colors.white,
@@ -147,8 +141,8 @@ class _LoginFormState extends State<LoginForm> {
                             child: Text('Signup'),
                             onPressed: () {
                               if (formKey.currentState.validate()) {
-                                Scaffold.of(context).showSnackBar(
-                                    SnackBar(content: Text('Signup not implemented')));
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text('Signup not implemented')));
                               }
                             },
                           ),

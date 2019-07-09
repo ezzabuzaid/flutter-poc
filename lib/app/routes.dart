@@ -6,13 +6,13 @@ import 'package:learning_flutter/app/pages/portal/index.dart';
 class RouterConstants {
   static const MEALS = '/meals';
   static const LOGIN = '/portal/login';
+  static const REGISTER = '/portal/register';
   static const MENUS = '/menus';
   static const Home = '/home';
   static const ORDERS = '/orders';
   static const OFFERS = '/offers';
   static const SUPPORT = '/support';
   static const PORTAL = '/portal';
-  static const REGISTER = '/portal/register';
 }
 
 final routes = {
@@ -20,7 +20,7 @@ final routes = {
   RouterConstants.MEALS: (BuildContext context) => MealsView(),
   RouterConstants.MENUS: (BuildContext context) => MenuView(),
   RouterConstants.LOGIN: (BuildContext context) => LoginView(),
-  RouterConstants.Home: (BuildContext context) => MealsView(),
+  RouterConstants.REGISTER: (BuildContext context) => RegisterView(),
   RouterConstants.Home: (BuildContext context) => MealsView(),
   RouterConstants.Home: (BuildContext context) => MealsView(),
   RouterConstants.Home: (BuildContext context) => MealsView(),

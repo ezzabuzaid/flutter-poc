@@ -1,25 +1,19 @@
-import 'package:learning_flutter/app/pages/portal/portal.model.dart';
+import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
+import 'package:learning_flutter/app/pages/portal/register/register.model.dart';
 
 import 'portal.service.dart';
 
 class PortalBloc {
   final _service = PortalService();
 
-  login(username, password) {
-    this._service.login(LoginModel(username: username, password: password));
+  login(LoginModel payload) {
+    this._service.login(payload);
   }
 
-//   final _moviesFetcher = PublishSubject<portalmode>();
+  register(RegisterModel payload) {
+    this._service.register(payload);
+  }
 
-//   Observable<ItemModel> get allMovies => _moviesFetcher.stream;
-//   fetchAllMovies() async {
-//     ItemModel itemModel = await _service.fetchAllMovies();
-//     _moviesFetcher.sink.add(itemModel);
-//   }
-
-//   dispose() {
-//     _moviesFetcher.close();
-//   }
 }
 
 final portalBloc = PortalBloc();
