@@ -3,6 +3,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
+import 'package:learning_flutter/app/routes.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -138,12 +139,12 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                         FullWidth(
                           child: OutlineButton(
-                            child: Text('Signup'),
+                            child: Text('Register'),
                             onPressed: () {
-                              if (formKey.currentState.validate()) {
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text('Signup not implemented')));
-                              }
+                              Navigator.pushNamed(
+                                context,
+                                RoutesConstants.REGISTER,
+                              );
                             },
                           ),
                         ),

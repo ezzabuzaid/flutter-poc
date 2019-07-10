@@ -9,8 +9,9 @@ class App extends StatelessWidget {
     return new MaterialApp(
       title: 'Learning flutter',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.orange,
         brightness: Brightness.light,
+        fontFamily: 'ChakraPetch'
       ),
       supportedLocales: [const Locale('en'), const Locale('ar')],
       routes: routes,

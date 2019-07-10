@@ -9,11 +9,11 @@ class MealsService {
     List data = List.from(decoded.data);
     return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
   }
-}
 
-// Response<T> test<T>(response, j) {
-//   final decodedResponse = Response<T>.fromJson(response.body);
-//   List<T> data = decodedResponse.data.map((i) => j.fromJson(i)).toList();
-//   decodedResponse.data = data;
-//   return decodedResponse;
-// }
+  Future<List<MealsModel>> fetchMealsByMenuId(String menuId) async {
+    final response = await http.get('meals/menu/$menuId');
+    final decoded = Response.fromJson(response.body);
+    List data = List.from(decoded.data);
+    return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
+  }
+}

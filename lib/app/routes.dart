@@ -3,7 +3,7 @@ import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/menu.view.dart';
 import 'package:learning_flutter/app/pages/portal/index.dart';
 
-class RouterConstants {
+class RoutesConstants {
   static const MEALS = '/meals';
   static const LOGIN = '/portal/login';
   static const REGISTER = '/portal/register';
@@ -17,11 +17,11 @@ class RouterConstants {
 
 final routes = {
   // '/': (BuildContext context) => ,
-  RouterConstants.MEALS: (BuildContext context) => MealsView(),
-  RouterConstants.MENUS: (BuildContext context) => MenuView(),
-  RouterConstants.LOGIN: (BuildContext context) => LoginView(),
-  RouterConstants.REGISTER: (BuildContext context) => RegisterView(),
-  RouterConstants.Home: (BuildContext context) => MealsView(),
-  RouterConstants.Home: (BuildContext context) => MealsView(),
-  RouterConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.MEALS: (BuildContext context) => MealsView(),
+  RoutesConstants.MENUS: (BuildContext context) => MenuView(),
+  RoutesConstants.LOGIN: (BuildContext context) => LoginView(),
+  RoutesConstants.REGISTER: (BuildContext context) => RegisterView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
 };

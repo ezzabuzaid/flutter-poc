@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/pages/portal/register/register.model.dart';
+import 'package:learning_flutter/app/routes.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
- 
+
 class RegisterForm extends StatefulWidget {
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -14,9 +15,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final formKey = GlobalKey<FormState>();
   final payload = RegisterModel();
   FocusNode passwordFocusNode;
-
-  final logoUrl =
-      'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png';
 
   void initState() {
     super.initState();
@@ -30,6 +28,16 @@ class _RegisterFormState extends State<RegisterForm> {
     FocusScope.of(context).requestFocus(node);
   }
 
+  Widget logo() {
+    return CachedNetworkImage(
+      imageUrl:
+          'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png',
+      fit: BoxFit.contain,
+      height: 150,
+      errorWidget: (context, url, error) => Icon(Icons.error),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -37,12 +45,7 @@ class _RegisterFormState extends State<RegisterForm> {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            CachedNetworkImage(
-              imageUrl: logoUrl,
-              fit: BoxFit.contain,
-              height: 150,
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
+            this.logo(),
             Form(
               key: formKey,
               child: Column(
@@ -207,13 +210,24 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/portal/register');
+                        Navigator.pushNamed(context, RoutesConstants.LOGIN);
                       },
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 25),
-                    child: Center(
+                  Center(
+                    child: FlatButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AboutDialog(
+                                applicationIcon: this.logo(),
+                                applicationName: 'Buildozer',
+                                applicationVersion: '1.0.0',
+                                applicationLegalese:
+                                    'You can do anything as you like, it\'s open source dude ^^',
+                              ),
+                        );
+                      },
                       child: Text(
                         'Terms fo use. Privacy policy',
                         style: Theme.of(context).textTheme.overline,
@@ -235,71 +249,3 @@ class _RegisterFormState extends State<RegisterForm> {
     super.dispose();
   }
 }
-
-void main() => runApp(new MyApp());
-
-class MyApp extends StatefulWidget {
-  MyApp({Key key}) : super(key: key);
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-//  _formKey and _autoValidate
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _autoValidate = false;
-  String _name;
-  String _email;
-  String _mobile;
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Form Validation'),
-        ),
-        body: new SingleChildScrollView(
-          child: new Container(
-            margin: new EdgeInsets.all(15.0),
-            child: new Form(
-              key: _formKey,
-              autovalidate: _autoValidate,
-              child: FormUI(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-// Here is our Form UI
-
-  Widget FormUI() {
-    return new Column(
-      children: <Widget>[
-        new TextFormField(
-          decoration: const InputDecoration(labelText: 'Name'),
-          keyboardType: TextInputType.text,
-        ),
-        new TextFormField(
-          decoration: const InputDecoration(labelText: 'Mobile'),
-          keyboardType: TextInputType.phone,
-        ),
-        new TextFormField(
-          decoration: const InputDecoration(labelText: 'Email'),
-          keyboardType: TextInputType.emailAddress,
-        ),
-        new SizedBox(
-          height: 10.0,
-        ),
-        new RaisedButton(
-          onPressed: _validateInputs,
-          child: new Text('Validate'),
-        )
-      ],
-    );
-  }
-
-  void _validateInputs() {}
-}
-

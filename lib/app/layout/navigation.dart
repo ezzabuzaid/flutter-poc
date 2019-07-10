@@ -8,7 +8,11 @@ class _Item {
   dynamic path;
   _Item({IconData icon, String title, dynamic path}) {
     this.title = Text(title, style: TextStyle(fontWeight: FontWeight.bold));
-    this.icon = Icon(icon, size: 30);
+    this.icon = Icon(
+      icon,
+      size: 30,
+      color: Colors.black87,
+    );
     this.path = path;
   }
 }
@@ -18,47 +22,47 @@ class Navigation extends StatelessWidget {
     new _Item(
       title: 'Home',
       icon: Icons.home,
-      path: RouterConstants.Home,
+      path: RoutesConstants.Home,
     ),
     new _Item(
       title: 'Meals',
       icon: Icons.home,
-      path: RouterConstants.MEALS,
+      path: RoutesConstants.MEALS,
     ),
     new _Item(
       title: 'Menu',
       icon: Icons.mail,
-      path: RouterConstants.MENUS,
+      path: RoutesConstants.MENUS,
     ),
     new _Item(
       title: 'My orders',
       icon: Icons.ac_unit,
-      path: RouterConstants.ORDERS,
+      path: RoutesConstants.ORDERS,
     ),
     new _Item(
       title: 'Offers',
       icon: Icons.local_offer,
-      path: RouterConstants.OFFERS,
+      path: RoutesConstants.OFFERS,
     ),
     new _Item(
       title: 'Support',
       icon: Icons.help,
-      path: RouterConstants.SUPPORT,
+      path: RoutesConstants.SUPPORT,
     ),
     new _Item(
       title: 'Portal',
       icon: Icons.track_changes,
-      path: RouterConstants.PORTAL,
+      path: RoutesConstants.PORTAL,
     ),
     new _Item(
       title: 'Login',
       icon: EvaIcons.logIn,
-      path: RouterConstants.LOGIN,
+      path: RoutesConstants.LOGIN,
     ),
     new _Item(
       title: 'Signup',
       icon: EvaIcons.square,
-      path: RouterConstants.REGISTER,
+      path: RoutesConstants.REGISTER,
     ),
   ];
 
@@ -86,8 +90,9 @@ class Navigation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserAccountsDrawerHeader(
-            currentAccountPicture:
-                CircleAvatar(child: Image.asset('lib/assets/images/profile.png')),
+            currentAccountPicture: CircleAvatar(
+              child: Image.asset('lib/assets/images/profile.png'),
+            ),
             accountEmail: Text('ezzabuzaid@hotmail.com'),
             accountName: Text('Ezzabuzaid'),
             margin: EdgeInsets.all(0),

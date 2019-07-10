@@ -5,7 +5,10 @@ import 'package:learning_flutter/app/pages/meals/meal.service.dart';
 
 class MealBloc {
   final _service = MealsService();
-  Stream<List<MealsModel>> fetchMeals() {
+  Stream<List<MealsModel>> fetchMeals(String menuId) {
+    if (menuId != '') {
+      return _service.fetchMealsByMenuId(menuId).asStream();
+    }
     return _service.fetchMeals().asStream();
   }
 }
