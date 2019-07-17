@@ -14,40 +14,6 @@ class _MealsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
-    final addWidget = Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      child: SizedBox(
-        height: 25,
-        width: 55,
-        child: OutlineButton(
-          borderSide: BorderSide(width: 1, color: primaryColor),
-          color: primaryColor,
-          child: Text(
-            'Add',
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              color: primaryColor,
-            ),
-          ),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return MealsDetails(meal: this.meal);
-              },
-            );
-          },
-        ),
-      ),
-    );
-    final priceWidget = Card(
-      child: Container(
-        child: Text('\$ 18.00'),
-        padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-      ),
-      color: Colors.green,
-    );
     const double height = 190;
 
     return Row(
@@ -67,7 +33,6 @@ class _MealsCard extends StatelessWidget {
           child: Container(
             height: height,
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            // margin: EdgeInsets,
             child: Wrap(
               runSpacing: 15,
               runAlignment: WrapAlignment.spaceBetween,
@@ -88,9 +53,6 @@ class _MealsCard extends StatelessWidget {
                         )
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                    ),
                     Text(
                       this.meal.recipe,
                       style: Theme.of(context).textTheme.caption,
@@ -99,7 +61,42 @@ class _MealsCard extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[priceWidget, addWidget],
+                  children: <Widget>[
+                    Card(
+                      child: Container(
+                        child: Text('\$ 18.00'),
+                        padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                      ),
+                      color: Colors.green,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: SizedBox(
+                        height: 25,
+                        width: 55,
+                        child: OutlineButton(
+                          borderSide: BorderSide(width: 1, color: primaryColor),
+                          color: primaryColor,
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: primaryColor,
+                            ),
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return MealsDetails(meal: this.meal);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -124,9 +121,8 @@ class MealsView extends StatelessWidget {
           if (snapshot.hasError) return Text(snapshot.error.toString());
           if (!snapshot.hasData) return const Text('Connecting...');
           return ListView.separated(
-            itemBuilder: (BuildContext context, int index) => _MealsCard(
-                  snapshot.data[index],
-                ),
+            itemBuilder: (BuildContext context, int index) =>
+                _MealsCard(snapshot.data[index]),
             itemCount: snapshot.data.length,
             separatorBuilder: (BuildContext context, int index) =>
                 Divider(height: 0),

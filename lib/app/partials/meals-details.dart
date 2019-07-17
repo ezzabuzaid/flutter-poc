@@ -121,7 +121,9 @@ class MealsDetails extends StatelessWidget {
                       color: Colors.black,
                       textColor: Colors.black,
                       borderSide: BorderSide(color: Colors.black),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       child: Center(
                         child: Text('Close'),
                       ),

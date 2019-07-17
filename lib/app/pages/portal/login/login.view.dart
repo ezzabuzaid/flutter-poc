@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/routes.dart';
+import 'package:learning_flutter/app/shared/validators.dart' as validators;
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -62,12 +63,12 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter some text';
-                      }
-                      return null;
-                    },
+                    validator: validators.validate([
+                      validators.Required('Required Error'),
+                      validators.MinLength(5, 'MinLength Error'),
+                      validators.MaxLength(10, 'MaxLength Error'),
+                      // validators.Between('Between Error', max: 10, min: 5),
+                    ]),
                     onSaved: (value) {
                       this.payload.username = value;
                     },
@@ -100,9 +101,9 @@ class _LoginFormState extends State<LoginForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                    onChanged: (bool value) {},
-                                    value: false,
-                                  ),
+                                onChanged: (bool value) {},
+                                value: false,
+                              ),
                             ),
                             width: 20,
                           ),
@@ -130,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                this.bloc.login(this.payload);
+                                // this.bloc.login(this.payload);
                               }
                             },
                             textColor: Colors.white,
