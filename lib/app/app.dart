@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       routes: routes,
       // initialRoute: '/',
       home: Scaffold(
-        body: PushNotification(child: Text('push')),
+        // body: PushNotification(child: Text('push')),
         appBar: Toolbar('Home'),
         drawer: (Navigation()),
       ),

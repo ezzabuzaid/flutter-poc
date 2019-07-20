@@ -1,9 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_pickers/countries.dart';
+import 'package:country_pickers/country.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/pages/portal/register/register.model.dart';
 import 'package:learning_flutter/app/routes.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
+import 'package:learning_flutter/app/shared/validators.dart' as validators;
+import 'package:libphonenumber/libphonenumber.dart' as phone;
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_pickers/country_pickers.dart';
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -14,9 +21,11 @@ class _RegisterFormState extends State<RegisterForm> {
   final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
   final payload = RegisterModel();
+  Country selectedCountry;
   FocusNode passwordFocusNode;
 
   void initState() {
+    // phone.RegionInfo()
     super.initState();
     passwordFocusNode = new FocusNode();
     passwordFocusNode.addListener(
@@ -64,12 +73,19 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter some text';
-                      }
-                      return null;
-                    },
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(16),
+                      // WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-\.]+$'))
+                      // TODO prevent special char
+                    ],
+                    validator: validators.validate([
+                      validators.Required('This field is required'),
+                      validators.Between(
+                        'Username must be between 8 and 16 char',
+                        max: 16,
+                        min: 8,
+                      ),
+                    ]),
                     onSaved: (value) {
                       this.payload.username = value;
                     },
@@ -90,15 +106,49 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter some text';
-                      }
-                      return null;
-                    },
+                    validator: validators.validate([
+                      validators.Required('This field is required'),
+                      validators.Email('Please enter the email correctly'),
+                    ]),
                     onSaved: (value) {
                       this.payload.email = value;
                     },
+                  ),
+                  SizedBox(height: 25),
+                  // TODO move it to widget folder
+                  DropdownButtonFormField<Country>(
+                    decoration: InputDecoration(
+                      labelText: 'Country',
+                      labelStyle: Theme.of(context).textTheme.body1,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                          width: .5,
+                        ),
+                      ),
+                    ),
+                    value: this.selectedCountry,
+                    onChanged: (value) {
+                      this.setState(() {
+                        this.selectedCountry = value;
+                      });
+                    },
+                    items: countryList
+                        .map(
+                          (country) => DropdownMenuItem<Country>(
+                            value: country,
+                            child: Row(
+                              children: <Widget>[
+                                CountryPickerUtils.getDefaultFlagImage(country),
+                                SizedBox(width: 8.0),
+                                Text(
+                                  "(${country.isoCode}) +${country.phoneCode}",
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
                   SizedBox(height: 25),
                   TextFormField(
@@ -116,9 +166,12 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                     ),
                     validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter some text';
-                      }
+                      // TODO Find a way to do the async validation
+                      // TODO move the validation to validation module
+                      // phone.PhoneNumberUtil.isValidPhoneNumber(
+                      //   isoCode: this.selectedCountry.isoCode,
+                      //   phoneNumber: value,
+                      // );
                       return null;
                     },
                     onSaved: (value) {
@@ -130,6 +183,8 @@ class _RegisterFormState extends State<RegisterForm> {
                     focusNode: passwordFocusNode,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      helperText:
+                          'It should contain at least 8 char, and one uppercase and one lower',
                       isDense: true,
                       labelStyle: Theme.of(context).textTheme.body1,
                       enabledBorder: UnderlineInputBorder(
@@ -139,6 +194,11 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                       ),
                     ),
+                    // TODO Password char check if it has uppercase and lowercase
+                    validator: validators.validate([
+                      validators.Required(),
+                      validators.MinLength(8),
+                    ]),
                     onSaved: (value) {
                       this.payload.password = value;
                     },
@@ -173,9 +233,9 @@ class _RegisterFormState extends State<RegisterForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                    onChanged: (bool value) {},
-                                    value: false,
-                                  ),
+                                onChanged: (bool value) {},
+                                value: false,
+                              ),
                             ),
                             width: 20,
                           ),
@@ -217,15 +277,16 @@ class _RegisterFormState extends State<RegisterForm> {
                   Center(
                     child: FlatButton(
                       onPressed: () {
+                        // move it to partial
                         showDialog(
                           context: context,
                           builder: (context) => AboutDialog(
-                                applicationIcon: this.logo(),
-                                applicationName: 'Buildozer',
-                                applicationVersion: '1.0.0',
-                                applicationLegalese:
-                                    'You can do anything as you like, it\'s open source dude ^^',
-                              ),
+                            applicationIcon: this.logo(),
+                            applicationName: 'Buildozer',
+                            applicationVersion: '1.0.0',
+                            applicationLegalese:
+                                'You can do anything as you like, it\'s open source dude ^^',
+                          ),
                         );
                       },
                       child: Text(

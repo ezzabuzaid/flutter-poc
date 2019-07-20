@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/routes.dart';
+import 'package:learning_flutter/app/shared/validators.dart' as validators;
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -62,12 +66,6 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Enter some text';
-                      }
-                      return null;
-                    },
                     onSaved: (value) {
                       this.payload.username = value;
                     },
@@ -79,6 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                       labelText: 'Password',
                       isDense: true,
                       labelStyle: Theme.of(context).textTheme.body1,
+                      helperStyle: TextStyle(fontSize: 10),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey.shade300,
@@ -100,9 +99,9 @@ class _LoginFormState extends State<LoginForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                    onChanged: (bool value) {},
-                                    value: false,
-                                  ),
+                                onChanged: (bool value) {},
+                                value: false,
+                              ),
                             ),
                             width: 20,
                           ),
@@ -127,10 +126,11 @@ class _LoginFormState extends State<LoginForm> {
                         FullWidth(
                           child: FlatButton(
                             color: Theme.of(context).primaryColor,
-                            onPressed: () {
+                            onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                this.bloc.login(this.payload);
+                                var res = await this.bloc.login(this.payload);
+                                print(json.decode(res));
                               }
                             },
                             textColor: Colors.white,

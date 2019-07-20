@@ -6,14 +6,13 @@ import 'portal.service.dart';
 class PortalBloc {
   final _service = PortalService();
 
-  login(LoginModel payload) {
-    this._service.login(payload);
+ Future login(LoginModel payload) {
+    return this._service.login(payload);
   }
 
   register(RegisterModel payload) {
     this._service.register(payload);
   }
-
 }
 
 final portalBloc = PortalBloc();

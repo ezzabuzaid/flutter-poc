@@ -33,6 +33,9 @@ dependencies:
   rxdart: ^0.20.0
   firebase_messaging: ^5.0.2
   firebase_core: ^0.4.0+6
+  libphonenumber: ^1.0.0
+  country_code_picker: ^1.1.7
+  country_pickers: ^1.1.0
 
 dev_dependencies:
   flutter_test:
