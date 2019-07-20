@@ -61,9 +61,12 @@ TODO setup multiple environment
 TODO setup file generation per screen
 TODO various interceptor {take a look into angular buildozer interceptors}
 TODO add git hocks for linting and check code healthy
-
-fetch('https://reqres.in/api/users',{method:'POST', data:{
-    "name": "morpheus",
-    "job": "leader"
-}})
-.then(res=>res.json()).then(console.log);
+firebase analytics 
+firebase app indexing
+A/B Testing
+Cloud Messaging (FCM) | IOS
+Crashlytics
+Dynamic Links
+Performance Monitoring
+Predictions
+Remote Config

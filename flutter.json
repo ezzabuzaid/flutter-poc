@@ -1,0 +1,26 @@
+{
+    "prod": {
+        "fileReplacements": [
+            {
+                "replace": "lib/environments/environment.dart",
+                "with": "lib/environments/environment.prod.dart"
+            }
+        ]
+    },
+    "dev": {
+        "fileReplacements": [
+            {
+                "replace": "lib/environments/environment.dart",
+                "with": "lib/environments/environment.dev.dart"
+            }
+        ]
+    },
+    "stage": {
+        "fileReplacements": [
+            {
+                "replace": "lib/environments/environment.dart",
+                "with": "lib/environments/environment.stage.dart"
+            }
+        ]
+    }
+}
