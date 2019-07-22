@@ -8,6 +8,7 @@ class PortalService {
   }
 
   Future register(RegisterModel payload) {
-    return http.post('portal/register', body: payload.toJson());
+    print(payload.toJson());
+    return http.post('users', body: payload.toJson());
   }
 }

@@ -1,16 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:country_pickers/countries.dart';
-import 'package:country_pickers/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/pages/portal/register/register.model.dart';
+import 'package:learning_flutter/app/partials/about.dart';
+import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/routes.dart';
+import 'package:learning_flutter/app/widgets/country-field.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 import 'package:learning_flutter/app/shared/validators.dart' as validators;
-import 'package:libphonenumber/libphonenumber.dart' as phone;
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:country_pickers/country_pickers.dart';
 
 class RegisterForm extends StatefulWidget {
   @override
@@ -21,30 +18,19 @@ class _RegisterFormState extends State<RegisterForm> {
   final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
   final payload = RegisterModel();
-  Country selectedCountry;
-  FocusNode passwordFocusNode;
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode countryFocusNode = FocusNode();
+  FocusNode mobileFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
+  FocusNode confirmPasswordFocusNode = FocusNode();
 
   void initState() {
     // phone.RegionInfo()
     super.initState();
-    passwordFocusNode = new FocusNode();
-    passwordFocusNode.addListener(
-      () => print('focusNode updated: hasFocus: ${passwordFocusNode.hasFocus}'),
-    );
   }
 
   void setFocus(node) {
     FocusScope.of(context).requestFocus(node);
-  }
-
-  Widget logo() {
-    return CachedNetworkImage(
-      imageUrl:
-          'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png',
-      fit: BoxFit.contain,
-      height: 150,
-      errorWidget: (context, url, error) => Icon(Icons.error),
-    );
   }
 
   @override
@@ -54,7 +40,7 @@ class _RegisterFormState extends State<RegisterForm> {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            this.logo(),
+            Logo(),
             Form(
               key: formKey,
               child: Column(
@@ -78,6 +64,9 @@ class _RegisterFormState extends State<RegisterForm> {
                       // WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-\.]+$'))
                       // TODO prevent special char
                     ],
+                    onFieldSubmitted: (v) {
+                      this.setFocus(this.emailFocusNode);
+                    },
                     validator: validators.validate([
                       validators.Required('This field is required'),
                       validators.Between(
@@ -92,6 +81,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   SizedBox(height: 25),
                   TextFormField(
+                    focusNode: emailFocusNode,
                     autovalidate: true,
                     autofocus: true,
                     keyboardType: TextInputType.emailAddress,
@@ -110,48 +100,18 @@ class _RegisterFormState extends State<RegisterForm> {
                       validators.Required('This field is required'),
                       validators.Email('Please enter the email correctly'),
                     ]),
+                    onFieldSubmitted: (v) {
+                      this.setFocus(this.countryFocusNode);
+                    },
                     onSaved: (value) {
                       this.payload.email = value;
                     },
                   ),
                   SizedBox(height: 25),
-                  // TODO move it to widget folder
-                  DropdownButtonFormField<Country>(
-                    decoration: InputDecoration(
-                      labelText: 'Country',
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey.shade300,
-                          width: .5,
-                        ),
-                      ),
-                    ),
-                    value: this.selectedCountry,
-                    onChanged: (value) {
-                      this.setState(() {
-                        this.selectedCountry = value;
-                      });
-                    },
-                    items: countryList
-                        .map(
-                          (country) => DropdownMenuItem<Country>(
-                            value: country,
-                            child: Row(
-                              children: <Widget>[
-                                CountryPickerUtils.getDefaultFlagImage(country),
-                                SizedBox(width: 8.0),
-                                Text(
-                                  "(${country.isoCode}) +${country.phoneCode}",
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
+                  CountryField(),
                   SizedBox(height: 25),
                   TextFormField(
+                    focusNode: this.mobileFocusNode,
                     autofocus: true,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
@@ -177,10 +137,14 @@ class _RegisterFormState extends State<RegisterForm> {
                     onSaved: (value) {
                       this.payload.username = value;
                     },
+                    onFieldSubmitted: (v) {
+                      this.setFocus(this.passwordFocusNode);
+                    },
                   ),
                   SizedBox(height: 25),
                   TextFormField(
                     focusNode: passwordFocusNode,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       helperText:
@@ -202,11 +166,13 @@ class _RegisterFormState extends State<RegisterForm> {
                     onSaved: (value) {
                       this.payload.password = value;
                     },
-                    obscureText: true,
+                    onFieldSubmitted: (v) {
+                      this.setFocus(this.confirmPasswordFocusNode);
+                    },
                   ),
                   SizedBox(height: 25),
                   TextFormField(
-                    focusNode: passwordFocusNode,
+                    focusNode: confirmPasswordFocusNode,
                     decoration: InputDecoration(
                       labelText: 'Confirm password',
                       isDense: true,
@@ -233,9 +199,11 @@ class _RegisterFormState extends State<RegisterForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                onChanged: (bool value) {},
-                                value: false,
-                              ),
+                                    onChanged: (bool value) {
+                                      // TODO Implement rememeber me feature
+                                    },
+                                    value: true,
+                                  ),
                             ),
                             width: 20,
                           ),
@@ -277,16 +245,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   Center(
                     child: FlatButton(
                       onPressed: () {
-                        // move it to partial
                         showDialog(
                           context: context,
-                          builder: (context) => AboutDialog(
-                            applicationIcon: this.logo(),
-                            applicationName: 'Buildozer',
-                            applicationVersion: '1.0.0',
-                            applicationLegalese:
-                                'You can do anything as you like, it\'s open source dude ^^',
-                          ),
+                          builder: (context) => About(),
                         );
                       },
                       child: Text(

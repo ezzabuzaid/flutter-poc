@@ -75,7 +75,8 @@ flutter:
   fonts:
     - family: ChakraPetch
       fonts:
-        - asset: lib/assets/fonts/ChakraPetch-Bold.ttf
+        - asset: lib/assets/fonts/DancingScript-Bold.ttf
+        - asset: lib/assets/fonts/DancingScript-Regular.ttf
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

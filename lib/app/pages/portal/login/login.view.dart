@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
+import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/routes.dart';
 import 'package:learning_flutter/app/shared/validators.dart' as validators;
 import 'package:learning_flutter/app/widgets/full-width.dart';
@@ -20,8 +21,6 @@ class _LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
   final payload = LoginModel();
   FocusNode passwordFocusNode;
-  final logoUrl =
-      'https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png';
 
   void initState() {
     super.initState();
@@ -42,12 +41,7 @@ class _LoginFormState extends State<LoginForm> {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            CachedNetworkImage(
-              imageUrl: logoUrl,
-              fit: BoxFit.contain,
-              height: 150,
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
+            Logo(),
             Form(
               key: formKey,
               child: Column(
@@ -99,9 +93,9 @@ class _LoginFormState extends State<LoginForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                onChanged: (bool value) {},
-                                value: false,
-                              ),
+                                    onChanged: (bool value) {},
+                                    value: false,
+                                  ),
                             ),
                             width: 20,
                           ),
