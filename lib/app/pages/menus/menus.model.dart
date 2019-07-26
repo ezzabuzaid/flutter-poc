@@ -6,6 +6,8 @@ class MenusModel {
   final String updatedAt;
   final String _Id;
 
+  String get id => this._Id;
+
   MenusModel(
     this._Id, {
     this.image,

@@ -64,6 +64,16 @@ class Navigation extends StatelessWidget {
       icon: EvaIcons.square,
       path: RoutesConstants.REGISTER,
     ),
+    new _Item(
+      title: 'Favourites',
+      icon: EvaIcons.heartOutline,
+      path: RoutesConstants.FAVOURITES,
+    ),
+    new _Item(
+      title: 'Face detection',
+      icon: EvaIcons.checkmarkSquare2Outline,
+      path: RoutesConstants.FACE,
+    ),
   ];
 
   Widget build(BuildContext context) {

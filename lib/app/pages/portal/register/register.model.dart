@@ -8,7 +8,7 @@ class RegisterModel {
     return {
       'username': this.username,
       'password': this.password,
-      'mobile': this.password,
+      'mobile': this.mobile,
       'email': this.email,
     };
   }

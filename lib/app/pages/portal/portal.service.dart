@@ -4,7 +4,10 @@ import 'package:learning_flutter/app/pages/portal/register/register.model.dart';
 
 class PortalService {
   Future login(LoginModel payload) {
-    return http.post('portal/login', body: payload.toJson());
+    print(payload.toJson());
+    return http.post('portal/login/user', body: payload.toJson()).then((e) {
+      print(e.body);
+    });
   }
 
   Future register(RegisterModel payload) {

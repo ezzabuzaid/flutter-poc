@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/menus/menu.bloc.dart';
+import 'package:learning_flutter/app/pages/menus/menus.model.dart';
 import 'package:learning_flutter/app/routes.dart';
 
 import '../../layout/navigation.dart';
@@ -22,30 +23,33 @@ class _MenuPageBody extends StatelessWidget {
               stream: menuBloc.fetchMeals(),
               builder: (
                 BuildContext context,
-                AsyncSnapshot snapshot,
+                AsyncSnapshot<List<MenusModel>> snapshot,
               ) {
+                if (snapshot.hasError) return Text(snapshot.error.toString());
+                if (!snapshot.hasData) return const Text('Connecting...');
                 final menus = snapshot.data;
                 return ListView.builder(
                   itemCount: menus.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final menu = menus[index];
                     return Card(
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
                         leading: CircleAvatar(
                           child: CachedNetworkImage(
-                            imageUrl: menus[index].image,
+                            imageUrl: menu.image,
                             colorBlendMode: BlendMode.overlay,
                             color: Colors.black54,
                             width: 125,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             // placeholder: (context, url) => CircularProgressIndicator(),
                             errorWidget: (context, url, error) =>
                                 Icon(Icons.error),
                           ),
                         ),
                         title: Text(
-                          menus[index].name,
+                          menu.name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
@@ -61,7 +65,7 @@ class _MenuPageBody extends StatelessWidget {
                             Navigator.pushNamed(
                               context,
                               RoutesConstants.MEALS,
-                              arguments: '5',
+                              arguments: menu.id,
                             );
                           },
                         ),

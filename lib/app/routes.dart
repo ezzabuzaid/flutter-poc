@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:learning_flutter/app/pages/check/check.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/menu.view.dart';
 import 'package:learning_flutter/app/pages/portal/index.dart';
@@ -13,6 +14,10 @@ class RoutesConstants {
   static const OFFERS = '/offers';
   static const SUPPORT = '/support';
   static const PORTAL = '/portal';
+  static const FAVOURITES = '/Favourites';
+  static const FACE = '/face';
+
+
 }
 
 final routes = {
@@ -24,4 +29,5 @@ final routes = {
   RoutesConstants.Home: (BuildContext context) => MealsView(),
   RoutesConstants.Home: (BuildContext context) => MealsView(),
   RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.FACE: (BuildContext context) => FaceDetection(),
 };

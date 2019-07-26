@@ -17,6 +17,7 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
+  final confirmPasswordKey = GlobalKey<FormFieldState>();
   final payload = RegisterModel();
   FocusNode emailFocusNode = FocusNode();
   FocusNode countryFocusNode = FocusNode();
@@ -25,7 +26,6 @@ class _RegisterFormState extends State<RegisterForm> {
   FocusNode confirmPasswordFocusNode = FocusNode();
 
   void initState() {
-    // phone.RegionInfo()
     super.initState();
   }
 
@@ -35,6 +35,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    print('Localizations.localeOf(context) ${Localizations.localeOf(context)}');
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -135,10 +136,11 @@ class _RegisterFormState extends State<RegisterForm> {
                       return null;
                     },
                     onSaved: (value) {
-                      this.payload.username = value;
+                      this.payload.mobile = value;
                     },
                     onFieldSubmitted: (v) {
                       this.setFocus(this.passwordFocusNode);
+                      print('mobile $v');
                     },
                   ),
                   SizedBox(height: 25),
@@ -172,6 +174,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   SizedBox(height: 25),
                   TextFormField(
+                    key: confirmPasswordKey,
                     focusNode: confirmPasswordFocusNode,
                     decoration: InputDecoration(
                       labelText: 'Confirm password',
@@ -184,9 +187,21 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                       ),
                     ),
-                    onSaved: (value) {
-                      // TODO: setup on blur validate for confirm password field
-                      this.payload.password = value;
+                    validator: validators.validate(
+                      [
+                        IsPasswordEqual(
+                          this.payload.password,
+                          "Passwords doesn't matches",
+                        ),
+                      ],
+                    ),
+                    onFieldSubmitted: (value) {
+                      print('password ${this.payload.password} confirm $value');
+                      this.formKey.currentState.save();
+                      if (this.payload.password != value) {
+                        this.setFocus(this.confirmPasswordFocusNode);
+                      }
+                      this.confirmPasswordKey.currentState.validate();
                     },
                     obscureText: true,
                   ),
@@ -221,7 +236,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         onPressed: () {
                           if (this.formKey.currentState.validate()) {
                             formKey.currentState.save();
-                            this.bloc.register(payload);
+                            this.bloc.register(payload).then((e) {});
                           }
                         },
                         textColor: Colors.white,
@@ -233,9 +248,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: FlatButton(
                       child: Text(
                         'Already have an account? Login.',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                        ),
+                        style: TextStyle(decoration: TextDecoration.underline),
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, RoutesConstants.LOGIN);
@@ -270,4 +283,18 @@ class _RegisterFormState extends State<RegisterForm> {
     passwordFocusNode.dispose();
     super.dispose();
   }
+}
+
+class IsPasswordEqual implements validators.IValidator {
+  final String password;
+  final String message;
+  @override
+  call(String value) {
+    if (this.password != value) {
+      return true;
+    }
+    return false;
+  }
+
+  IsPasswordEqual(this.password, [this.message = '']);
 }

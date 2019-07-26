@@ -40,26 +40,27 @@ class UrlInterceptor implements InterceptorContract {
 class FinalaizeResponesInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({RequestData data}) async {
-    if (data.method == Method.POST ||
-        data.method == Method.PATCH ||
-        data.method == Method.PUT) {}
-    Builder(
-      builder: (context) => RaisedButton(
-            child: Text('Show Snackbar'),
-            onPressed: () {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Proccessing request'),
-                ),
-              );
-            },
-          ),
-    );
     return data;
   }
 
   @override
   Future<ResponseData> interceptResponse({ResponseData data}) async {
+    if (data.method == Method.POST ||
+        data.method == Method.PATCH ||
+        data.method == Method.PUT) {
+      Builder(builder: (context) {
+        return RaisedButton(
+          child: Text('Show Snackbar'),
+          onPressed: () {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Proccessing request'),
+              ),
+            );
+          },
+        );
+      });
+    }
     return data;
   }
 }

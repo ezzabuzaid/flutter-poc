@@ -123,8 +123,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                var res = await this.bloc.login(this.payload);
-                                print(json.decode(res));
+                                this.bloc.login(this.payload);
                               }
                             },
                             textColor: Colors.white,
