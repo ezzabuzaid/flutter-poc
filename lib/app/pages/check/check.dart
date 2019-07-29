@@ -1,11 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:learning_flutter/app/layout/navigation.dart';
-import 'package:learning_flutter/app/layout/toolbar.dart';
-// import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:camera/camera.dart' as camera;
 
 class FaceDetection extends StatefulWidget {
   @override
@@ -13,31 +7,38 @@ class FaceDetection extends StatefulWidget {
 }
 
 class _FaceDetectionState extends State<FaceDetection> {
-  File _image;
+  camera.CameraController controller;
 
-  // Future getImage() async {
-  //   var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-  //   final FirebaseVisionImage visionImage =
-  //       FirebaseVisionImage.fromFile(image);
+  init() async {
+    List<camera.CameraDescription> cameras = await camera.availableCameras();
+    controller = camera.CameraController(cameras[1], camera.ResolutionPreset.high);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
+  }
 
-  //   setState(() {
-  //     _image = image;
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    this.init();
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Toolbar('Meals'),
-      body: Center(
-        child: _image == null ? Text('No image selected.') : Image.file(_image),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Pick Image',
-        child: Icon(Icons.add_a_photo),
-      ),
-      drawer: Navigation(),
-    );
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
+    return AspectRatio(
+        aspectRatio: controller.value.aspectRatio,
+        child: camera.CameraPreview(controller));
   }
 }

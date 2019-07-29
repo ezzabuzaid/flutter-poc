@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:learning_flutter/app/pages/check/check.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/menu.view.dart';
+import 'package:learning_flutter/app/pages/olhc/olhc.dart';
 import 'package:learning_flutter/app/pages/portal/index.dart';
 
 class RoutesConstants {
@@ -14,10 +15,9 @@ class RoutesConstants {
   static const OFFERS = '/offers';
   static const SUPPORT = '/support';
   static const PORTAL = '/portal';
-  static const FAVOURITES = '/Favourites';
+  static const FAVOURITES = '/favourites';
   static const FACE = '/face';
-
-
+  static const OLHC = '/olhc';
 }
 
 final routes = {
@@ -26,8 +26,10 @@ final routes = {
   RoutesConstants.MENUS: (BuildContext context) => MenuView(),
   RoutesConstants.LOGIN: (BuildContext context) => LoginView(),
   RoutesConstants.REGISTER: (BuildContext context) => RegisterView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
   RoutesConstants.FACE: (BuildContext context) => FaceDetection(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.OLHC: (BuildContext context) => OLHC(),
 };

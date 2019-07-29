@@ -1,14 +1,9 @@
-import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/routes.dart';
-import 'package:learning_flutter/app/shared/validators.dart' as validators;
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -20,14 +15,10 @@ class _LoginFormState extends State<LoginForm> {
   final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
   final payload = LoginModel();
-  FocusNode passwordFocusNode;
+  final passwordFocusNode = new FocusNode();
 
   void initState() {
     super.initState();
-    passwordFocusNode = new FocusNode();
-    passwordFocusNode.addListener(
-      () => print('focusNode updated: hasFocus: ${passwordFocusNode.hasFocus}'),
-    );
   }
 
   void setFocus(node) {
@@ -63,6 +54,9 @@ class _LoginFormState extends State<LoginForm> {
                     onSaved: (value) {
                       this.payload.username = value;
                     },
+                    onEditingComplete: () {
+                      this.setFocus(this.passwordFocusNode);
+                    },
                   ),
                   SizedBox(height: 25),
                   TextFormField(
@@ -93,9 +87,9 @@ class _LoginFormState extends State<LoginForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                    onChanged: (bool value) {},
-                                    value: false,
-                                  ),
+                                onChanged: (bool value) {},
+                                value: false,
+                              ),
                             ),
                             width: 20,
                           ),

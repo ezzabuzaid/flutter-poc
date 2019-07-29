@@ -74,6 +74,11 @@ class Navigation extends StatelessWidget {
       icon: EvaIcons.checkmarkSquare2Outline,
       path: RoutesConstants.FACE,
     ),
+    new _Item(
+      title: 'OLHC',
+      icon: EvaIcons.checkmarkSquare2Outline,
+      path: RoutesConstants.OLHC,
+    ),
   ];
 
   Widget build(BuildContext context) {
