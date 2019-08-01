@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/layout/index.dart';
+import 'package:learning_flutter/app/pages/olhc/index.dart';
 import 'package:learning_flutter/app/routes.dart';
 
 class App extends StatelessWidget {
@@ -14,10 +15,11 @@ class App extends StatelessWidget {
       supportedLocales: [const Locale('en'), const Locale('ar')],
       routes: routes,
       // initialRoute: '/',
-      home: Scaffold(
-        appBar: Toolbar('Home'),
-        drawer: Navigation(),
-      ),
+        home: OLHCListView(),
+      // home: Scaffold(
+      //   appBar: Toolbar('Home'),
+      //   drawer: Navigation(),
+      // ),
     );
   }
 }

@@ -1,2 +1,2 @@
 export './http.dart';
-export './interceptor.dart';
+export './interceptors/interceptor.dart';

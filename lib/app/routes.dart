@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:learning_flutter/app/pages/check/check.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/menu.view.dart';
-import 'package:learning_flutter/app/pages/olhc/olhc.dart';
+import 'package:learning_flutter/app/pages/olhc/index.dart';
 import 'package:learning_flutter/app/pages/portal/index.dart';
 
 class RoutesConstants {
@@ -18,6 +18,8 @@ class RoutesConstants {
   static const FAVOURITES = '/favourites';
   static const FACE = '/face';
   static const OLHC = '/olhc';
+  static const OLHC_CHART = '/olhc-chart';
+  
 }
 
 final routes = {
@@ -31,5 +33,6 @@ final routes = {
   RoutesConstants.Home: (BuildContext context) => MealsView(),
   RoutesConstants.Home: (BuildContext context) => MealsView(),
   RoutesConstants.Home: (BuildContext context) => MealsView(),
-  RoutesConstants.OLHC: (BuildContext context) => OLHC(),
+  RoutesConstants.OLHC: (BuildContext context) => OLHCListView(),
+  RoutesConstants.OLHC_CHART: (BuildContext context) => OHLCCandleView(),
 };

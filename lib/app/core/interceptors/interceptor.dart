@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http_interceptor.dart';
-// NOTE get this from environment
+import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/core/helpers/utils.dart';
 
+// NOTE get this from environment
 class LogginInterceptor implements InterceptorContract {
   Map logging = Map<String, int>();
   @override
@@ -26,8 +28,10 @@ class LogginInterceptor implements InterceptorContract {
 class UrlInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({RequestData data}) async {
+    if (data.headers[MutationRequest.defaultUrl] != 'false'){
     data.url = Uri.https('node-buildozer.herokuapp.com', '/api/${data.url}')
         .toString();
+    }
     return data;
   }
 
@@ -79,8 +83,13 @@ class ErrorInterceptor implements InterceptorContract {
 }
 
 class MutationInterceptor implements InterceptorContract {
+  configure(options) {
+    logger.d(options);
+  }
+
   @override
   Future<RequestData> interceptRequest({RequestData data}) async {
+    logger.w("MutationInterceptor Working");
     return data;
   }
 

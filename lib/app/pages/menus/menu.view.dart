@@ -26,7 +26,9 @@ class _MenuPageBody extends StatelessWidget {
                 AsyncSnapshot<List<MenusModel>> snapshot,
               ) {
                 if (snapshot.hasError) return Text(snapshot.error.toString());
-                if (!snapshot.hasData) return const Text('Connecting...');
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
                 final menus = snapshot.data;
                 return ListView.builder(
                   itemCount: menus.length,

@@ -12,7 +12,6 @@ class MealsService {
 
   Future<List<MealsModel>> fetchMealsByMenuId(String menuId) async {
     final response = await http.get('meals/menu/$menuId');
-    print(response.body);
     final decoded = Response.fromJson(response.body);
     List data = List.from(decoded.data);
     return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();

@@ -114,12 +114,15 @@ class MealsView extends StatelessWidget {
 
     return Scaffold(
       appBar: Toolbar('Meals'),
+      drawer: Navigation(),
       body: StreamBuilder(
         stream: mealsBloc.fetchMeals(mealId),
         builder:
             (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
           if (snapshot.hasError) return Text(snapshot.error.toString());
-          if (!snapshot.hasData) return const Text('Connecting...');
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
           return ListView.separated(
             itemBuilder: (BuildContext context, int index) =>
                 _MealsCard(snapshot.data[index]),
@@ -129,7 +132,6 @@ class MealsView extends StatelessWidget {
           );
         },
       ),
-      drawer: Navigation(),
     );
   }
 }

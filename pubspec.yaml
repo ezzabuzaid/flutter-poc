@@ -38,6 +38,9 @@ dependencies:
   country_pickers: ^1.1.0
   flutter_circular_chart: ^0.1.0
   camera: ^0.5.2+2
+  flutter_socket_io: ^0.5.1
+  flutter_candlesticks: ^0.1.4
+  logger: ^0.6.0
 
 dev_dependencies:
   flutter_test:
