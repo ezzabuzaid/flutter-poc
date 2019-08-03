@@ -8,7 +8,7 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: 'https://bit.ly/2Gjlh3y',
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
       height: 150,
       errorWidget: (context, url, error) => Icon(Icons.error),
     );

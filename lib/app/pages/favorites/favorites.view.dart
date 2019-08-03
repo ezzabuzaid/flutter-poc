@@ -1,14 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:learning_flutter/app/pages/favorites/index.dart';
+import 'package:learning_flutter/app/pages/meals/index.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
 import '../../partials/meals-details.dart';
-import 'index.dart';
 
-class _MealsCard extends StatelessWidget {
-  final MealsModel meal;
-  _MealsCard(this.meal);
+class _ItemCard extends StatelessWidget {
+  final MealsModel item;
+  _ItemCard(this.item);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class _MealsCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         CachedNetworkImage(
-          imageUrl: this.meal.image,
+          imageUrl: this.item.image,
           height: height,
           colorBlendMode: BlendMode.overlay,
           color: Colors.black54,
@@ -43,7 +44,7 @@ class _MealsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          this.meal.name,
+                          this.item.name,
                           style: Theme.of(context).textTheme.subtitle,
                         ),
                         IconButton(
@@ -53,7 +54,7 @@ class _MealsCard extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      this.meal.recipe,
+                      this.item.recipe,
                       style: Theme.of(context).textTheme.caption,
                     ),
                   ],
@@ -88,7 +89,7 @@ class _MealsCard extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return MealsDetails(meal: this.meal);
+                                return MealsDetails(meal: this.item);
                               },
                             );
                           },
@@ -106,34 +107,80 @@ class _MealsCard extends StatelessWidget {
   }
 }
 
-class MealsView extends StatelessWidget {
+class _FavoritesBody extends StatelessWidget {
+  const _FavoritesBody({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    String mealId = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      appBar: Toolbar('Meals'),
-      drawer: Navigation(),
-      body: StreamBuilder(
-        stream: mealsBloc.fetchMeals(mealId),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return ListView.separated(
-            itemBuilder: (BuildContext context, int index) {
-              return _MealsCard(snapshot.data[index]);
-            },
-            itemCount: snapshot.data.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider(height: 0);
-            },
-          );
-        },
-      ),
+    return StreamBuilder(
+      stream: favoritesBloc.fetchFavorites(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            return _ItemCard(snapshot.data[index]);
+          },
+          itemCount: snapshot.data.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return Divider(height: 0);
+          },
+        );
+      },
     );
   }
 }
+
+class FavoritesView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: Toolbar('Favorites'),
+      drawer: Navigation(),
+      body: _FavoritesBody(),
+    );
+  }
+}
+
+
+// class BottomBar extends StatelessWidget {
+//   const BottomBar({Key key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BottomNavigationBar(
+//       currentIndex: 0,
+//       items: [
+//         BottomNavigationBarItem(
+//           title: Text('List'),
+//           icon: GestureDetector(
+//             child: Icon(Icons.list),
+//             onTap: () {
+//               Navigator.pushReplacementNamed(
+//                 context,
+//                 RoutesConstants.OLHC,
+//               );
+//             },
+//           ),
+//         ),
+//         BottomNavigationBarItem(
+//           title: Text('Chart'),
+//           icon: GestureDetector(
+//             child: Icon(Icons.multiline_chart),
+//             onTap: () {
+//               Navigator.pushReplacementNamed(
+//                 context,
+//                 RoutesConstants.OLHC_CHART,
+//               );
+//             },
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

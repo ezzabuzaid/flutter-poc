@@ -1,9 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/olhc/ohlc.bloc.dart';
 import 'package:learning_flutter/app/pages/olhc/olhc.model.dart';
 

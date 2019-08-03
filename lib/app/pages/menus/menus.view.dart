@@ -1,12 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/pages/menus/menu.bloc.dart';
-import 'package:learning_flutter/app/pages/menus/menus.model.dart';
-import 'package:learning_flutter/app/routes.dart';
-
+import '../../core/constants.dart';
 import '../../layout/navigation.dart';
 import '../../layout/toolbar.dart';
+import 'index.dart';
+import 'menus.model.dart';
 
 class _MenuPageBody extends StatelessWidget {
   const _MenuPageBody({Key key}) : super(key: key);

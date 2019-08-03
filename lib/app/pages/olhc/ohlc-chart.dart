@@ -12,11 +12,11 @@ class OHLCCandle extends StatefulWidget {
 
 class _OHLCCandleState extends State<OHLCCandle> {
   final stream = ohlcBloc.connectToOhlcSocket();
-  StreamSubscription _streamSubscription;
+  StreamSubscription streamSubscription;
   @override
   void initState() {
     super.initState();
-    this._streamSubscription = stream.listen((data) {
+    this.streamSubscription = stream.listen((data) {
       logger.d(data);
       setState(() {
         this.sampleData.add({
@@ -52,7 +52,7 @@ class _OHLCCandleState extends State<OHLCCandle> {
 
   @override
   void dispose() {
-    this._streamSubscription.cancel();
+    this.streamSubscription.cancel();
     super.dispose();
   }
 }

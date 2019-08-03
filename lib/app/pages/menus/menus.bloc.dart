@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:learning_flutter/app/pages/menus/menu.service.dart';
-import 'package:learning_flutter/app/pages/menus/menus.model.dart';
+import 'menus.model.dart';
+import 'menus.service.dart';
 
 class MenuBloc {
   final _service = MenusService();

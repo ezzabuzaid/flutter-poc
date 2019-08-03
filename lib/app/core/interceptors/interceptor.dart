@@ -28,9 +28,9 @@ class LogginInterceptor implements InterceptorContract {
 class UrlInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({RequestData data}) async {
-    if (data.headers[MutationRequest.defaultUrl] != 'false'){
-    data.url = Uri.https('node-buildozer.herokuapp.com', '/api/${data.url}')
-        .toString();
+    if (data.headers[MutationRequest.defaultUrl] != 'false') {
+      data.url = Uri.https('node-buildozer.herokuapp.com', '/api/${data.url}')
+          .toString();
     }
     return data;
   }
@@ -49,21 +49,17 @@ class FinalaizeResponesInterceptor implements InterceptorContract {
 
   @override
   Future<ResponseData> interceptResponse({ResponseData data}) async {
+    logger.i(data.method);
     if (data.method == Method.POST ||
         data.method == Method.PATCH ||
         data.method == Method.PUT) {
-      Builder(builder: (context) {
-        return RaisedButton(
-          child: Text('Show Snackbar'),
-          onPressed: () {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Proccessing request'),
-              ),
-            );
-          },
-        );
-      });
+      Builder(
+        builder: (context) {
+          return SnackBar(
+            content: Text('Proccessing request'),
+          );
+        },
+      ).build(null);
     }
     return data;
   }

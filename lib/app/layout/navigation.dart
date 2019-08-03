@@ -1,6 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/routes.dart';
+import 'package:learning_flutter/app/core/constants.dart';
 
 class _Item {
   Text title;

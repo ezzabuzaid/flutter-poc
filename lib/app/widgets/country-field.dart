@@ -1,21 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:libphonenumber/libphonenumber.dart' as phone;
-// import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/countries.dart';
 import 'package:country_pickers/country.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 
 class CountryField extends StatefulWidget {
-  final FocusNode focusNode;
-  CountryField({Key key, this.focusNode}) : super(key: key);
+  Country country;
+  final Function onChange;
+  CountryField({
+    Key key,
+    isoCode,
+    @required this.onChange,
+  }) : super(key: key) {
+    this.country = countryList.firstWhere((el) => el.isoCode == isoCode);
+  }
 
   _CountryFieldState createState() => _CountryFieldState();
 }
 
 class _CountryFieldState extends State<CountryField> {
-  Country selectedCountry;
-
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
@@ -29,10 +33,12 @@ class _CountryFieldState extends State<CountryField> {
           ),
         ),
       ),
-      value: this.selectedCountry,
+      value: this.widget.country,
       onChanged: (value) {
         this.setState(() {
-          this.selectedCountry = value;
+          this.widget.country = value;
+          final function = this.widget.onChange ?? (value) {};
+          function(value);
         });
       },
       items: this._buildList(),
@@ -43,17 +49,17 @@ class _CountryFieldState extends State<CountryField> {
     return countryList
         .map(
           (country) => DropdownMenuItem<Country>(
-                value: country,
-                child: Row(
-                  children: <Widget>[
-                    CountryPickerUtils.getDefaultFlagImage(country),
-                    SizedBox(width: 8.0),
-                    Text(
-                      "(${country.isoCode}) +${country.phoneCode}",
-                    ),
-                  ],
+            value: country,
+            child: Row(
+              children: <Widget>[
+                CountryPickerUtils.getDefaultFlagImage(country),
+                SizedBox(width: 8.0),
+                Text(
+                  "(${country.isoCode}) +${country.phoneCode}",
                 ),
-              ),
+              ],
+            ),
+          ),
         )
         .toList();
   }

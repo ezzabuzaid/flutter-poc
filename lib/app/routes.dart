@@ -1,26 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:learning_flutter/app/pages/check/check.dart';
-import 'package:learning_flutter/app/pages/meals/index.dart';
-import 'package:learning_flutter/app/pages/menus/menu.view.dart';
-import 'package:learning_flutter/app/pages/olhc/index.dart';
-import 'package:learning_flutter/app/pages/portal/index.dart';
+import 'core/constants.dart';
+import 'pages/face-detection/face-detection.dart';
+import 'pages/favorites/index.dart';
+import 'pages/meals/index.dart';
+import 'pages/menus/menus.view.dart';
+import 'pages/olhc/index.dart';
+import 'pages/portal/index.dart';
 
-class RoutesConstants {
-  static const MEALS = '/meals';
-  static const LOGIN = '/portal/login';
-  static const REGISTER = '/portal/register';
-  static const MENUS = '/menus';
-  static const Home = '/home';
-  static const ORDERS = '/orders';
-  static const OFFERS = '/offers';
-  static const SUPPORT = '/support';
-  static const PORTAL = '/portal';
-  static const FAVOURITES = '/favourites';
-  static const FACE = '/face';
-  static const OLHC = '/olhc';
-  static const OLHC_CHART = '/olhc-chart';
-  
-}
 
 final routes = {
   // '/': (BuildContext context) => ,
@@ -28,11 +14,11 @@ final routes = {
   RoutesConstants.MENUS: (BuildContext context) => MenuView(),
   RoutesConstants.LOGIN: (BuildContext context) => LoginView(),
   RoutesConstants.REGISTER: (BuildContext context) => RegisterView(),
-  RoutesConstants.FACE: (BuildContext context) => FaceDetection(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.FACE: (BuildContext context) => FaceDetectionView(),
+  RoutesConstants.FAVOURITES: (BuildContext context) => FavoritesView(),
   RoutesConstants.OLHC: (BuildContext context) => OLHCListView(),
   RoutesConstants.OLHC_CHART: (BuildContext context) => OHLCCandleView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => MealsView(),
 };

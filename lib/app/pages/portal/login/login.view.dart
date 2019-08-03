@@ -1,5 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/core/constants.dart';
 import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
@@ -39,7 +40,6 @@ class _LoginFormState extends State<LoginForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
-                    autofocus: true,
                     decoration: InputDecoration(
                       labelText: 'Username',
                       isDense: true,

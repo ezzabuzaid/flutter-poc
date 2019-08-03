@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/core/constants.dart';
 import 'package:learning_flutter/app/layout/navigation.dart';
 import 'package:learning_flutter/app/layout/toolbar.dart';
 import 'package:learning_flutter/app/pages/olhc/ohlc-chart.dart';
 import 'package:learning_flutter/app/pages/olhc/olhc-list.dart';
-import 'package:learning_flutter/app/routes.dart';
 
 export './olhc-list.dart';
 export './olhc.model.dart';

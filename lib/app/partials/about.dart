@@ -8,7 +8,7 @@ class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AboutDialog(
-      applicationIcon: Logo(),
+      children: <Widget>[Logo()],
       applicationName: 'Buildozer',
       applicationVersion: '1.0.0',
       applicationLegalese:

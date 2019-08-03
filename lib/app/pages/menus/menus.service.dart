@@ -1,6 +1,6 @@
-import 'package:learning_flutter/app/core/http.dart';
-import 'package:learning_flutter/app/pages/menus/menus.model.dart';
-import 'package:learning_flutter/app/shared/response.dart';
+import '../../core/http.dart';
+import '../../shared/response.dart';
+import 'menus.model.dart';
 
 class MenusService {
   Future<List<MenusModel>> fetchMenus() async {

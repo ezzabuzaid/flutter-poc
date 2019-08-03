@@ -1,5 +1,5 @@
 class MealsModel {
-  final String _Id;
+  final String sId;
   int price;
   String image;
   String recipe;
@@ -9,7 +9,7 @@ class MealsModel {
   String updatedAt;
 
   MealsModel(
-    this._Id, {
+    this.sId, {
     this.price,
     this.image,
     this.recipe,
@@ -34,7 +34,7 @@ class MealsModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this._Id;
+    data['_id'] = this.sId;
     data['price'] = this.price;
     data['image'] = this.image;
     data['recipe'] = this.recipe;
