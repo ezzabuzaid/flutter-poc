@@ -4,7 +4,6 @@ class OLHCModel {
   double high;
   double low;
   double close;
-  double volume;
 
   OLHCModel({
     this.date,
@@ -12,7 +11,6 @@ class OLHCModel {
     this.high,
     this.low,
     this.close,
-    this.volume,
   });
 
   OLHCModel.fromJson(Map<String, dynamic> json) {
@@ -21,7 +19,6 @@ class OLHCModel {
     high = toFloat(json['High']);
     low = toFloat(json['Low']);
     close = toFloat(json['Close']);
-    volume = toFloat(json['Volume']);
   }
 
   Map<String, dynamic> toJson() {
@@ -31,12 +28,10 @@ class OLHCModel {
     data['High'] = this.high;
     data['Low'] = this.low;
     data['Close'] = this.close;
-    data['Volume'] = this.volume;
     return data;
   }
 }
 
-
-toFloat(num value){
+toFloat(num value) {
   return value + .0;
 }

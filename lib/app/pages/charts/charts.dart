@@ -9,12 +9,12 @@ import 'package:web_socket_channel/io.dart';
 final channel =
     IOWebSocketChannel.connect('wss://ws.coincap.io/trades/binance');
 
-class Chart extends StatefulWidget {
+class ChartView extends StatefulWidget {
   @override
-  _ChartState createState() => _ChartState();
+  _ChartViewState createState() => _ChartViewState();
 }
 
-class _ChartState extends State<Chart> {
+class _ChartViewState extends State<ChartView> {
   StreamSubscription streamSubscription;
   @override
   void initState() {

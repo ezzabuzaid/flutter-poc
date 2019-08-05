@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/pages/home/index.dart';
+import 'package:learning_flutter/app/pages/olhc/index.dart';
+import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/routes.dart';
 
 class App extends StatefulWidget {
@@ -10,7 +11,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   lightTheme(BuildContext context) {
     return ThemeData(
-      primarySwatch: Colors.amber,
+      primarySwatch: Colors.cyan,
       brightness: Brightness.light,
     );
   }
@@ -43,7 +44,7 @@ class _AppState extends State<App> {
         title: 'Learning flutter',
         supportedLocales: [const Locale('en'), const Locale('ar')],
         routes: routes,
-        home: HomeView(),
+        home: OLHCListView(),
       ),
       data: this,
     );
@@ -71,11 +72,3 @@ class ThemeSwitcher extends InheritedWidget {
     return this != old;
   }
 }
-
-var themeData = ThemeData(
-  fontFamily: 'Raleway',
-  primaryColor: Colors.blue,
-  brightness: Brightness.light,
-  backgroundColor: Colors.white,
-  accentColor: Colors.blue,
-);

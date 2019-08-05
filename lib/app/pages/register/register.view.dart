@@ -2,9 +2,9 @@ import 'package:country_pickers/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/core/constants.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
-import 'package:learning_flutter/app/pages/portal/register/register.model.dart';
+import 'package:learning_flutter/app/pages/register/register.bloc.dart';
+import 'package:learning_flutter/app/pages/register/register.model.dart';
 import 'package:learning_flutter/app/partials/about.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/country-field.dart';
@@ -266,7 +266,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                             isoCode: 'JO',
                                             phoneNumber: this.payload.mobile);
                                 final response =
-                                    await this.bloc.register(payload);
+                                    await registerBloc.register(payload);
                                 String message =
                                     'Successfully registerd, please see you email to verify your account and then come to login';
                                 if (response.code >= 400 ||
@@ -350,4 +350,11 @@ class IsPhoneNumber implements validators.IValidator {
 
   @override
   String get message => 'Test messsgae';
+}
+
+class RegisterView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: RegisterForm());
+  }
 }

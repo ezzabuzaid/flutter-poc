@@ -8,6 +8,16 @@ import 'package:web_socket_channel/io.dart';
 
 final socketEndpoint = 'wss://node-buildozer.herokuapp.com/olhc';
 
+class Singleton {
+  static final Singleton _singleton = new Singleton._internal();
+
+  factory Singleton() {
+    return _singleton;
+  }
+
+  Singleton._internal();
+}
+
 class OhlcBloc {
   final _service = OHLCService();
   final _channel = IOWebSocketChannel.connect(socketEndpoint);
@@ -17,11 +27,14 @@ class OhlcBloc {
     this._stream = _channel.stream.asBroadcastStream();
   }
 
-  Observable<OLHCModel> connectToOhlcSocket() {
+  Observable<OLHCModel> connectToOhlcSocket(String name) {
     logger.i("Connection to connectToOhlcSocket");
     return Observable.merge(
       [
-        _service.connectToOhlcSocketHttpEndpoint().asStream().cast<OLHCModel>(),
+        _service
+            .connectToOhlcSocketHttpEndpoint(name)
+            .asStream()
+            .cast<OLHCModel>(),
         _stream.map((data) => OLHCModel.fromJson(json.decode(data)))
       ],
     ).skip(1).asBroadcastStream();

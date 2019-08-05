@@ -11,7 +11,7 @@ class OHLCCandle extends StatefulWidget {
 }
 
 class _OHLCCandleState extends State<OHLCCandle> {
-  final stream = ohlcBloc.connectToOhlcSocket();
+  final stream = ohlcBloc.connectToOhlcSocket('eurusd');
   StreamSubscription streamSubscription;
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _OHLCCandleState extends State<OHLCCandle> {
           "high": data.high,
           "low": data.low,
           "close": data.close,
-          "volumeto": data.volume,
+          // "volumeto": data.volume,
         });
       });
     });

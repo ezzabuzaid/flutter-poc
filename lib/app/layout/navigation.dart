@@ -98,6 +98,12 @@ class Navigation extends StatelessWidget {
         path: RoutesConstants.OLHC,
         context: context,
       ),
+      new _Item(
+        title: 'Chart',
+        icon: Icons.pie_chart,
+        path: RoutesConstants.CHARTS,
+        context: context,
+      ),
     ];
   }
 

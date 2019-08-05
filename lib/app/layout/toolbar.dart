@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/app.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 
 class Toolbar extends AppBar {
   final Widget title;

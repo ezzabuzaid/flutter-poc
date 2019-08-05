@@ -1,10 +1,9 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants.dart';
-import 'package:learning_flutter/app/pages/portal/login/login.model.dart';
-import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
+import 'package:learning_flutter/app/pages/login/login.bloc.dart';
+import 'package:learning_flutter/app/pages/login/login.model.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
-import 'package:learning_flutter/app/routes.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
@@ -13,7 +12,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
   final payload = LoginModel();
   final passwordFocusNode = new FocusNode();
@@ -117,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                this.bloc.login(this.payload);
+                                loginBloc.login(this.payload);
                               }
                             },
                             textColor: Colors.white,
@@ -175,5 +173,12 @@ class _LoginFormState extends State<LoginForm> {
   void dispose() {
     passwordFocusNode.dispose();
     super.dispose();
+  }
+}
+
+class LoginView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: LoginForm());
   }
 }

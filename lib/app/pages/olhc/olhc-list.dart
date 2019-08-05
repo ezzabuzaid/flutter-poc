@@ -13,7 +13,7 @@ getBetween(num value, from, to) {
 }
 
 class _OHLCState extends State<OHLC> {
-  final stream = ohlcBloc.connectToOhlcSocket();
+  final stream = ohlcBloc.connectToOhlcSocket('test');
 
   @override
   void initState() {

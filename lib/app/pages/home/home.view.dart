@@ -47,7 +47,10 @@ class _HomeCard extends StatelessWidget {
                 Text('Menu name'),
               ],
             ),
-            ToCart(meal: this.meal)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: ToCart(meal: this.meal),
+            )
           ],
         ),
       ),

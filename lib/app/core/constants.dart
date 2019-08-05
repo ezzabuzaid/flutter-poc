@@ -12,6 +12,7 @@ class RoutesConstants {
   static const FACE = '/face';
   static const OLHC = '/olhc';
   static const OLHC_CHART = '/olhc-chart';
+  static const CHARTS = '/charts';
 }
 
 class ApiConstants {
