@@ -1,0 +1,19 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = new FlutterSecureStorage();
+
+class TokenHelper {
+  factory TokenHelper() => const TokenHelper._internal();
+  const TokenHelper._internal();
+  removeToken() async {
+    return await storage.delete(key: 'token');
+  }
+
+  addToken(token) async {
+    return await storage.write(key: 'token', value: token);
+  }
+
+  getToken() async {
+    return await storage.read(key: 'token');
+  }
+}

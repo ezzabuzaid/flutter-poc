@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:learning_flutter/app/widgets/to-cart.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
-import '../../partials/meals-details.dart';
 import 'index.dart';
 
 class _MealsCard extends StatelessWidget {
@@ -13,7 +12,6 @@ class _MealsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Theme.of(context).primaryColor;
     const double height = 190;
 
     return Row(

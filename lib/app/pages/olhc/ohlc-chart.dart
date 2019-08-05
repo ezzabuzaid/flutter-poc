@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_candlesticks/flutter_candlesticks.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/olhc/ohlc.bloc.dart';
 
 class OHLCCandle extends StatefulWidget {
@@ -16,8 +15,8 @@ class _OHLCCandleState extends State<OHLCCandle> {
   @override
   void initState() {
     super.initState();
-    this.streamSubscription = stream.listen((data) {
-      logger.d(data);
+    this.streamSubscription = stream.listen((_data) {
+      final data = _data.data;
       setState(() {
         this.sampleData.add({
           "open": data.open,

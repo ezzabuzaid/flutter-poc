@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:learning_flutter/app/pages/charts/charts.dart';
+import 'package:learning_flutter/app/pages/home/home.view.dart';
 import 'package:learning_flutter/app/pages/login/login.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/register/register.view.dart';
@@ -22,5 +23,5 @@ final routes = {
   RoutesConstants.OLHC: (BuildContext context) => OLHCListView(),
   RoutesConstants.OLHC_CHART: (BuildContext context) => OHLCCandleView(),
   RoutesConstants.CHARTS: (BuildContext context) => ChartView(),
-  RoutesConstants.Home: (BuildContext context) => MealsView(),
+  RoutesConstants.Home: (BuildContext context) => HomeView(),
 };

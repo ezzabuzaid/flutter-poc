@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/core/helpers/token.dart';
 import 'package:learning_flutter/app/core/helpers/utils.dart';
 
 // NOTE get this from environment
@@ -49,7 +50,7 @@ class FinalaizeResponesInterceptor implements InterceptorContract {
 
   @override
   Future<ResponseData> interceptResponse({ResponseData data}) async {
-    logger.i(data.method);
+    logger.i('${data.method} || URL => ${data.url}');
     if (data.method == Method.POST ||
         data.method == Method.PATCH ||
         data.method == Method.PUT) {
@@ -93,5 +94,27 @@ class MutationInterceptor implements InterceptorContract {
   Future<ResponseData> interceptResponse({ResponseData data}) async {
     // data.body = json.decode(data.body);
     return data;
+  }
+}
+
+class HeadersInterceptor implements InterceptorContract {
+  @override
+  Future<RequestData> interceptRequest({RequestData data}) async {
+    removeHeader(data.headers, MutationRequest.defaultUrl);
+    String token = await TokenHelper().getToken();
+    data.headers.putIfAbsent(MutationRequest.authorization, () => token);
+    logger.d(token);
+    return data;
+  }
+
+  @override
+  Future<ResponseData> interceptResponse({ResponseData data}) async {
+    return data;
+  }
+}
+
+removeHeader(headers, key) {
+  if (headers.containsKey(key)) {
+    headers.remove(key);
   }
 }

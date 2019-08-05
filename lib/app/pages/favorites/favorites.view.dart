@@ -112,8 +112,8 @@ class _FavoritesBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: favoritesBloc.fetchFavorites(),
+    return StreamBuilder<List<MealsModel>>(
+      stream: favoritesBloc.fetchFavorites().stream,
       builder:
           (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
         if (snapshot.hasError) {
@@ -140,14 +140,15 @@ class FavoritesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Toolbar(title:'Favorites',
-        context: context,),
+      appBar: Toolbar(
+        title: 'Favorites',
+        context: context,
+      ),
       drawer: Navigation(),
       body: _FavoritesBody(),
     );
   }
 }
-
 
 // class BottomBar extends StatelessWidget {
 //   const BottomBar({Key key}) : super(key: key);

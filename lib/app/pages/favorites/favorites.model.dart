@@ -29,7 +29,6 @@ class FavoritesModel<T> {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['item_id'] = this.itemId;
-    data['type'] = this.type;
     return data;
   }
 }

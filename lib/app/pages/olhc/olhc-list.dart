@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/olhc/ohlc.bloc.dart';
 import 'package:learning_flutter/app/pages/olhc/olhc.model.dart';
 
@@ -12,9 +13,13 @@ getBetween(num value, from, to) {
   return value.toStringAsFixed(5).substring(from, to);
 }
 
-class _OHLCState extends State<OHLC> {
-  final stream = ohlcBloc.connectToOhlcSocket('test');
+// , 'cad', 'gbp', 'jpy'
+final List<Map> dataList = [
+  {'name': 'EURUSD', 'path': 'eurusd'},
+  // {'name': 'JPY', 'path': 'jpy'},
+];
 
+class _OHLCState extends State<OHLC> {
   @override
   void initState() {
     super.initState();
@@ -28,85 +33,89 @@ class _OHLCState extends State<OHLC> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder(
-        stream: stream,
-        builder: (BuildContext context, AsyncSnapshot<OLHCModel> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Text(snapshot.hasError.toString());
-          }
-          final data = snapshot.data;
-          final splitedDate = data.date.split(" ");
-          final fullYear = splitedDate[0].split(".");
-          final formattedFullYear = DateTime(
-            int.parse(fullYear[0]),
-            int.parse(fullYear[1]),
-            int.parse(fullYear[2]),
-          );
-          getLastThreeDigit(double value) {
-            return int.parse(getBetween(value, 4, 7)).toDouble();
-          }
+    return ListView.separated(
+      itemBuilder: (BuildContext context, int index) {
+        final socketDetails = dataList[index];
+        return StreamBuilder(
+          stream: ohlcBloc.connectToOhlcSocket(socketDetails['path']),
+          builder: (BuildContext context,
+              AsyncSnapshot<SocketResponseModel> snapshot) {
+            if (snapshot.hasError) {
+              logger.e(snapshot.error);
+              return Text(snapshot.error.toString());
+            }
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            print(snapshot.data);
+            final data = snapshot.data.data;
+            final splitedDate = data.date.split(" ");
+            // final fullYear = splitedDate[0].split(".");
+            // final formattedFullYear = DateTime(
+            //   int.parse(fullYear[0]),
+            //   int.parse(fullYear[1]),
+            //   int.parse(fullYear[2]),
+            // );
+            getLastThreeDigit(double value) {
+              return int.parse(getBetween(value, 4, 7)).toDouble();
+            }
 
-          return ListView.separated(
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 7,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topLeft,
-                      widthFactor: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'EURUSD',
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          Text(
-                            splitedDate[1],
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                          Text(
-                            'Spread: ${calculateSpread(getLastThreeDigit(data.high), getLastThreeDigit(data.low))}',
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
+            return Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 7,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: 135,
+                    // alignment: Alignment.topLeft,
+                    // widthFactor: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          socketDetails['name'],
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Text(
+                          splitedDate[1],
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          'Spread: ${calculateSpread(getLastThreeDigit(data.high), getLastThreeDigit(data.low))}',
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
                     ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          _MarketInfluence(
-                            priceState: data.open,
-                            marketPrice: data.low,
-                            mode: "Low",
-                          ),
-                          _MarketInfluence(
-                            priceState: data.close,
-                            marketPrice: data.high,
-                            mode: "High",
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-            itemCount: 2,
-            separatorBuilder: (BuildContext context, int index) =>
-                Divider(height: 0),
-          );
-        },
-      ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        _MarketInfluence(
+                          priceState: data.open,
+                          marketPrice: data.low,
+                          mode: "Low",
+                        ),
+                        _MarketInfluence(
+                          priceState: data.close,
+                          marketPrice: data.high,
+                          mode: "High",
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+            // return Text(data.open.toString());
+          },
+        );
+      },
+      itemCount: dataList.length,
+      separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
     );
   }
 

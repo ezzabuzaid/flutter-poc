@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/pages/favorites/favorites.bloc.dart';
+import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 
 class MealsDetails extends StatelessWidget {
@@ -53,7 +55,17 @@ class MealsDetails extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.favorite_border),
-                    onPressed: () {},
+                    onPressed: () {
+                      favoritesService
+                          .addToFavoritesMeals(
+                        FavoritesModel(itemId: this.meal.sId),
+                      )
+                          .then((onValue) {
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('Done'),
+                        ));
+                      });
+                    },
                   )
                 ],
               ),

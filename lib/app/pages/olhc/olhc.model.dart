@@ -13,12 +13,13 @@ class OLHCModel {
     this.close,
   });
 
-  OLHCModel.fromJson(Map<String, dynamic> json) {
-    date = json['Date'];
-    open = toFloat(json['Open']);
-    high = toFloat(json['High']);
-    low = toFloat(json['Low']);
-    close = toFloat(json['Close']);
+  factory OLHCModel.fromJson(Map<String, dynamic> json) {
+    return OLHCModel(
+        close: toFloat(json['Close']),
+        date: json['Date'],
+        high: toFloat(json['High']),
+        open: toFloat(json['Open']),
+        low: toFloat(json['Low']));
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +33,18 @@ class OLHCModel {
   }
 }
 
-toFloat(num value) {
-  return value + .0;
+toFloat(dynamic value) {
+  return num.parse(value) + .0;
+}
+
+class SocketResponseModel {
+  String name;
+  OLHCModel data;
+
+  SocketResponseModel({this.data, this.name});
+
+  SocketResponseModel.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    data = json['data'] != null ? OLHCModel.fromJson(json['data']) : null;
+  }
 }

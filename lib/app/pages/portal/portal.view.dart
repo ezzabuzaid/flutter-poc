@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/core/constants.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
@@ -60,7 +61,9 @@ class PortalView extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, RoutesConstants.LOGIN);
+                    },
                   ),
                 ),
                 Row(
@@ -73,7 +76,9 @@ class PortalView extends StatelessWidget {
                         'Register here.',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesConstants.REGISTER);
+                      },
                     )
                   ],
                 ),

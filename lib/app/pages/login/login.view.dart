@@ -5,7 +5,6 @@ import 'package:learning_flutter/app/pages/login/login.bloc.dart';
 import 'package:learning_flutter/app/pages/login/login.model.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
-
 class LoginForm extends StatefulWidget {
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -115,7 +114,12 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                loginBloc.login(this.payload);
+                                loginBloc.login(this.payload).then((value) {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    RoutesConstants.Home,
+                                  );
+                                });
                               }
                             },
                             textColor: Colors.white,

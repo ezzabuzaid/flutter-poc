@@ -1,18 +1,22 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/shared/user.dart';
 
 class _Item {
+  String id;
   Text title;
   Icon icon;
   dynamic path;
-  _Item({IconData icon, String title, dynamic path, BuildContext context}) {
+  _Item(
+      {IconData icon,
+      String title,
+      dynamic path,
+      BuildContext context,
+      this.id}) {
     this.title = Text(
       title,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.white70,
-      ),
+      style: TextStyle(fontWeight: FontWeight.bold),
     );
     this.icon = Icon(
       icon,
@@ -34,13 +38,13 @@ class Navigation extends StatelessWidget {
       ),
       new _Item(
         title: 'Meals',
-        icon: Icons.home,
+        icon: Icons.fastfood,
         path: RoutesConstants.MEALS,
         context: context,
       ),
       new _Item(
         title: 'Menu',
-        icon: Icons.mail,
+        icon: Icons.view_list,
         path: RoutesConstants.MENUS,
         context: context,
       ),
@@ -62,39 +66,39 @@ class Navigation extends StatelessWidget {
         path: RoutesConstants.SUPPORT,
         context: context,
       ),
-      new _Item(
-        title: 'Portal',
-        icon: Icons.track_changes,
-        path: RoutesConstants.PORTAL,
-        context: context,
-      ),
-      new _Item(
-        title: 'Login',
-        icon: EvaIcons.logIn,
-        path: RoutesConstants.LOGIN,
-        context: context,
-      ),
-      new _Item(
-        title: 'Signup',
-        icon: EvaIcons.square,
-        path: RoutesConstants.REGISTER,
-        context: context,
-      ),
+      // new _Item(
+      //   title: 'Portal',
+      //   icon: Icons.track_changes,
+      //   path: RoutesConstants.PORTAL,
+      //   context: context,
+      // ),
+      // new _Item(
+      //   title: 'Login',
+      //   icon: EvaIcons.logIn,
+      //   path: RoutesConstants.LOGIN,
+      //   context: context,
+      // ),
+      // new _Item(
+      //   title: 'Signup',
+      //   icon: EvaIcons.square,
+      //   path: RoutesConstants.REGISTER,
+      //   context: context,
+      // ),
       new _Item(
         title: 'Favourites',
-        icon: EvaIcons.heartOutline,
+        icon: Icons.favorite,
         path: RoutesConstants.FAVOURITES,
         context: context,
       ),
       new _Item(
         title: 'Face detection',
-        icon: EvaIcons.checkmarkSquare2Outline,
+        icon: Icons.face,
         path: RoutesConstants.FACE,
         context: context,
       ),
       new _Item(
         title: 'OLHC',
-        icon: EvaIcons.checkmarkSquare2Outline,
+        icon: EvaIcons.barChartOutline,
         path: RoutesConstants.OLHC,
         context: context,
       ),
@@ -102,6 +106,13 @@ class Navigation extends StatelessWidget {
         title: 'Chart',
         icon: Icons.pie_chart,
         path: RoutesConstants.CHARTS,
+        context: context,
+      ),
+      new _Item(
+        id: 'logout',
+        title: 'Logout',
+        icon: Icons.exit_to_app,
+        path: RoutesConstants.LOGIN,
         context: context,
       ),
     ];
@@ -118,7 +129,11 @@ class Navigation extends StatelessWidget {
           title: item.title,
           leading: item.icon,
           onTap: () {
-            Navigator.pushNamed(context, item.path);
+            if (item.id != 'logout') {
+              Navigator.pushNamed(context, item.path);
+            } else {
+              User().logout(context);
+            }
           },
         );
       },

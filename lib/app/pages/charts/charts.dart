@@ -15,10 +15,10 @@ class ChartView extends StatefulWidget {
 }
 
 class _ChartViewState extends State<ChartView> {
-  StreamSubscription streamSubscription;
+  StreamSubscription _streamSubscription;
   @override
   void initState() {
-    this.streamSubscription = channel.stream.listen((value) {
+    this._streamSubscription = channel.stream.listen((value) {
       var data = CoincapModel.fromJson(json.decode(value)).toJson();
       _chartKey.currentState.updateData([circularStack(data)]);
     });
@@ -47,7 +47,7 @@ class _ChartViewState extends State<ChartView> {
 
   @override
   void dispose() {
-    this.streamSubscription.cancel();
+    this._streamSubscription.cancel();
     super.dispose();
   }
 }

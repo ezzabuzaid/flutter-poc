@@ -5,17 +5,30 @@ import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/pages/meals/meals.model.dart';
 import 'package:learning_flutter/app/shared/response.dart';
 
-class FavoritesService {
-  Future<List<MealsModel>> fetchFavoritesMeals() async {
-    logger.d(ApiConstants.FAVORITES_MEALS);
+class _FavoritesService {
+  Future fetchFavoritesMeals() async {
     final response = await http.get(ApiConstants.FAVORITES_MEALS);
-    final decoded = Response<List<FavoritesModel>>.fromJson(response.body);
-    logger.d(decoded.toJson());
-    List data = List.from(decoded.data);
-    return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
+    final decoded = Response.fromJson(
+      response.body,
+    );
+    logger.w(decoded.toJson());
+    final data = List<FavoritesModel<MealsModel>>.from(decoded.data);
+    final List<MealsModel> items = data.map((json) {
+      final item = FavoritesModel<MealsModel>.fromJson(json as dynamic);
+      logger.w(item);
+      item.items = MealsModel.fromJson(json.items as dynamic);
+      return item.items;
+    }).toList();
+    return items;
   }
 
-  addToFavoritesMeals(FavoritesModel payload) {
+  Future addToFavoritesMeals(FavoritesModel payload) {
     return http.post(ApiConstants.FAVORITES_MEALS, body: payload.toJson());
   }
+
+  Future removeFromFavoritesMeals(String id) {
+    return http.delete('${ApiConstants.FAVORITES}/$id');
+  }
 }
+
+final favoritesService = _FavoritesService();

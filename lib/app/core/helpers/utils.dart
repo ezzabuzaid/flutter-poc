@@ -1,5 +1,6 @@
 class MutationRequest {
   static final defaultUrl = 'defaultUrl';
+  static final authorization = 'authorization';
 }
 
 enum EMutationRequest {

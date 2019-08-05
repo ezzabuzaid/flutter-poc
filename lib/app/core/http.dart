@@ -3,6 +3,7 @@ import 'package:learning_flutter/app/core/interceptors/interceptor.dart';
 
 final http = HttpWithInterceptor.build(interceptors: [
   UrlInterceptor(),
-  FinalaizeResponesInterceptor()
+  HeadersInterceptor(),
+  FinalaizeResponesInterceptor(),
   // LogginInterceptor(),
 ]);
