@@ -50,7 +50,8 @@ class OLHCListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OHLC(),
-      appBar: Toolbar('OLHC List'),
+      appBar: Toolbar(title:'OLHC List',
+        context: context,),
       drawer: Navigation(),
       bottomNavigationBar: BottomBar(),
     );
@@ -62,7 +63,8 @@ class OHLCCandleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OHLCCandle(),
-      appBar: Toolbar('OLHC Chart'),
+      appBar: Toolbar(title:'OLHC Chart',
+        context: context,),
       drawer: Navigation(),
       bottomNavigationBar: BottomBar(),
     );

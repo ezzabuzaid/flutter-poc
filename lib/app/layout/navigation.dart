@@ -6,87 +6,108 @@ class _Item {
   Text title;
   Icon icon;
   dynamic path;
-  _Item({IconData icon, String title, dynamic path}) {
-    this.title = Text(title, style: TextStyle(fontWeight: FontWeight.bold));
+  _Item({IconData icon, String title, dynamic path, BuildContext context}) {
+    this.title = Text(
+      title,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.white70,
+      ),
+    );
     this.icon = Icon(
       icon,
       size: 30,
-      color: Colors.black87,
+      color: Theme.of(context).primaryColor,
     );
     this.path = path;
   }
 }
 
 class Navigation extends StatelessWidget {
-  final list = [
-    new _Item(
-      title: 'Home',
-      icon: Icons.home,
-      path: RoutesConstants.Home,
-    ),
-    new _Item(
-      title: 'Meals',
-      icon: Icons.home,
-      path: RoutesConstants.MEALS,
-    ),
-    new _Item(
-      title: 'Menu',
-      icon: Icons.mail,
-      path: RoutesConstants.MENUS,
-    ),
-    new _Item(
-      title: 'My orders',
-      icon: Icons.ac_unit,
-      path: RoutesConstants.ORDERS,
-    ),
-    new _Item(
-      title: 'Offers',
-      icon: Icons.local_offer,
-      path: RoutesConstants.OFFERS,
-    ),
-    new _Item(
-      title: 'Support',
-      icon: Icons.help,
-      path: RoutesConstants.SUPPORT,
-    ),
-    new _Item(
-      title: 'Portal',
-      icon: Icons.track_changes,
-      path: RoutesConstants.PORTAL,
-    ),
-    new _Item(
-      title: 'Login',
-      icon: EvaIcons.logIn,
-      path: RoutesConstants.LOGIN,
-    ),
-    new _Item(
-      title: 'Signup',
-      icon: EvaIcons.square,
-      path: RoutesConstants.REGISTER,
-    ),
-    new _Item(
-      title: 'Favourites',
-      icon: EvaIcons.heartOutline,
-      path: RoutesConstants.FAVOURITES,
-    ),
-    new _Item(
-      title: 'Face detection',
-      icon: EvaIcons.checkmarkSquare2Outline,
-      path: RoutesConstants.FACE,
-    ),
-    new _Item(
-      title: 'OLHC',
-      icon: EvaIcons.checkmarkSquare2Outline,
-      path: RoutesConstants.OLHC,
-    ),
-  ];
+  list(context) {
+    return [
+      new _Item(
+        title: 'Home',
+        icon: Icons.home,
+        path: RoutesConstants.Home,
+        context: context,
+      ),
+      new _Item(
+        title: 'Meals',
+        icon: Icons.home,
+        path: RoutesConstants.MEALS,
+        context: context,
+      ),
+      new _Item(
+        title: 'Menu',
+        icon: Icons.mail,
+        path: RoutesConstants.MENUS,
+        context: context,
+      ),
+      new _Item(
+        title: 'My orders',
+        icon: Icons.ac_unit,
+        path: RoutesConstants.ORDERS,
+        context: context,
+      ),
+      new _Item(
+        title: 'Offers',
+        icon: Icons.local_offer,
+        path: RoutesConstants.OFFERS,
+        context: context,
+      ),
+      new _Item(
+        title: 'Support',
+        icon: Icons.help,
+        path: RoutesConstants.SUPPORT,
+        context: context,
+      ),
+      new _Item(
+        title: 'Portal',
+        icon: Icons.track_changes,
+        path: RoutesConstants.PORTAL,
+        context: context,
+      ),
+      new _Item(
+        title: 'Login',
+        icon: EvaIcons.logIn,
+        path: RoutesConstants.LOGIN,
+        context: context,
+      ),
+      new _Item(
+        title: 'Signup',
+        icon: EvaIcons.square,
+        path: RoutesConstants.REGISTER,
+        context: context,
+      ),
+      new _Item(
+        title: 'Favourites',
+        icon: EvaIcons.heartOutline,
+        path: RoutesConstants.FAVOURITES,
+        context: context,
+      ),
+      new _Item(
+        title: 'Face detection',
+        icon: EvaIcons.checkmarkSquare2Outline,
+        path: RoutesConstants.FACE,
+        context: context,
+      ),
+      new _Item(
+        title: 'OLHC',
+        icon: EvaIcons.checkmarkSquare2Outline,
+        path: RoutesConstants.OLHC,
+        context: context,
+      ),
+    ];
+  }
 
   Widget build(BuildContext context) {
+    final List<_Item> list = this.list(context);
     final seperatedListView = ListView.separated(
       padding: EdgeInsets.zero,
       physics: BouncingScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
-        var item = this.list[index];
+        var item = list[index];
         return ListTile(
           title: item.title,
           leading: item.icon,
@@ -95,7 +116,7 @@ class Navigation extends StatelessWidget {
           },
         );
       },
-      itemCount: this.list.length,
+      itemCount: list.length,
       separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
     );
 

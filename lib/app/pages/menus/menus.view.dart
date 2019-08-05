@@ -87,7 +87,10 @@ class MenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Toolbar('Menu'),
+      appBar: Toolbar(
+        title: 'Menu',
+        context: context,
+      ),
       body: _MenuPageBody(),
       drawer: Navigation(),
     );

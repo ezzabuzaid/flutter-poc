@@ -35,9 +35,14 @@ class _RegisterFormState extends State<RegisterForm> {
   String isoCountryCode;
 
   Future<List<Placemark>> getCurrentLocation() {
-    return Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then(Geolocator().placemarkFromPosition);
+    return Geolocator().isLocationServiceEnabled().then((value) {
+      if (value) {
+        return Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      } else {
+        return throw Error();
+      }
+    }).then(Geolocator().placemarkFromPosition);
   }
 
   void initState() {

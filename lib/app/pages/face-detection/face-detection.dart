@@ -80,7 +80,10 @@ class FaceDetectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Toolbar('Face Detection'),
+      appBar: Toolbar(
+        title: 'Face Detection',
+        context: context,
+      ),
       drawer: Navigation(),
       body: _FaceDetectionBody(),
       floatingActionButton: FloatingActionButton(

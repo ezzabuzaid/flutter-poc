@@ -70,3 +70,9 @@ Dynamic Links
 Performance Monitoring
 Predictions
 Remote Config
+
+
+To get the height without toolbar size
+double abovePadding = MediaQuery.of(context).padding.top;
+double appBarHeight = appBar.preferredSize.height;
+double leftHeight = screenHeight - abovePadding - appBarHeight;

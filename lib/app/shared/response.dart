@@ -4,7 +4,7 @@ class Response<T> {
   final String name;
   final String message;
   final int code;
-  List<T> data;
+  T data;
   final String status;
 
   Response({

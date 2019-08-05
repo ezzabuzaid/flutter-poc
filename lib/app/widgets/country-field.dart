@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/countries.dart';
 import 'package:country_pickers/country.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 
 class CountryField extends StatefulWidget {
   Country country;

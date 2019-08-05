@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:learning_flutter/app/widgets/to-cart.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
 import '../../partials/meals-details.dart';
@@ -58,45 +59,9 @@ class _MealsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Card(
-                      child: Container(
-                        child: Text('\$ 18.00'),
-                        padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                      ),
-                      color: Colors.green,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: SizedBox(
-                        height: 25,
-                        width: 55,
-                        child: OutlineButton(
-                          borderSide: BorderSide(width: 1, color: primaryColor),
-                          color: primaryColor,
-                          child: Text(
-                            'Add',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
-                            ),
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return MealsDetails(meal: this.meal);
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                ToCart(
+                  meal: this.meal,
+                )
               ],
             ),
           ),
@@ -111,7 +76,10 @@ class MealsView extends StatelessWidget {
   Widget build(BuildContext context) {
     String mealId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: Toolbar('Meals'),
+      appBar: Toolbar(
+        title: 'Meals',
+        context: context,
+      ),
       drawer: Navigation(),
       body: StreamBuilder(
         stream: mealsBloc.fetchMeals(mealId),

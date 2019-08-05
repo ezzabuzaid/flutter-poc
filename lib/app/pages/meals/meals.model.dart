@@ -10,10 +10,10 @@ class MealsModel {
 
   MealsModel(
     this.sId, {
-    this.price,
     this.image,
-    this.recipe,
     this.name,
+    this.recipe,
+    this.price,
     this.menuId,
     this.createdAt,
     this.updatedAt,

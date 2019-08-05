@@ -9,7 +9,7 @@ class FavoritesService {
   Future<List<MealsModel>> fetchFavoritesMeals() async {
     logger.d(ApiConstants.FAVORITES_MEALS);
     final response = await http.get(ApiConstants.FAVORITES_MEALS);
-    final decoded = Response<FavoritesModel>.fromJson(response.body);
+    final decoded = Response<List<FavoritesModel>>.fromJson(response.body);
     logger.d(decoded.toJson());
     List data = List.from(decoded.data);
     return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
