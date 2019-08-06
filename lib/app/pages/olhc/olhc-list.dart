@@ -13,10 +13,11 @@ getBetween(num value, from, to) {
   return value.toStringAsFixed(5).substring(from, to);
 }
 
-// , 'cad', 'gbp', 'jpy'
 final List<Map> dataList = [
   {'name': 'EURUSD', 'path': 'eurusd'},
-  // {'name': 'JPY', 'path': 'jpy'},
+  {'name': 'JPY', 'path': 'jpy'},
+  {'name': 'CAD', 'path': 'cad'},
+  {'name': 'GBP', 'path': 'gbp'},
 ];
 
 class _OHLCState extends State<OHLC> {

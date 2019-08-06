@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/app.dart';
-import 'package:learning_flutter/app/core/helpers/crashlytics.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 
 void main() async {
@@ -17,7 +16,7 @@ void main() async {
       Zone.current.handleUncaughtError(details.exception, details.stack);
     }
   };
-
+  // TODO: add crashlytics
   // await flutterCrashlytics.initialize();
 
   runZoned<Future<Null>>(

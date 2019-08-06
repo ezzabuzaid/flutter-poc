@@ -5,20 +5,20 @@ import 'package:country_pickers/countries.dart';
 import 'package:country_pickers/country.dart';
 
 class CountryField extends StatefulWidget {
-  Country country;
+  final Country initialCountry;
   final Function onChange;
   CountryField({
     Key key,
     isoCode,
     @required this.onChange,
-  }) : super(key: key) {
-    this.country = countryList.firstWhere((el) => el.isoCode == isoCode);
-  }
+  })  : this.initialCountry = countryList.firstWhere((el) => el.isoCode == isoCode),
+        super(key: key);
 
   _CountryFieldState createState() => _CountryFieldState();
 }
 
 class _CountryFieldState extends State<CountryField> {
+  Country _country;
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
@@ -32,10 +32,10 @@ class _CountryFieldState extends State<CountryField> {
           ),
         ),
       ),
-      value: this.widget.country,
+      value: this._country,
       onChanged: (value) {
         this.setState(() {
-          this.widget.country = value;
+          this._country = value;
           final function = this.widget.onChange ?? (value) {};
           function(value);
         });

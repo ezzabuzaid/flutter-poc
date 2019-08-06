@@ -5,15 +5,15 @@ final storage = new FlutterSecureStorage();
 class TokenHelper {
   factory TokenHelper() => const TokenHelper._internal();
   const TokenHelper._internal();
-  removeToken() async {
+  Future<void> removeToken() async {
     return await storage.delete(key: 'token');
   }
 
-  addToken(token) async {
+  Future<void> addToken(token) async {
     return await storage.write(key: 'token', value: token);
   }
 
-  getToken() async {
+  Future<String> getToken() async {
     return await storage.read(key: 'token');
   }
 }

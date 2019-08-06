@@ -56,7 +56,7 @@ class _FaceDetectionBodyState extends State<_FaceDetectionBody> {
 
   Future getImage() async {
     logger.i("Future getImage() async");
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _image = image;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/pages/home/index.dart';
 import 'package:learning_flutter/app/routes.dart';
 
@@ -35,7 +34,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    favoritesService.fetchFavoritesMeals();
+    // favoritesService.fetchFavoritesMeals();
     final _themeData =
         mode == Brightness.dark ? this.darkTheme : this.lightTheme;
     return ThemeSwitcher(
