@@ -4,6 +4,7 @@ import 'package:learning_flutter/app/pages/home/home.view.dart';
 import 'package:learning_flutter/app/pages/login/login.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/register/register.view.dart';
+import 'package:learning_flutter/app/pages/settings/index.dart';
 import 'core/constants.dart';
 import 'pages/face-detection/face-detection.dart';
 import 'pages/favorites/index.dart';
@@ -24,4 +25,5 @@ final routes = {
   RoutesConstants.OLHC_CHART: (BuildContext context) => OHLCCandleView(),
   RoutesConstants.CHARTS: (BuildContext context) => ChartView(),
   RoutesConstants.Home: (BuildContext context) => HomeView(),
+  RoutesConstants.SETTINGS: (BuildContext context) => SettingView(),
 };

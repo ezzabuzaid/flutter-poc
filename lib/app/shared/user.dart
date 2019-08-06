@@ -17,7 +17,7 @@ class User {
     await TokenHelper().removeToken();
   }
 
-  isAuthenticated() async {
+  Future<bool> isAuthenticated() async {
     return (await TokenHelper().getToken()) != null;
     // TODO: use a jwt token to verify that it's not expaired and valid token
   }

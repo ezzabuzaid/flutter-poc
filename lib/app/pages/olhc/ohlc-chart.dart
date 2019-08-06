@@ -15,7 +15,7 @@ class _OHLCCandleState extends State<OHLCCandle> {
   @override
   void initState() {
     super.initState();
-    this.streamSubscription = stream.listen((_data) {
+    streamSubscription = stream.listen((_data) {
       final data = _data.data;
       setState(() {
         this.sampleData.add({
@@ -51,7 +51,7 @@ class _OHLCCandleState extends State<OHLCCandle> {
 
   @override
   void dispose() {
-    this.streamSubscription.cancel();
+    streamSubscription.cancel();
     super.dispose();
   }
 }

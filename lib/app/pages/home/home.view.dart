@@ -85,8 +85,7 @@ class HomeView extends StatelessWidget {
                 return FullWidth(child: _HomeCard(data[index]));
               },
             ),
-            maxCrossAxisExtent: 250,
-            // mainAxisSpacing: 10,
+            maxCrossAxisExtent: 250
           );
         },
       ),

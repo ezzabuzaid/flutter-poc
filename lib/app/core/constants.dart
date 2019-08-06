@@ -13,6 +13,7 @@ class RoutesConstants {
   static const OLHC = '/olhc';
   static const OLHC_CHART = '/olhc-chart';
   static const CHARTS = '/charts';
+  static const SETTINGS = '/settings';
 }
 
 class ApiConstants {

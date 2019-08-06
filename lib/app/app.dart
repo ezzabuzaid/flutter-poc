@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/pages/home/index.dart';
+import 'package:learning_flutter/app/pages/settings/settings.view.dart';
 import 'package:learning_flutter/app/routes.dart';
 
 class App extends StatefulWidget {
@@ -10,14 +10,15 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   lightTheme(BuildContext context) {
     return ThemeData(
-      primarySwatch: Colors.red,
+      primarySwatch: Colors.blue,
       brightness: Brightness.light,
     );
   }
 
   darkTheme(BuildContext context) {
     return ThemeData(
-      primarySwatch: Colors.amber,
+      primarySwatch: Colors.blue,
+      primaryColor: Colors.blue,
       brightness: Brightness.dark,
     );
   }
@@ -34,7 +35,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    // favoritesService.fetchFavoritesMeals();
     final _themeData =
         mode == Brightness.dark ? this.darkTheme : this.lightTheme;
     return ThemeSwitcher(
@@ -43,7 +43,7 @@ class _AppState extends State<App> {
         title: 'Learning flutter',
         supportedLocales: [const Locale('en'), const Locale('ar')],
         routes: routes,
-        home: HomeView(),
+        home: SettingView(),
       ),
       data: this,
     );

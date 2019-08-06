@@ -2,30 +2,25 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/auth.service.dart';
 import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/shared/user.dart';
+import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class _Item {
-  String id;
-  Text title;
-  Icon icon;
-  dynamic path;
-  _Item(
-      {IconData icon,
-      String title,
-      dynamic path,
-      BuildContext context,
-      this.id}) {
-    this.title = Text(
-      title,
-      style: TextStyle(fontWeight: FontWeight.bold),
-    );
-    this.icon = Icon(
-      icon,
-      size: 30,
-      color: Theme.of(context).primaryColor,
-    );
-    this.path = path;
-  }
+  final String id;
+  final Text title;
+  final Icon icon;
+  final dynamic path;
+  final bool needAuth;
+  _Item({
+    IconData icon,
+    String title,
+    BuildContext context,
+    this.path,
+    this.id,
+    this.needAuth = false,
+  })  : this.title = Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        this.icon = Icon(icon, size: 30);
 }
 
 class Navigation extends StatelessWidget {
@@ -54,6 +49,7 @@ class Navigation extends StatelessWidget {
         icon: Icons.ac_unit,
         path: RoutesConstants.ORDERS,
         context: context,
+        needAuth: true,
       ),
       new _Item(
         title: 'Offers',
@@ -66,6 +62,7 @@ class Navigation extends StatelessWidget {
         icon: Icons.help,
         path: RoutesConstants.SUPPORT,
         context: context,
+        needAuth: true,
       ),
       // new _Item(
       //   title: 'Portal',
@@ -90,6 +87,7 @@ class Navigation extends StatelessWidget {
         icon: Icons.favorite,
         path: RoutesConstants.FAVOURITES,
         context: context,
+        needAuth: true,
       ),
       new _Item(
         title: 'Face detection',
@@ -122,37 +120,13 @@ class Navigation extends StatelessWidget {
         icon: Icons.exit_to_app,
         path: RoutesConstants.LOGIN,
         context: context,
+        needAuth: true,
       ),
     ];
   }
 
   Widget build(BuildContext context) {
     final List<_Item> list = this.list(context);
-    final seperatedListView = ListView.separated(
-      padding: EdgeInsets.zero,
-      physics: BouncingScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        var item = list[index];
-        return ListTile(
-          title: item.title,
-          leading: item.icon,
-          onTap: () {
-            switch (item.id) {
-              case 'logout':
-                User().logout(context);
-                break;
-              case 'log_face':
-                LocalAuthenticationService().authenticate();
-                break;
-              default:
-                Navigator.pushNamed(context, item.path);
-            }
-          },
-        );
-      },
-      itemCount: list.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
-    );
 
     return Drawer(
       child: Column(
@@ -168,8 +142,75 @@ class Navigation extends StatelessWidget {
             margin: EdgeInsets.all(0),
           ),
           Expanded(
-            child: seperatedListView,
+            child: FutureBuilder(
+              future: User().isAuthenticated(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == false) {
+                  list.removeWhere((item) => item.needAuth);
+                }
+                return ListView.separated(
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    var item = list[index];
+                    return ListTile(
+                      title: item.title,
+                      leading: item.icon,
+                      onTap: () {
+                        switch (item.id) {
+                          case 'logout':
+                            User().logout(context);
+                            break;
+                          case 'log_face':
+                            LocalAuthenticationService()
+                                .authenticate()
+                                .then(logger.d);
+                            break;
+                          default:
+                            Navigator.pushNamed(context, item.path);
+                        }
+                      },
+                    );
+                  },
+                  itemCount: list.length,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(height: 0),
+                );
+              },
+            ),
           ),
+          FutureBuilder(
+            future: User().isAuthenticated(),
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              Widget widget;
+              if (snapshot.data == true) {
+                widget = Align(
+                  widthFactor: 1,
+                  alignment: Alignment.centerLeft,
+                  child: FlatButton.icon(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, RoutesConstants.SETTINGS);
+                    },
+                    icon: Icon(Icons.settings),
+                    label: Text('Setting'),
+                  ),
+                );
+              } else {
+                widget = FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, RoutesConstants.LOGIN);
+                  },
+                  child: Text('Login'),
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                );
+              }
+              return FullWidth(child: widget);
+            },
+          )
         ],
       ),
     );

@@ -12,8 +12,7 @@ import 'package:learning_flutter/app/widgets/full-width.dart';
 import 'package:form_validators/form_validators.dart' as validators;
 import 'package:geolocator/geolocator.dart';
 import 'package:libphonenumber/libphonenumber.dart' as phone;
-import 'package:permission_handler/permission_handler.dart';
-import 'package:system_setting/system_setting.dart' as system;
+// import 'package:system_setting/system_setting.dart' as system;
 // await system.SystemSetting.goto(system.SettingTarget.LOCATION);
 
 class RegisterForm extends StatefulWidget {

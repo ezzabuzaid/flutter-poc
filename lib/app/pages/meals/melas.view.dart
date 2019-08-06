@@ -24,7 +24,6 @@ class _MealsCard extends StatelessWidget {
           color: Colors.black54,
           width: 125,
           fit: BoxFit.cover,
-          // placeholder: (context, url) => CircularProgressIndicator(),
           errorWidget: (context, url, error) => Icon(Icons.error),
         ),
         Expanded(
