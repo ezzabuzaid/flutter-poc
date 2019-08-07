@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/layout/index.dart';
+import 'package:learning_flutter/app/pages/olhc/index.dart';
 import 'package:learning_flutter/app/pages/olhc/ohlc.bloc.dart';
 import 'package:learning_flutter/app/pages/olhc/olhc.model.dart';
 
-class OHLC extends StatefulWidget {
-  OHLC({Key key}) : super(key: key);
+class _OHLCBody extends StatefulWidget {
+  _OHLCBody({Key key}) : super(key: key);
   _OHLCState createState() => _OHLCState();
 }
 
@@ -20,7 +22,7 @@ final List<Map> dataList = [
   {'name': 'GBP', 'path': 'gbp'},
 ];
 
-class _OHLCState extends State<OHLC> {
+class _OHLCState extends State<_OHLCBody> {
   @override
   void initState() {
     super.initState();
@@ -207,6 +209,21 @@ class __MarketInfluenceState extends State<_MarketInfluence> {
           ],
         )
       ],
+    );
+  }
+}
+
+class OLHCListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _OHLCBody(),
+      appBar: Toolbar(
+        title: 'OLHC List',
+        context: context,
+      ),
+      drawer: Navigation(),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

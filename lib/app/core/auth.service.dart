@@ -1,16 +1,25 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 
-GetIt locator = GetIt();
-
-void setupLocator() {
-  locator.registerLazySingleton(() => LocalAuthenticationService());
+class BugFix {
+  final double number;
+  final String author;
+  final String comment;
+  const BugFix({this.number, this.author, this.comment});
+  f() {
+    logger.e(this.number);
+  }
 }
 
+// REVIEW Storage && Service Locator
+final storage = FlutterSecureStorage();
+
+@BugFix(number: 1000000000000000000000)
 class LocalAuthenticationService {
   final _auth = LocalAuthentication();
+  final canCheckBiometrics = LocalAuthentication().canCheckBiometrics;
   bool isProtectionEnabled = false;
 
   // NOTE: save this in the storage and let the user choice to use this authentication or not

@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_candlesticks/flutter_candlesticks.dart';
+import 'package:learning_flutter/app/layout/navigation.dart';
+import 'package:learning_flutter/app/layout/toolbar.dart';
+import 'package:learning_flutter/app/pages/olhc/index.dart';
 import 'package:learning_flutter/app/pages/olhc/ohlc.bloc.dart';
 
 class OHLCCandle extends StatefulWidget {
@@ -53,5 +56,20 @@ class _OHLCCandleState extends State<OHLCCandle> {
   void dispose() {
     streamSubscription.cancel();
     super.dispose();
+  }
+}
+
+class OHLCCandleView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: OHLCCandle(),
+      appBar: Toolbar(
+        title: 'OLHC Chart',
+        context: context,
+      ),
+      drawer: Navigation(),
+      bottomNavigationBar: BottomBar(),
+    );
   }
 }

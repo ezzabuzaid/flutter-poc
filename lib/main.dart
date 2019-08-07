@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/app.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/core/helpers/service-locator.dart';
 
 void main() async {
   bool isInDebugMode = false;
@@ -26,6 +27,7 @@ void main() async {
         [DeviceOrientation.portraitUp],
       );
       logger.i("Run The Applicaton");
+      setupLocator();
       runApp(App());
     },
     onError: (error, stackTrace) async {

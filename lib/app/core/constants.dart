@@ -9,11 +9,14 @@ class RoutesConstants {
   static const SUPPORT = '/support';
   static const PORTAL = '/portal';
   static const FAVOURITES = '/favourites';
+  static const CHARTS = '/charts';
+  static const SETTINGS = '/settings';
+  static const CONTACT = '/contact';
+  static const ABOUT = '/about';
+  static const FEEDBACK = '/feedback';
   static const FACE = '/face';
   static const OLHC = '/olhc';
   static const OLHC_CHART = '/olhc-chart';
-  static const CHARTS = '/charts';
-  static const SETTINGS = '/settings';
 }
 
 class ApiConstants {

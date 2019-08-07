@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final storage = new FlutterSecureStorage();
+final storage = FlutterSecureStorage();
 
 class TokenHelper {
   factory TokenHelper() => const TokenHelper._internal();

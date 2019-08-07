@@ -1,8 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/auth.service.dart';
 import 'package:learning_flutter/app/core/constants.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/shared/user.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
@@ -107,21 +105,6 @@ class Navigation extends StatelessWidget {
         path: RoutesConstants.CHARTS,
         context: context,
       ),
-      new _Item(
-        id: 'log_face',
-        title: 'Face Checker',
-        icon: Icons.pan_tool,
-        path: RoutesConstants.LOGIN,
-        context: context,
-      ),
-      new _Item(
-        id: 'logout',
-        title: 'Logout',
-        icon: Icons.exit_to_app,
-        path: RoutesConstants.LOGIN,
-        context: context,
-        needAuth: true,
-      ),
     ];
   }
 
@@ -157,18 +140,7 @@ class Navigation extends StatelessWidget {
                       title: item.title,
                       leading: item.icon,
                       onTap: () {
-                        switch (item.id) {
-                          case 'logout':
-                            User().logout(context);
-                            break;
-                          case 'log_face':
-                            LocalAuthenticationService()
-                                .authenticate()
-                                .then(logger.d);
-                            break;
-                          default:
-                            Navigator.pushNamed(context, item.path);
-                        }
+                        Navigator.pushNamed(context, item.path);
                       },
                     );
                   },

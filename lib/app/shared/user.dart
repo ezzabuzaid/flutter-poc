@@ -7,7 +7,7 @@ class User {
   factory User() => User._internal();
   User._internal();
 
-  final _subject = BehaviorSubject();
+  final _subject = BehaviorSubject<UserModel>();
 
   logout(BuildContext context) async {
     Navigator.of(context).pushNamedAndRemoveUntil(
@@ -22,7 +22,7 @@ class User {
     // TODO: use a jwt token to verify that it's not expaired and valid token
   }
 
-  getInformation() {
+  Stream<UserModel> getInformation() {
     return _subject.stream;
   }
 
@@ -33,4 +33,9 @@ class User {
   dispose() {
     _subject.close();
   }
+}
+
+class UserModel {
+  String image =
+      'https://i.pinimg.com/originals/21/fd/c5/21fdc52d3b5f3847d2a982f99f419328.png';
 }
