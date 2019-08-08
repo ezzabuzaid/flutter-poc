@@ -7,7 +7,7 @@ import 'package:web_socket_channel/io.dart';
 final socketEndpoint = 'wss://node-buildozer.herokuapp.com';
 
 class Singleton {
-  static final Singleton _singleton = new Singleton._internal();
+  static final Singleton _singleton = Singleton._internal();
 
   factory Singleton() {
     return _singleton;
@@ -21,19 +21,14 @@ class OhlcBloc {
   Stream _stream;
 
   Observable<SocketResponseModel> connectToOhlcSocket(String name) {
-    final _channel = IOWebSocketChannel.connect(socketEndpoint,);
+    final _channel = IOWebSocketChannel.connect(
+      socketEndpoint,
+    );
     this._stream = _channel.stream.asBroadcastStream();
-    // final Stream<dynamic> httpResponse =
-    //     _service.connectToOhlcSocketHttpEndpoint(name).asStream();
-    return Observable.fromFuture(
-      _service.connectToOhlcSocketHttpEndpoint(name),
-    )
+    return Observable.fromFuture(_service.connectToOhlcSocketHttpEndpoint(name))
         .switchMap((v) => _stream)
         .map((data) => SocketResponseModel.fromJson(json.decode(data)));
-    //  .skip(1).asBroadcastStream();
   }
 }
 
 final ohlcBloc = OhlcBloc();
-
-//

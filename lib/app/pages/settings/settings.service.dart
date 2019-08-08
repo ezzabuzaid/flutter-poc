@@ -1,19 +1,23 @@
-import 'package:learning_flutter/app/core/http.dart';
-import 'package:learning_flutter/app/pages/settings/index.dart';
-import 'package:learning_flutter/app/shared/response.dart';
+import 'dart:convert';
 
-class SettingsService {
-  Future<List<SettingsModel>> fetchSettings() async {
-    final response = await http.get('Settings');
-    final decoded = Response.fromJson(response.body);
-    List data = List.from(decoded.data);
-    return data.map((json) => SettingsModel.fromJson(json as dynamic)).toList();
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:learning_flutter/app/pages/settings/index.dart';
+
+final storage = FlutterSecureStorage();
+const _settings_key = 'settings';
+
+class _SettingsService {
+  Future<SettingsModel> getSettings() async {
+    final settings = await storage.read(key: _settings_key);
+    return SettingsModel.fromJson(jsonDecode(settings));
   }
 
-  Future<List<SettingsModel>> fetchSettingsByMenuId(String menuId) async {
-    final response = await http.get('Settings/menu/$menuId');
-    final decoded = Response.fromJson(response.body);
-    List data = List.from(decoded.data);
-    return data.map((json) => SettingsModel.fromJson(json as dynamic)).toList();
+  Future<void> setSettings(SettingsModel payload) async {
+    return await storage.write(
+      key: _settings_key,
+      value: jsonEncode(payload.toJson()),
+    );
   }
 }
+
+final settingsService = _SettingsService();

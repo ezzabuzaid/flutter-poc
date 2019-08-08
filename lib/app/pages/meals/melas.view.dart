@@ -82,12 +82,7 @@ class MealsView extends StatelessWidget {
         stream: mealsBloc.fetchMeals(mealId),
         builder:
             (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
+        
           return ListView.separated(
             itemBuilder: (BuildContext context, int index) {
               return _MealsCard(snapshot.data[index]);

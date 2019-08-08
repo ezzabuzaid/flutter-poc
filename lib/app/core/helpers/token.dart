@@ -1,19 +1,20 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:learning_flutter/app/core/helpers/storage.dart';
 
-final storage = FlutterSecureStorage();
+const token_key = 'token';
 
 class TokenHelper {
   factory TokenHelper() => const TokenHelper._internal();
   const TokenHelper._internal();
+
   Future<void> removeToken() async {
-    return await storage.delete(key: 'token');
+    return await Storage().remove(token_key);
   }
 
-  Future<void> addToken(token) async {
-    return await storage.write(key: 'token', value: token);
+  Future<void> addToken(String token) async {
+    return await Storage().set(token_key, token);
   }
 
   Future<String> getToken() async {
-    return await storage.read(key: 'token');
+    return await Storage().get(token_key);
   }
 }
