@@ -91,6 +91,16 @@ class PortalView extends StatelessWidget {
                     )
                   ],
                 ),
+                FlatButton(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    'Explore the app as visitor',
+                    // style: Theme.of(context).textTheme.button,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, RoutesConstants.Home);
+                  },
+                )
               ],
             )
           ],

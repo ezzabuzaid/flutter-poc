@@ -19,7 +19,7 @@ class _MenuPageBody extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             margin: EdgeInsets.symmetric(vertical: 10),
             child: StreamBuilder(
-              stream: menuBloc.fetchMeals(),
+              stream: menuBloc.fetchMenus(),
               builder: (
                 BuildContext context,
                 AsyncSnapshot<List<MenusModel>> snapshot,
@@ -86,11 +86,8 @@ class _MenuPageBody extends StatelessWidget {
 class MenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Toolbar(
-        title: 'Menu',
-        context: context,
-      ),
+    return Scaffold(      appBar: Toolbar(context: context),
+
       body: _MenuPageBody(),
       drawer: Navigation(),
     );

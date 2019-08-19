@@ -140,10 +140,7 @@ class FavoritesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Toolbar(
-        title: 'Favorites',
-        context: context,
-      ),
+      appBar: Toolbar(context: context),
       drawer: Navigation(),
       body: _FavoritesBody(),
     );

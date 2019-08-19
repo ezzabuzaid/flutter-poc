@@ -1,22 +1,27 @@
 import 'dart:convert';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/core/helpers/storage.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 
-final storage = FlutterSecureStorage();
 const _settings_key = 'settings';
+int times = 0;
 
 class _SettingsService {
   Future<SettingsModel> getSettings() async {
-    final settings = await storage.read(key: _settings_key);
-    return SettingsModel.fromJson(jsonDecode(settings));
+    String encodedSettings = await Storage().get(_settings_key);
+    if (encodedSettings == null) {
+      await setSettings(SettingsModel(
+        darkMode: false,
+        notification: true,
+      ));
+      return await getSettings();
+    }
+    return SettingsModel.fromJson(json.decode(encodedSettings));
   }
 
   Future<void> setSettings(SettingsModel payload) async {
-    return await storage.write(
-      key: _settings_key,
-      value: jsonEncode(payload.toJson()),
-    );
+    logger.w('setSettings');
+    return await Storage().set(_settings_key, json.encode(payload.toJson()));
   }
 }
 

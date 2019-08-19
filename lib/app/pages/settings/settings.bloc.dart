@@ -1,22 +1,16 @@
-import 'dart:async';
-
+import 'package:learning_flutter/app/core/bloc.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SettingsBloc {
   final settings = Bloc<SettingsModel>();
   SettingsBloc() {
     settings.sink.addStream(settingsService.getSettings().asStream());
   }
+
+  setSettings(SettingsModel data) {
+    settingsService.setSettings(data);
+    settings.sink.add(data);
+  }
 }
 
 final settingsBloc = SettingsBloc();
-
-class Bloc<T> {
-  final _subject = BehaviorSubject<T>();
-  Stream<T> get stream => _subject.stream;
-  StreamSink<T> get sink => _subject.sink;
-  dispose() {
-    _subject.close();
-  }
-}

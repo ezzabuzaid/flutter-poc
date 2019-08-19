@@ -2,6 +2,7 @@ import 'package:country_pickers/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/pages/register/register.bloc.dart';
 import 'package:learning_flutter/app/pages/register/register.model.dart';
@@ -26,7 +27,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final confirmPasswordKey = GlobalKey<FormFieldState>();
   final payload = RegisterModel();
   FocusNode emailFocusNode = FocusNode();
-  FocusNode countryFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
   Position position;
@@ -34,14 +34,25 @@ class _RegisterFormState extends State<RegisterForm> {
   String isoCountryCode;
 
   Future<List<Placemark>> getCurrentLocation() {
-    return Geolocator().isLocationServiceEnabled().then((value) {
-      if (value) {
-        return Geolocator()
-            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      } else {
-        return throw Error();
-      }
-    }).then(Geolocator().placemarkFromPosition);
+    return Geolocator()
+        .checkGeolocationPermissionStatus()
+        .then((enabled) {
+          logger.i('checkGeolocationPermissionStatus $enabled');
+          if (enabled == GeolocationStatus.granted) {
+            return Geolocator().isLocationServiceEnabled();
+          }
+          return throw Exception('Permission is denied');
+        })
+        .then((enabled) {
+          if (enabled) {
+            logger.i('isLocationServiceEnabled $enabled');
+            return Geolocator()
+                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          }
+          return throw Exception('Service is not enabled');
+        })
+        .then(Geolocator().placemarkFromPosition)
+        .catchError((error, trace) => [Placemark(isoCountryCode: 'AUS')]);
   }
 
   void initState() {
@@ -59,13 +70,10 @@ class _RegisterFormState extends State<RegisterForm> {
         future: this.getCurrentLocation(),
         builder:
             (BuildContext context, AsyncSnapshot<List<Placemark>> snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.hasError.toString());
-          }
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          this.isoCountryCode = snapshot?.data[0].isoCountryCode;
+          isoCountryCode = snapshot.data[0].isoCountryCode;
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Column(
@@ -130,9 +138,6 @@ class _RegisterFormState extends State<RegisterForm> {
                           validators.Required('This field is required'),
                           validators.Email('Please enter the email correctly'),
                         ]),
-                        onFieldSubmitted: (v) {
-                          this.setFocus(this.countryFocusNode);
-                        },
                         onSaved: (value) {
                           this.payload.email = value;
                         },
@@ -150,7 +155,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           labelText: 'Mobile',
-                          isDense: true,
+                        isDense: true,
                           labelStyle: Theme.of(context).textTheme.body1,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -331,6 +336,8 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   void dispose() {
     passwordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
+    emailFocusNode.dispose();
     super.dispose();
   }
 }

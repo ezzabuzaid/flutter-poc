@@ -1,16 +1,24 @@
+import 'package:flutter/material.dart';
+
 class SettingsModel {
-  bool theme = true;
-  bool notification = true;
-  SettingsModel({this.theme,this.notification,});
+  bool darkMode;
+  bool notification;
+  SettingsModel({
+    this.darkMode,
+    this.notification,
+  });
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['theme'] = this.theme;
+    data['darkMode'] = this.darkMode;
     data['notification'] = this.notification;
     return data;
   }
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) {
-    return SettingsModel(theme: json['theme'],notification:json['notification'],);
+    return SettingsModel(
+      darkMode: json['darkMode'],
+      notification: json['notification'],
+    );
   }
 }

@@ -25,7 +25,7 @@ class _Text extends StatelessWidget {
 
 class _ButtonListTile extends StatelessWidget {
   final String title;
-  final String route; 
+  final String route;
   final Function onClick;
   _ButtonListTile(this.title, {this.route, this.onClick});
 
@@ -65,73 +65,78 @@ class _SettingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: settingsBloc.settings.stream,
-        builder: (context, AsyncSnapshot<SettingsModel> snapshot) {
-          // FIXME: Make it generic
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final data = snapshot.data;
-          return Column(
-            children: <Widget>[
-              SwitchListTile(
-                value: data.theme,
-                onChanged: (v) {
-                  ThemeSwitcher.of(context).switchTheme(Brightness.light);
-                },
-                title: _Text('night mode'.toUpperCase()),
-              ),
-              _Divider(),
-              SwitchListTile(
-                value: data.notification,
-                onChanged: (v) {},
-                title: _Text('notification'.toUpperCase()),
-              ),
-              _Divider(),
-              _ButtonListTile(
-                'Auth',
-                onClick: () async {
-                  logger.d('LocalAuthenticationService');
-                  await locator
-                      .get<LocalAuthenticationService>()
-                      .authenticate();
-                },
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 3, horizontal: 20),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    isExpanded: true,
-                    value: 'en-us',
-                    items: <DropdownMenuItem>[
-                      DropdownMenuItem(child: _Text('Arabic'), value: 'ar-jo'),
-                      DropdownMenuItem(child: _Text('English'), value: 'en-us')
-                    ],
-                    onChanged: (value) {},
-                  ),
+      stream: settingsBloc.settings.stream,
+      builder: (context, AsyncSnapshot<SettingsModel> snapshot) {
+        // FIXME: Make it generic
+        if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        final data = snapshot.data;
+        logger.w(data.toJson());
+        return Column(
+          children: <Widget>[
+            SwitchListTile(
+              value: data.darkMode,
+              onChanged: (value) {
+                data.darkMode = value;
+                ThemeSwitcher.of(context).switchTheme(
+                    value == true ? Brightness.dark : Brightness.light);
+                settingsBloc.setSettings(data);
+              },
+              title: _Text('Dark mode'.toUpperCase()),
+            ),
+            _Divider(),
+            SwitchListTile(
+              value: data.notification,
+              onChanged: (value) {
+                data.notification = value;
+                settingsBloc.setSettings(data);
+              },
+              title: _Text('notification'.toUpperCase()),
+            ),
+            _Divider(),
+            _ButtonListTile(
+              'Auth',
+              onClick: () async {
+                logger.d('LocalAuthenticationService');
+                await locator.get<LocalAuthenticationService>().authenticate();
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton(
+                  isExpanded: true,
+                  value: 'en-us',
+                  items: <DropdownMenuItem>[
+                    DropdownMenuItem(child: _Text('Arabic'), value: 'ar-jo'),
+                    DropdownMenuItem(child: _Text('English'), value: 'en-us')
+                  ],
+                  onChanged: (value) {},
                 ),
               ),
-              _Divider(),
-              _ButtonListTile(
-                'Give me your feedback',
-                route: RoutesConstants.FEEDBACK,
-              ),
-              _ButtonListTile('Contect me', route: RoutesConstants.CONTACT),
-              _ButtonListTile('About me', route: RoutesConstants.ABOUT),
-              _ButtonListTile(
-                'Logout',
-                route: RoutesConstants.LOGIN,
-                onClick: () {
-                  User().logout(context);
-                },
-              ),
-            ],
-          );
-        });
+            ),
+            _Divider(),
+            _ButtonListTile(
+              'Give me your feedback',
+              route: RoutesConstants.FEEDBACK,
+            ),
+            _ButtonListTile('Contect me', route: RoutesConstants.CONTACT),
+            _ButtonListTile('About me', route: RoutesConstants.ABOUT),
+            _ButtonListTile(
+              'Logout',
+              route: RoutesConstants.LOGIN,
+              onClick: () {
+                User().logout(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -139,10 +144,7 @@ class SettingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Toolbar(
-        title: 'Settings',
-        context: context,
-      ),
+      appBar: Toolbar(context: context),
       drawer: Navigation(),
       body: _SettingBody(),
     );

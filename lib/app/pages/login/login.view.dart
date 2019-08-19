@@ -1,10 +1,12 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/helpers/token.dart';
 import 'package:learning_flutter/app/pages/login/login.bloc.dart';
 import 'package:learning_flutter/app/pages/login/login.model.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
+
 class LoginForm extends StatefulWidget {
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -14,7 +16,7 @@ class _LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
   final payload = LoginModel();
   final passwordFocusNode = new FocusNode();
-
+  bool rememberMe = true;
   void initState() {
     super.initState();
   }
@@ -84,8 +86,12 @@ class _LoginFormState extends State<LoginForm> {
                           SizedBox(
                             child: FormField(
                               builder: (context) => Checkbox(
-                                onChanged: (bool value) {},
-                                value: false,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    rememberMe = value;
+                                  });
+                                },
+                                value: rememberMe,
                               ),
                             ),
                             width: 20,
@@ -98,7 +104,10 @@ class _LoginFormState extends State<LoginForm> {
                         padding: EdgeInsets.all(0),
                         child: Text(
                           'Forgot password',
-                          style: TextStyle(fontWeight: FontWeight.normal),
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                         onPressed: () {},
                       )
@@ -114,7 +123,10 @@ class _LoginFormState extends State<LoginForm> {
                             onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                loginBloc.login(this.payload).then((value) {
+                                loginBloc.login(this.payload).then((token) {
+                                  if (rememberMe) {
+                                    TokenHelper().addToken(token);
+                                  }
                                   Navigator.pushReplacementNamed(
                                     context,
                                     RoutesConstants.Home,

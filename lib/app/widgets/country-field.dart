@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/countries.dart';
 import 'package:country_pickers/country.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 
 class CountryField extends StatefulWidget {
   final Country initialCountry;
@@ -11,7 +12,7 @@ class CountryField extends StatefulWidget {
     Key key,
     isoCode,
     @required this.onChange,
-  })  : this.initialCountry = countryList.firstWhere((el) => el.isoCode == isoCode),
+  })  : initialCountry = countryList.firstWhere((el) => el.isoCode == isoCode),
         super(key: key);
 
   _CountryFieldState createState() => _CountryFieldState();
@@ -32,15 +33,15 @@ class _CountryFieldState extends State<CountryField> {
           ),
         ),
       ),
-      value: this._country,
+      value: _country ?? widget.initialCountry,
       onChanged: (value) {
-        this.setState(() {
+        setState(() {
           this._country = value;
-          final function = this.widget.onChange ?? (value) {};
+          final function = widget.onChange ?? (value) {};
           function(value);
         });
       },
-      items: this._buildList(),
+      items: _buildList(),
     );
   }
 

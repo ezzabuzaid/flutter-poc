@@ -26,7 +26,7 @@ class User {
     return _subject.stream;
   }
 
-  setInformation(data) {
+  setInformation(UserModel data) {
     _subject.sink.add(data);
   }
 

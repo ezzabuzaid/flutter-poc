@@ -218,10 +218,7 @@ class OLHCListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _OHLCBody(),
-      appBar: Toolbar(
-        title: 'OLHC List',
-        context: context,
-      ),
+      appBar: Toolbar(context: context),
       drawer: Navigation(),
       bottomNavigationBar: BottomBar(),
     );

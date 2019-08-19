@@ -73,16 +73,12 @@ class MealsView extends StatelessWidget {
   Widget build(BuildContext context) {
     String mealId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: Toolbar(
-        title: 'Meals',
-        context: context,
-      ),
+      appBar: Toolbar(context: context),
       drawer: Navigation(),
       body: StreamBuilder(
         stream: mealsBloc.fetchMeals(mealId),
         builder:
             (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
-        
           return ListView.separated(
             itemBuilder: (BuildContext context, int index) {
               return _MealsCard(snapshot.data[index]);

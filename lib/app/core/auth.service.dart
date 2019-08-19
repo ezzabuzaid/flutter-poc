@@ -1,4 +1,3 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +13,6 @@ class BugFix {
 }
 
 // REVIEW Storage && Service Locator
-final storage = FlutterSecureStorage();
-
 @BugFix(number: 1000000000000000000000)
 class LocalAuthenticationService {
   final _auth = LocalAuthentication();

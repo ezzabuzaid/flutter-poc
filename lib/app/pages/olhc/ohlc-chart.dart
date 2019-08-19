@@ -64,10 +64,7 @@ class OHLCCandleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OHLCCandle(),
-      appBar: Toolbar(
-        title: 'OLHC Chart',
-        context: context,
-      ),
+      appBar: Toolbar(context: context),
       drawer: Navigation(),
       bottomNavigationBar: BottomBar(),
     );
