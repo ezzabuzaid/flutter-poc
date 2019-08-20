@@ -5,8 +5,8 @@ class MealsModel {
   String recipe;
   String name;
   String menuId;
-  String createdAt;
-  String updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   MealsModel(
     this.sId, {
@@ -27,8 +27,8 @@ class MealsModel {
       recipe: json['recipe'],
       name: json['name'],
       menuId: json['menu_id'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      createdAt: DateTime.parse(json["createdAt"]),
+      updatedAt: DateTime.parse(json["updatedAt"]),
     );
   }
 

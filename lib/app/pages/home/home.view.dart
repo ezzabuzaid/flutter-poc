@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:learning_flutter/app/app.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
-import 'package:learning_flutter/app/pages/home/home.bloc.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/index.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
@@ -73,7 +73,9 @@ class HomeBody extends StatelessWidget {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: ThemeSwitcher.of(context).mode == Brightness.light
+                    ? Colors.black26
+                    : Colors.transparent,
                 blurRadius: 100,
               ),
             ],
@@ -90,15 +92,17 @@ class HomeBody extends StatelessWidget {
 
 class MenusWidget extends StatefulWidget {
   MenusWidget({Key key}) : super(key: key);
-
   _MenusWidgetState createState() => _MenusWidgetState();
 }
 
 class _MenusWidgetState extends State<MenusWidget> {
-  _MenusWidgetState() {
-    // menuBloc.fetchMenus();
+  @override
+  void initState() {
+    menuBloc.fetchMenus();
+    super.initState();
   }
-  String menuId;
+
+  int selectedMenuIndex = 0;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -108,8 +112,7 @@ class _MenusWidgetState extends State<MenusWidget> {
             return Center(child: CircularProgressIndicator());
           }
           final data = snapshot.data;
-          homeBloc.getMealsByMenuId(data[0].id);
-          menuId = data[0].id;
+          mealsBloc.fetchMeals(data[selectedMenuIndex].id);
           return ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -119,7 +122,7 @@ class _MenusWidgetState extends State<MenusWidget> {
               return Row(
                 children: <Widget>[
                   FlatButton(
-                    color: menuId == data[index].id
+                    color: selectedMenuIndex == index
                         ? Colors.grey.shade200
                         : Colors.transparent,
                     shape: RoundedRectangleBorder(
@@ -133,8 +136,7 @@ class _MenusWidgetState extends State<MenusWidget> {
                     ),
                     onPressed: () {
                       setState(() {
-                        menuId = data[index].id;
-                        homeBloc.getMealsByMenuId(data[index].id);
+                        selectedMenuIndex = index;
                       });
                     },
                   ),
@@ -148,14 +150,12 @@ class _MenusWidgetState extends State<MenusWidget> {
 }
 
 class MealsWidget extends StatelessWidget {
-  const MealsWidget({
-    Key key,
-  }) : super(key: key);
+  const MealsWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: homeBloc.meals.stream,
+        stream: mealsBloc.meals.stream,
         builder: (context, AsyncSnapshot<List<MealsModel>> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -183,8 +183,9 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     logger.w('BUILD COUNT ${count++}');
     return Scaffold(
-        appBar: Toolbar(context: context),
-        drawer: Navigation(),
-        body: HomeBody());
+      appBar: Toolbar(context: context),
+      drawer: Navigation(),
+      body: HomeBody(),
+    );
   }
 }

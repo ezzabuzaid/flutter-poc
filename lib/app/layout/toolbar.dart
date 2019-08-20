@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/core/constants.dart';
 
 class Toolbar extends AppBar {
   final BuildContext context;
@@ -10,6 +11,7 @@ class Toolbar extends AppBar {
             height: 35,
             child: TextField(
               decoration: InputDecoration(
+                hintText: 'Search for meal',
                 prefixIcon: Icon(Icons.search),
                 contentPadding: EdgeInsets.symmetric(vertical: 1),
                 filled: true,
@@ -39,8 +41,8 @@ class Toolbar extends AppBar {
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.favorite),
-              onPressed: () {},
+              icon: Icon(Icons.favorite_border),
+              onPressed: () => Navigator.pushNamed(context, RoutesConstants.FAVOURITES),
             )
           ],
         );

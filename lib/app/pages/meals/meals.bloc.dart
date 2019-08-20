@@ -1,16 +1,18 @@
-import 'dart:async';
-
-import 'package:learning_flutter/app/pages/meals/meals.model.dart';
+import 'package:learning_flutter/app/core/bloc.dart';
+import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/meals/meals.service.dart';
 
-class MealBloc {
-  final _service = MealsService();
-  Stream<List<MealsModel>> fetchMeals(String menuId) {
+class _MealBloc {
+  final meals = Bloc<List<MealsModel>>();
+  fetchMeals(String menuId) async {
+    Future<List<MealsModel>> result;
     if (menuId != null) {
-      return _service.fetchMealsByMenuId(menuId).asStream();
+      result = mealsService.fetchMealsByMenuId(menuId);
+    } else {
+      result = mealsService.fetchMeals();
     }
-    return _service.fetchMeals().asStream();
+    meals.sink.add(await result);
   }
 }
 
-final mealsBloc = MealBloc();
+final mealsBloc = _MealBloc();

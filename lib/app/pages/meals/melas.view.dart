@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/widgets/to-cart.dart';
 import '../../layout/index.dart';
-import '../../layout/toolbar.dart';
 import 'index.dart';
 
 class _MealsCard extends StatelessWidget {
@@ -46,7 +46,13 @@ class _MealsCard extends StatelessWidget {
                         ),
                         IconButton(
                           icon: Icon(Icons.favorite_border),
-                          onPressed: () {},
+                          onPressed: () {
+                            // TODO: here it should be weather remove or add, find a way to set favorites meals
+                            favoritesBloc.addToFavoritesMeals(
+                              FavoritesModel(itemId: this.meal.sId),
+                            );
+                            // TODO: update the icon to be filled, and meal details as well
+                          },
                         )
                       ],
                     ),
@@ -68,15 +74,32 @@ class _MealsCard extends StatelessWidget {
   }
 }
 
-class MealsView extends StatelessWidget {
+class MealsView extends StatefulWidget {
+  @override
+  _MealsViewState createState() => _MealsViewState();
+}
+
+class _MealsViewState extends State<MealsView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  get mealId => ModalRoute.of(context).settings.arguments;
+
+  @override
+  void didChangeDependencies() {
+    mealsBloc.fetchMeals(mealId);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String mealId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: Toolbar(context: context),
       drawer: Navigation(),
       body: StreamBuilder(
-        stream: mealsBloc.fetchMeals(mealId),
+        stream: mealsBloc.meals.stream,
         builder:
             (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
           return ListView.separated(
@@ -91,5 +114,11 @@ class MealsView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    mealsBloc.meals.dispose();
+    super.dispose();
   }
 }

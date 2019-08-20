@@ -1,14 +1,14 @@
 class FavoritesModel<T> {
-  String sId;
+  String id;
   String type;
   String userId;
   String itemId;
-  String createdAt;
-  String updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
   T items;
 
   FavoritesModel({
-    this.sId,
+    this.id,
     this.type,
     this.userId,
     this.itemId,
@@ -17,17 +17,18 @@ class FavoritesModel<T> {
     this.items,
   });
 
-  FavoritesModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    type = json['type'];
-    userId = json['user_id'];
-    itemId = json['item_id'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
+  factory FavoritesModel.fromJson(Map<String, dynamic> json) {
+    return FavoritesModel(
+      id: json["_id"],
+      type: json["type"],
+      userId: json["user_id"],
+      itemId: json["item_id"],
+      createdAt: DateTime.parse(json["createdAt"]),
+      updatedAt: DateTime.parse(json["updatedAt"]),
+    );
   }
-
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['item_id'] = this.itemId;
     return data;
   }

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class SettingsModel {
   bool darkMode;
   bool notification;

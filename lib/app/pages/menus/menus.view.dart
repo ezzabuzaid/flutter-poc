@@ -1,14 +1,23 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/app.dart';
 import '../../core/constants.dart';
 import '../../layout/navigation.dart';
 import '../../layout/toolbar.dart';
 import 'index.dart';
 import 'menus.model.dart';
 
-class _MenuPageBody extends StatelessWidget {
-  const _MenuPageBody({Key key}) : super(key: key);
+class _MenuPageBody extends StatefulWidget {
+  @override
+  _MenuPageBodyState createState() => _MenuPageBodyState();
+}
+
+class _MenuPageBodyState extends State<_MenuPageBody> {
+  @override
+  void initState() {
+    menuBloc.fetchMenus();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +27,8 @@ class _MenuPageBody extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             margin: EdgeInsets.symmetric(vertical: 10),
-            child: StreamBuilder(
-              stream: menuBloc.fetchMenus(),
+            child: StreamBuilder<List<MenusModel>>(
+              stream: menuBloc.menus.stream,
               builder: (
                 BuildContext context,
                 AsyncSnapshot<List<MenusModel>> snapshot,
@@ -37,17 +46,20 @@ class _MenuPageBody extends StatelessWidget {
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: ListTile(
                         contentPadding: EdgeInsets.all(10),
-                        leading: CircleAvatar(
-                          child: CachedNetworkImage(
-                            imageUrl: menu.image,
-                            colorBlendMode: BlendMode.overlay,
-                            color: Colors.black54,
-                            width: 125,
-                            fit: BoxFit.fill,
-                            // placeholder: (context, url) => CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          ),
+                        leading: Container(
+                          width: 75,
+                          height: 75,
+                          // foregroundDecoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(10),
+                          // ),
+                          // child: CachedNetworkImage(
+                          //   imageUrl: menu.image,
+                          //   // colorBlendMode: BlendMode.overlay,
+                          //   // color: Colors.black54,
+                          //   // fit: BoxFit.cover,
+                          //   errorWidget: (context, url, error) =>
+                          //       Icon(Icons.error),
+                          // ),
                         ),
                         title: Text(
                           menu.name,
@@ -59,7 +71,10 @@ class _MenuPageBody extends StatelessWidget {
                         trailing: IconButton(
                           icon: Icon(
                             EvaIcons.arrowCircleRight,
-                            color: Theme.of(context).primaryColorDark,
+                            color: ThemeSwitcher.of(context).mode ==
+                                    Brightness.dark
+                                ? Theme.of(context).primaryColorLight
+                                : Theme.of(context).primaryColorDark,
                             size: 35,
                           ),
                           onPressed: () {
@@ -81,13 +96,19 @@ class _MenuPageBody extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    menuBloc.menus.dispose();
+    super.dispose();
+  }
 }
 
 class MenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(      appBar: Toolbar(context: context),
-
+    return Scaffold(
+      appBar: Toolbar(context: context),
       body: _MenuPageBody(),
       drawer: Navigation(),
     );

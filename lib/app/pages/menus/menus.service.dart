@@ -17,3 +17,5 @@ serilaizeList(body, model) {
   List data = List.from(decoded.data);
   return data.map((json) => model.fromJson(json as dynamic)).toList();
 }
+
+final menusService = MenusService();

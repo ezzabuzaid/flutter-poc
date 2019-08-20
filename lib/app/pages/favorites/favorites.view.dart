@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import '../../layout/index.dart';
@@ -107,24 +108,35 @@ class _ItemCard extends StatelessWidget {
   }
 }
 
-class _FavoritesBody extends StatelessWidget {
-  const _FavoritesBody({Key key}) : super(key: key);
+class _FavoritesBody extends StatefulWidget {
+  @override
+  _FavoritesBodyState createState() => _FavoritesBodyState();
+}
+
+class _FavoritesBodyState extends State<_FavoritesBody> {
+  @override
+  void initState() {
+    favoritesBloc.fetchFavorites();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<MealsModel>>(
-      stream: favoritesBloc.fetchFavorites().stream,
-      builder:
-          (BuildContext context, AsyncSnapshot<List<MealsModel>> snapshot) {
+    return StreamBuilder<List<FavoritesModel<MealsModel>>>(
+      stream: favoritesBloc.favorites.stream
+          .cast<List<FavoritesModel<MealsModel>>>(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<FavoritesModel<MealsModel>>> snapshot) {
         if (snapshot.hasError) {
           return Text(snapshot.error.toString());
         }
         if (!snapshot.hasData) {
           return Center(child: CircularProgressIndicator());
         }
+        logger.w(snapshot.data);
         return ListView.separated(
           itemBuilder: (BuildContext context, int index) {
-            return _ItemCard(snapshot.data[index]);
+            return _ItemCard(snapshot.data[index].items);
           },
           itemCount: snapshot.data.length,
           separatorBuilder: (BuildContext context, int index) {
@@ -133,6 +145,12 @@ class _FavoritesBody extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    favoritesBloc.favorites.dispose();
+    super.dispose();
   }
 }
 

@@ -55,13 +55,13 @@ class Navigation extends StatelessWidget {
         path: RoutesConstants.OFFERS,
         context: context,
       ),
-      new _Item(
-        title: 'Support',
-        icon: Icons.help,
-        path: RoutesConstants.SUPPORT,
-        context: context,
-        needAuth: true,
-      ),
+      // new _Item(
+      //   title: 'Support',
+      //   icon: Icons.help,
+      //   path: RoutesConstants.SUPPORT,
+      //   context: context,
+      //   needAuth: true,
+      // ),
       // new _Item(
       //   title: 'Portal',
       //   icon: Icons.track_changes,
@@ -80,13 +80,13 @@ class Navigation extends StatelessWidget {
       //   path: RoutesConstants.REGISTER,
       //   context: context,
       // ),
-      new _Item(
-        title: 'Favourites',
-        icon: Icons.favorite,
-        path: RoutesConstants.FAVOURITES,
-        context: context,
-        needAuth: true,
-      ),
+      // new _Item(
+      //   title: 'Favourites',
+      //   icon: Icons.favorite,
+      //   path: RoutesConstants.FAVOURITES,
+      //   context: context,
+      //   needAuth: true,
+      // ),
       new _Item(
         title: 'Face detection',
         icon: Icons.face,

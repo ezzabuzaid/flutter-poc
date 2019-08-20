@@ -17,3 +17,5 @@ class MealsService {
     return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
   }
 }
+
+final mealsService = MealsService();

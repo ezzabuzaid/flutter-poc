@@ -102,9 +102,9 @@ class HeadersInterceptor implements InterceptorContract {
   Future<RequestData> interceptRequest({RequestData data}) async {
     removeHeader(data.headers, MutationRequest.defaultUrl);
     String token = await TokenHelper().getToken();
+    logger.i('Token => $token');
     data.headers.putIfAbsent(MutationRequest.authorization, () => token);
-    logger.d(token);
-    return data;
+     return data;
   }
 
   @override
