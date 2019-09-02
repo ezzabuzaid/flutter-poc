@@ -1,7 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/constants.dart';
-import 'package:learning_flutter/app/shared/user.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
+import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class _Item {

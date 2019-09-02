@@ -18,8 +18,3 @@ class RoutesConstants {
   static const OLHC = '/olhc';
   static const OLHC_CHART = '/olhc-chart';
 }
-
-class ApiConstants {
-  static const FAVORITES_MEALS = 'favorites/meals';
-  static const FAVORITES = 'favorites';
-}

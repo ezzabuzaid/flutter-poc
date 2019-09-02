@@ -1,4 +1,4 @@
-import '../../core/http.dart';
+import '../../core/http/index.dart';
 import '../../shared/response.dart';
 import 'menus.model.dart';
 

@@ -1,7 +1,7 @@
 import 'package:country_pickers/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
 import 'package:learning_flutter/app/pages/register/register.bloc.dart';

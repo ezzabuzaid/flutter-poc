@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 
 class Toolbar extends AppBar {
   final BuildContext context;

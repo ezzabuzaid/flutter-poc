@@ -1,7 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/app.dart';
-import '../../core/constants.dart';
+import '../../core/constants/index.dart';
 import '../../layout/navigation.dart';
 import '../../layout/toolbar.dart';
 import 'index.dart';

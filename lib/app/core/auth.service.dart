@@ -1,7 +1,7 @@
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
-
+// FIXME biometric not working
 class BugFix {
   final double number;
   final String author;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/token.dart';
+import 'package:learning_flutter/app/shared/services/user/user.model.dart';
 import 'package:rxdart/subjects.dart';
 
 class User {
@@ -33,9 +34,4 @@ class User {
   dispose() {
     _subject.close();
   }
-}
-
-class UserModel {
-  String image =
-      'https://i.pinimg.com/originals/21/fd/c5/21fdc52d3b5f3847d2a982f99f419328.png';
 }

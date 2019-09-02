@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/app.dart';
 import 'package:learning_flutter/app/core/auth.service.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/core/helpers/service-locator.dart';
 import 'package:learning_flutter/app/pages/settings/settings.bloc.dart';
 import 'package:learning_flutter/app/pages/settings/settings.model.dart';
-import 'package:learning_flutter/app/shared/user.dart';
+import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';

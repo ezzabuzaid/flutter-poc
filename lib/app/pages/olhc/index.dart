@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 export './olhc-list.dart';
 export './olhc.model.dart';
 

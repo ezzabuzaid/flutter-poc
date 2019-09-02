@@ -1,4 +1,4 @@
-import 'package:learning_flutter/app/core/http.dart';
+import 'package:learning_flutter/app/core/http/index.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/shared/response.dart';
 

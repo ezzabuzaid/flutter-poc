@@ -1,14 +1,19 @@
-class MutationRequest {
-  static final defaultUrl = 'defaultUrl';
-  static final authorization = 'authorization';
-}
-
 enum EMutationRequest {
   defaultUrl,
 }
 
-Map<String, String> prepareHeader(Map<String, dynamic> headers) {
+Map<String, String> prepareHeader(Map<EMutationRequest, bool> headers) {
   return headers.map((key, value) {
-    return MapEntry(key, value.toString());
+    return MapEntry(key.toString(), value.toString());
   });
+}
+
+getHeaderValue(Map<String, String> headers, EMutationRequest header) {
+  return headers[header.toString()] != 'false';
+}
+
+removeHeader(Map<String, String> headers, EMutationRequest header) {
+  if (headers.containsKey(header.toString())) {
+    headers.remove(header.toString());
+  }
 }

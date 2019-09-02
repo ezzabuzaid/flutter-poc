@@ -1,5 +1,5 @@
-import 'package:learning_flutter/app/core/constants.dart';
-import 'package:learning_flutter/app/core/http.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
+import 'package:learning_flutter/app/core/http/index.dart';
 import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/shared/response.dart';
 import 'package:learning_flutter/app/pages/meals/meals.model.dart';

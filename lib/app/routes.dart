@@ -6,7 +6,7 @@ import 'package:learning_flutter/app/pages/olhc/ohlc-chart.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/register/register.view.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
-import 'core/constants.dart';
+import 'core/constants/index.dart';
 import 'pages/face-detection/face-detection.dart';
 import 'pages/favorites/index.dart';
 import 'pages/meals/index.dart';

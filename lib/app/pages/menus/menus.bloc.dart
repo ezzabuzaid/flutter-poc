@@ -1,4 +1,5 @@
-import 'package:learning_flutter/app/core/bloc.dart';
+import 'package:learning_flutter/app/core/helpers/bloc/bloc.dart';
+
 import 'menus.model.dart';
 import 'menus.service.dart';
 

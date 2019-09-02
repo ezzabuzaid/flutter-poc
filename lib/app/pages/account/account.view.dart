@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/shared/user.dart';
+import 'package:learning_flutter/app/shared/services/user/user.model.dart';
+import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
 

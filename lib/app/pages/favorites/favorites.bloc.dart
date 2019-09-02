@@ -1,4 +1,4 @@
-import 'package:learning_flutter/app/core/bloc.dart';
+import 'package:learning_flutter/app/core/helpers/bloc/bloc.dart';
 import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 

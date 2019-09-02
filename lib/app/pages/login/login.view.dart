@@ -1,6 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/token.dart';
 import 'package:learning_flutter/app/pages/login/login.bloc.dart';
 import 'package:learning_flutter/app/pages/login/login.model.dart';

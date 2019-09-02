@@ -3,17 +3,52 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/favorites/index.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 
-class MealsDetails extends StatelessWidget {
+class MealsDetails extends StatefulWidget {
   final MealsModel meal;
   MealsDetails({Key key, this.meal}) : super(key: key);
 
-  Widget buttonBox(Widget child) {
+  @override
+  _MealsDetailsState createState() => _MealsDetailsState();
+}
+
+class _CounterButton extends StatelessWidget {
+  final IconData icon;
+  final Function onClick;
+  _CounterButton({Key key, this.icon, this.onClick}) : super(key: key);
+
+  static box(Widget child) {
+    return SizedBox(height: 25, width: 40, child: child);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       height: 25,
       width: 40,
-      child: child,
+      child: _CounterButton.box(
+        Container(
+          // decoration: BoxDecoration(
+          //   border: Border(
+          //     left: BorderSide(color: Colors.black),
+          //   ),
+          // ),
+          child: FlatButton(
+            padding: EdgeInsets.symmetric(horizontal: 2),
+            onPressed: this.onClick,
+            child: Icon(this.icon, size: 13),
+            // color: Colors.green,
+          ),
+        ),
+      ),
     );
   }
+}
+
+class _MealsDetailsState extends State<MealsDetails> {
+  // TODO: imagine that the user was added this item to it's cart
+  //  with quantity 4 therefore you cannot say that the value is zero
+  // and for that you need to send the quantity when open this dialog
+  int quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +66,7 @@ class MealsDetails extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
           child: CachedNetworkImage(
-            imageUrl: this.meal.image,
+            imageUrl: widget.meal.image,
             colorBlendMode: BlendMode.hardLight,
             color: Colors.black54,
             fit: BoxFit.cover,
@@ -49,7 +84,7 @@ class MealsDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    this.meal.name,
+                    widget.meal.name,
                     style: Theme.of(context).textTheme.title,
                   ),
                   IconButton(
@@ -57,7 +92,7 @@ class MealsDetails extends StatelessWidget {
                     onPressed: () {
                       favoritesService
                           .addToFavoritesMeals(
-                        FavoritesModel(itemId: this.meal.sId),
+                        FavoritesModel(itemId: widget.meal.sId),
                       )
                           .then((onValue) {
                         Scaffold.of(context).showSnackBar(SnackBar(
@@ -70,7 +105,7 @@ class MealsDetails extends StatelessWidget {
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               Text(
-                this.meal.recipe,
+                widget.meal.recipe,
                 style: Theme.of(context).textTheme.caption,
               ),
               Divider(
@@ -82,39 +117,37 @@ class MealsDetails extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(left: 15),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        border: Border.all(width: 1)),
+                      borderRadius: BorderRadius.circular(3),
+                      border: Border.all(width: 1),
+                    ),
                     child: Row(
                       children: <Widget>[
-                        buttonBox(
+                        _CounterButton(
+                          icon: Icons.add,
+                          onClick: () => {
+                            this.setState(() => {++this.quantity})
+                          },
+                        ),
+                        _CounterButton.box(
                           Container(
                             decoration: BoxDecoration(
                               border: Border(
+                                left: BorderSide(color: Colors.black),
                                 right: BorderSide(color: Colors.black),
                               ),
                             ),
-                            child: FlatButton(
-                              padding: EdgeInsets.symmetric(horizontal: 2),
-                              onPressed: null,
-                              child: Icon(Icons.remove, size: 13),
-                              color: Colors.green,
-                            ),
+                            child:
+                                Center(child: Text(this.quantity.toString())),
                           ),
                         ),
-                        buttonBox(Center(child: Text('2'))),
-                        buttonBox(Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(color: Colors.black),
-                            ),
-                          ),
-                          child: FlatButton(
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            onPressed: null,
-                            child: Icon(Icons.add, size: 13),
-                            color: Colors.green,
-                          ),
-                        )),
+                        _CounterButton(
+                          icon: Icons.remove,
+                          onClick: () => {
+                            this.setState(() => {
+                                  if (this.quantity > 0) {--this.quantity}
+                                })
+                          },
+                        )
                       ],
                     ),
                   )
@@ -149,7 +182,9 @@ class MealsDetails extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
                       child: Text('Add to cart'),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (this.quantity == 0) {}
+                      },
                     ),
                   )
                 ],

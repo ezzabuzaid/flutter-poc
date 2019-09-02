@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/app/core/constants.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;

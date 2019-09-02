@@ -3,7 +3,7 @@ import 'package:learning_flutter/app/pages/home/home.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 import 'package:learning_flutter/app/routes.dart';
-import 'package:learning_flutter/app/shared/user.dart';
+import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 
 class App extends StatefulWidget {
   @override
