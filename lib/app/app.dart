@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/pages/home/home.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
@@ -28,6 +29,10 @@ class _AppState extends State<App> {
 
   Brightness mode;
 
+  isLight() {
+    return mode == Brightness.light;
+  }
+
   void switchTheme(Brightness mode) {
     if (this.mode != mode) {
       setState(() {
@@ -38,6 +43,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    // The setting should be available after user is logged in
     return StreamBuilder(
         stream: settingsBloc.settings.stream,
         builder: (context, AsyncSnapshot<SettingsModel> snapshot) {
@@ -51,13 +57,16 @@ class _AppState extends State<App> {
             data: this,
             child: MaterialApp(
               theme: _themeData(context),
-              title: 'Learning flutter',
-              supportedLocales: [const Locale('en'), const Locale('ar')],
+              title: AppplicationConstants.appName,
+              supportedLocales: [
+                const Locale('en'),
+                const Locale('ar'),
+              ],
               routes: routes,
               home: FutureBuilder(
                 future: User().isAuthenticated(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.data == false ? PortalView() : HomeView();
+                  return snapshot.data == true ? HomeView() : PortalView();
                 },
               ),
             ),

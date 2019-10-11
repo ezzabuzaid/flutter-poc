@@ -1,6 +1,6 @@
 import 'package:learning_flutter/app/core/http/index.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
-import 'package:learning_flutter/app/shared/response.dart';
+import 'package:learning_flutter/app/shared/models/response.dart';
 
 class MealsService {
   Future<List<MealsModel>> fetchMeals() async {

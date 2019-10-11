@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/core/helpers/token.dart';
 import 'package:learning_flutter/app/shared/services/user/user.model.dart';
 import 'package:rxdart/subjects.dart';
@@ -19,7 +20,9 @@ class User {
   }
 
   Future<bool> isAuthenticated() async {
-    return (await TokenHelper().getToken()) != null;
+    final token = await TokenHelper().getToken();
+    logger.w('token $token');
+    return token != null;
     // TODO: use a jwt token to verify that it's not expaired and valid token
   }
 

@@ -1,5 +1,5 @@
+import 'package:learning_flutter/app/shared/models/response.dart';
 import '../../core/http/index.dart';
-import '../../shared/response.dart';
 import 'menus.model.dart';
 
 class MenusService {

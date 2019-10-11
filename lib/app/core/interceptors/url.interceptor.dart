@@ -1,6 +1,6 @@
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:learning_flutter/app/core/constants/app.constant.dart';
-import 'package:learning_flutter/app/core/helpers/utils.dart';
+import 'package:learning_flutter/app/core/http/index.dart';
 
 class UrlInterceptor implements InterceptorContract {
   @override

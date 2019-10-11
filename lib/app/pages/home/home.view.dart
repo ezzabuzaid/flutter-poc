@@ -2,13 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:learning_flutter/app/app.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/index.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 import 'package:learning_flutter/app/widgets/to-cart.dart';
+import 'package:provider/provider.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
+
+class Test with ChangeNotifier {
+  Test() {
+    this.notifyListeners();
+  }
+}
 
 class _HomeCard extends StatelessWidget {
   final MealsModel meal;
@@ -61,35 +67,6 @@ class _HomeCard extends StatelessWidget {
   }
 }
 
-class HomeBody extends StatelessWidget {
-  HomeBody({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 25),
-        Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: ThemeSwitcher.of(context).mode == Brightness.light
-                    ? Colors.black26
-                    : Colors.transparent,
-                blurRadius: 100,
-              ),
-            ],
-          ),
-          height: 40,
-          child: MenusWidget(),
-        ),
-        SizedBox(height: 15),
-        MealsWidget(),
-      ],
-    );
-  }
-}
-
 class MenusWidget extends StatefulWidget {
   MenusWidget({Key key}) : super(key: key);
   _MenusWidgetState createState() => _MenusWidgetState();
@@ -106,46 +83,48 @@ class _MenusWidgetState extends State<MenusWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: menuBloc.menus.stream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final data = snapshot.data;
-          mealsBloc.fetchMeals(data[selectedMenuIndex].id);
-          return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            scrollDirection: Axis.horizontal,
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Row(
-                children: <Widget>[
-                  FlatButton(
-                    color: selectedMenuIndex == index
-                        ? Colors.grey.shade200
-                        : Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Text(
-                      data[index].name,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedMenuIndex = index;
-                      });
-                    },
+      stream: menuBloc.menus.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        final data = snapshot.data;
+        mealsBloc.fetchMeals(data[selectedMenuIndex].id);
+        return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          scrollDirection: Axis.horizontal,
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            final menu = data[index];
+            return Row(
+              children: <Widget>[
+                FlatButton(
+                  color: selectedMenuIndex == index
+                      ? Colors.grey.shade200
+                      : Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  SizedBox(width: 20),
-                ],
-              );
-            },
-          );
-        });
+                  child: Text(
+                    menu.name,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedMenuIndex = index;
+                    });
+                  },
+                ),
+                SizedBox(width: 20),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 }
 
@@ -176,12 +155,38 @@ class MealsWidget extends StatelessWidget {
   }
 }
 
-int count = 0;
+class HomeBody extends StatelessWidget {
+  HomeBody({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 25),
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: ThemeSwitcher.of(context).isLight()
+                    ? Colors.black26
+                    : Colors.transparent,
+                blurRadius: 100,
+              ),
+            ],
+          ),
+          height: 40,
+          child: MenusWidget(),
+        ),
+        SizedBox(height: 15),
+        // MealsWidget(),
+      ],
+    );
+  }
+}
 
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    logger.w('BUILD COUNT ${count++}');
     return Scaffold(
       appBar: Toolbar(context: context),
       drawer: Navigation(),

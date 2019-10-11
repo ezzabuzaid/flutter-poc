@@ -2,19 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
-import 'package:permission_handler/permission_handler.dart' as permission;
+import 'package:permission_handler/permission_handler.dart';
 
 class PortalView extends StatelessWidget {
+  void getPermissionStatus() async {
+    final permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
+    if (permission == PermissionStatus.granted) {
+    } else if (permission == PermissionStatus.denied ||
+        permission == PermissionStatus.disabled ||
+        permission == PermissionStatus.restricted) {
+      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      getPermissionStatus();
+    }
+  }
+
+  // FIXME  PlatformException(ERROR_ALREADY_REQUESTING_PERMISSIONS, A request for permissions is already running, please wait for it to finish before doing another request (note that you can request multiple permissions at the same time)., null)
+  requestPermission() {
+    return PermissionHandler().requestPermissions([
+      PermissionGroup.camera,
+      PermissionGroup.location,
+      PermissionGroup.phone,
+      PermissionGroup.photos,
+      PermissionGroup.storage,
+      PermissionGroup.speech,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    permission.PermissionHandler().requestPermissions([
-      permission.PermissionGroup.camera,
-      permission.PermissionGroup.location,
-      permission.PermissionGroup.phone,
-      permission.PermissionGroup.photos,
-      permission.PermissionGroup.storage,
-      permission.PermissionGroup.speech,
-    ]);
+    requestPermission();
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(
@@ -59,7 +76,7 @@ class PortalView extends StatelessWidget {
                 FullWidth(
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     padding: EdgeInsets.all(20),
                     color: Theme.of(context).primaryColor,
@@ -95,7 +112,7 @@ class PortalView extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                   child: Text(
                     'Explore the app as visitor',
-                    // style: Theme.of(context).textTheme.button,
+                    style: TextStyle(decoration: TextDecoration.underline),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, RoutesConstants.Home);
