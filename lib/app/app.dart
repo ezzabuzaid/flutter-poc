@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/pages/home/home.view.dart';
+import 'package:learning_flutter/app/pages/meals/melas.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 import 'package:learning_flutter/app/routes.dart';
@@ -66,7 +67,7 @@ class _AppState extends State<App> {
               home: FutureBuilder(
                 future: User().isAuthenticated(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.data == true ? HomeView() : PortalView();
+                  return snapshot.data == true ? HomeView() : MealsView();
                 },
               ),
             ),

@@ -1,18 +1,16 @@
-import 'package:learning_flutter/app/core/helpers/bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/meals/meals.service.dart';
 
-class _MealBloc {
-  final meals = Bloc<List<MealsModel>>();
-  fetchMeals(String menuId) async {
-    Future<List<MealsModel>> result;
-    if (menuId != null) {
-      result = mealsService.fetchMealsByMenuId(menuId);
-    } else {
-      result = mealsService.fetchMeals();
-    }
-    meals.sink.add(await result);
+class MealsBloc with ChangeNotifier {
+  List<MealsModel> meals = [];
+  fetchMeals() async {
+    this.meals = await mealsService.fetchMeals();
+    notifyListeners();
+  }
+
+  toggleMealFavState(MealsModel meal, int index) {
+    // TODO: update fav meal status here
+    notifyListeners();
   }
 }
-
-final mealsBloc = _MealBloc();

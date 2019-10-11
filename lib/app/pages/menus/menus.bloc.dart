@@ -1,7 +1,8 @@
 import 'package:learning_flutter/app/core/helpers/bloc/bloc.dart';
-
 import 'menus.model.dart';
 import 'menus.service.dart';
+import 'package:learning_flutter/app/pages/menus/menus.model.dart';
+import 'package:learning_flutter/app/pages/menus/menus.service.dart';
 
 class MenuBloc {
   final menus = Bloc<List<MenusModel>>();

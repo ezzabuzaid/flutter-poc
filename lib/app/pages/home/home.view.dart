@@ -1,185 +1,47 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:learning_flutter/app/app.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/locator.dart';
+import 'package:learning_flutter/app/pages/home/home-meals.dart';
+import 'package:learning_flutter/app/pages/home/home-menus.dart';
+import 'package:learning_flutter/app/pages/home/home.bloc.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/menus/index.dart';
-import 'package:learning_flutter/app/widgets/full-width.dart';
-import 'package:learning_flutter/app/widgets/to-cart.dart';
 import 'package:provider/provider.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
-
-class Test with ChangeNotifier {
-  Test() {
-    this.notifyListeners();
-  }
-}
-
-class _HomeCard extends StatelessWidget {
-  final MealsModel meal;
-  _HomeCard(this.meal);
-
-  @override
-  Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      heightFactor: .9,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        elevation: 3,
-        borderOnForeground: true,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: this.meal.image,
-                colorBlendMode: BlendMode.overlay,
-                color: Colors.black54,
-                fit: BoxFit.fill,
-                height: 65,
-                width: 65,
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              ),
-            ),
-            Column(
-              children: <Widget>[
-                Text(
-                  this.meal.name,
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-                Text('Menu name'),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: ToCart(meal: this.meal),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MenusWidget extends StatefulWidget {
-  MenusWidget({Key key}) : super(key: key);
-  _MenusWidgetState createState() => _MenusWidgetState();
-}
-
-class _MenusWidgetState extends State<MenusWidget> {
-  @override
-  void initState() {
-    menuBloc.fetchMenus();
-    super.initState();
-  }
-
-  int selectedMenuIndex = 0;
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: menuBloc.menus.stream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
-        }
-        final data = snapshot.data;
-        mealsBloc.fetchMeals(data[selectedMenuIndex].id);
-        return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          scrollDirection: Axis.horizontal,
-          itemCount: data.length,
-          itemBuilder: (BuildContext context, int index) {
-            final menu = data[index];
-            return Row(
-              children: <Widget>[
-                FlatButton(
-                  color: selectedMenuIndex == index
-                      ? Colors.grey.shade200
-                      : Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Text(
-                    menu.name,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      selectedMenuIndex = index;
-                    });
-                  },
-                ),
-                SizedBox(width: 20),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class MealsWidget extends StatelessWidget {
-  const MealsWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: mealsBloc.meals.stream,
-        builder: (context, AsyncSnapshot<List<MealsModel>> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final data = snapshot.data;
-          return Expanded(
-            child: GridView.extent(
-              children: List.generate(
-                data.length,
-                (index) {
-                  return FullWidth(child: _HomeCard(data[index]));
-                },
-              ),
-              maxCrossAxisExtent: 250,
-            ),
-          );
-        });
-  }
-}
 
 class HomeBody extends StatelessWidget {
   HomeBody({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 25),
-        Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: ThemeSwitcher.of(context).isLight()
-                    ? Colors.black26
-                    : Colors.transparent,
-                blurRadius: 100,
-              ),
-            ],
+    final bloc = locator<HomeBloc>();
+    bloc.fetchMenus();
+    return ChangeNotifierProvider<HomeBloc>(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 25),
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: ThemeSwitcher.of(context).isLight()
+                      ? Colors.black26
+                      : Colors.transparent,
+                  blurRadius: 100,
+                ),
+              ],
+            ),
+            height: 40,
+            child: MenusWidget(),
           ),
-          height: 40,
-          child: MenusWidget(),
-        ),
-        SizedBox(height: 15),
-        // MealsWidget(),
-      ],
+          SizedBox(height: 15),
+          MealsWidget(),
+        ],
+      ),
+      builder: (_) => locator<HomeBloc>(),
     );
   }
 }
