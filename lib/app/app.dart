@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/home/home.view.dart';
 import 'package:learning_flutter/app/pages/meals/melas.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 import 'package:learning_flutter/app/routes.dart';
 import 'package:learning_flutter/app/shared/services/user/user.service.dart';
+import 'package:provider/provider.dart';
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
+class App extends StatelessWidget {
+  static final settingBloc = locator<SettingsBloc>();
 
-class _AppState extends State<App> {
-  lightTheme(BuildContext context) {
+  App({Key key}) : super(key: key) {
+    settingBloc.getSettings();
+  }
+
+  ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       primarySwatch: Colors.red,
       brightness: Brightness.light,
     );
   }
 
-  darkTheme(BuildContext context) {
+  ThemeData darkTheme(BuildContext context) {
     return ThemeData(
       primarySwatch: Colors.red,
       primaryColor: Colors.blue,
@@ -28,72 +32,51 @@ class _AppState extends State<App> {
     );
   }
 
-  Brightness mode;
+  static Brightness get brightness =>
+      settingBloc.settings.darkMode ? Brightness.dark : Brightness.light;
 
-  isLight() {
-    return mode == Brightness.light;
+  static isLight() {
+    return brightness == Brightness.light;
   }
 
-  void switchTheme(Brightness mode) {
-    if (this.mode != mode) {
-      setState(() {
-        this.mode = mode;
-      });
-    }
+  static switchTheme() {
+    settingBloc.switchTheme();
+  }
+
+  ThemeData prepareTheme(BuildContext context, bool darkMode) {
+    final theme = brightness == Brightness.dark ? darkTheme : lightTheme;
+    return theme(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    // The setting should be available after user is logged in
-    return StreamBuilder(
-        stream: settingsBloc.settings.stream,
-        builder: (context, AsyncSnapshot<SettingsModel> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final data = snapshot.data;
-          mode = data.darkMode ? Brightness.dark : Brightness.light;
-          final _themeData = mode == Brightness.dark ? darkTheme : lightTheme;
-          return ThemeSwitcher(
-            data: this,
-            child: MaterialApp(
-              theme: _themeData(context),
-              title: AppplicationConstants.appName,
-              supportedLocales: [
-                const Locale('en'),
-                const Locale('ar'),
-              ],
-              routes: routes,
-              home: FutureBuilder(
-                future: User().isAuthenticated(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.data == true ? HomeView() : MealsView();
-                },
-              ),
+    // TODO: The setting should be available after user is logged in
+    return ChangeNotifierProvider<SettingsBloc>(
+      builder: (_) => settingBloc,
+      child: Selector<SettingsBloc, bool>(
+        selector: (buildContext, bloc) {
+          // TODO: there's an error that the settings is und
+          return bloc.settings.darkMode;
+        },
+        builder: (context, darkMode, child) {
+          return MaterialApp(
+            theme: prepareTheme(context, darkMode),
+            title: AppplicationConstants.appName,
+            supportedLocales: [
+              // TODO: setup localization
+              const Locale('en'),
+              const Locale('ar'),
+            ],
+            routes: routes,
+            home: FutureBuilder(
+              future: User().isAuthenticated(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return snapshot.data == true ? HomeView() : PortalView();
+              },
             ),
           );
-        });
-  }
-}
-
-class ThemeSwitcher extends InheritedWidget {
-  final _AppState data;
-
-  const ThemeSwitcher({
-    Key key,
-    @required this.data,
-    @required Widget child,
-  })  : assert(child != null),
-        super(key: key, child: child);
-
-  static _AppState of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(ThemeSwitcher)
-            as ThemeSwitcher)
-        .data;
-  }
-
-  @override
-  bool updateShouldNotify(ThemeSwitcher old) {
-    return this != old;
+        },
+      ),
+    );
   }
 }

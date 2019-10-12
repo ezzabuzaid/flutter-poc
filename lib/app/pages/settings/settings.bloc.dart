@@ -1,16 +1,22 @@
-import 'package:learning_flutter/app/core/helpers/bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 
-class SettingsBloc {
-  final settings = Bloc<SettingsModel>();
-  SettingsBloc() {
-    settings.sink.addStream(settingsService.getSettings().asStream());
+class SettingsBloc with ChangeNotifier {
+  SettingsModel settings;
+
+  void presistSettings() async {
+    await settingsService.setSettings(this.settings);
+    notifyListeners();
   }
 
-  setSettings(SettingsModel data) {
-    settingsService.setSettings(data);
-    settings.sink.add(data);
+  void getSettings() async {
+    settings = await settingsService.getSettings();
+    notifyListeners();
   }
+
+  void switchTheme() async {
+    settings.darkMode = !settings.darkMode;
+    presistSettings();
+  }
+
 }
-
-final settingsBloc = SettingsBloc();

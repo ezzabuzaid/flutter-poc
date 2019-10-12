@@ -71,7 +71,7 @@ class _MenuPageBodyState extends State<_MenuPageBody> {
                         trailing: IconButton(
                           icon: Icon(
                             EvaIcons.arrowCircleRight,
-                            color: ThemeSwitcher.of(context).mode ==
+                            color: App.brightness ==
                                     Brightness.dark
                                 ? Theme.of(context).primaryColorLight
                                 : Theme.of(context).primaryColorDark,

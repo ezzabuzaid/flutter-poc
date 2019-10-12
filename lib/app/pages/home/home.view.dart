@@ -13,12 +13,13 @@ import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
 
 class HomeBody extends StatelessWidget {
-  HomeBody({Key key}) : super(key: key);
+  HomeBody({Key key}) : super(key: key) {
+    final bloc = locator<HomeBloc>();
+    bloc.fetchMenus();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = locator<HomeBloc>();
-    bloc.fetchMenus();
     return ChangeNotifierProvider<HomeBloc>(
       child: Column(
         children: <Widget>[
@@ -27,9 +28,7 @@ class HomeBody extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: ThemeSwitcher.of(context).isLight()
-                      ? Colors.black26
-                      : Colors.transparent,
+                  color: App.isLight() ? Colors.black26 : Colors.transparent,
                   blurRadius: 100,
                 ),
               ],

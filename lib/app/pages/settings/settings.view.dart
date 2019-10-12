@@ -8,6 +8,7 @@ import 'package:learning_flutter/app/pages/settings/settings.bloc.dart';
 import 'package:learning_flutter/app/pages/settings/settings.model.dart';
 import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
+import 'package:provider/provider.dart';
 import '../../layout/index.dart';
 import '../../layout/toolbar.dart';
 
@@ -62,38 +63,30 @@ class _Divider extends StatelessWidget {
 }
 
 class _SettingBody extends StatelessWidget {
+  final settingBloc = locator<SettingsBloc>();
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: settingsBloc.settings.stream,
-      builder: (context, AsyncSnapshot<SettingsModel> snapshot) {
-        // FIXME: Make it generic
-        if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-        if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
-        }
-        final data = snapshot.data;
-        logger.w(data.toJson());
+    return ChangeNotifierProvider<SettingsBloc>(
+      builder: (_) => settingBloc,
+      child: Consumer<SettingsBloc>(builder: (context, bloc, child) {
         return Column(
           children: <Widget>[
             SwitchListTile(
-              value: data.darkMode,
+              value: bloc.settings.darkMode,
               onChanged: (value) {
-                data.darkMode = value;
-                ThemeSwitcher.of(context).switchTheme(
-                    value == true ? Brightness.dark : Brightness.light);
-                settingsBloc.setSettings(data);
+                bloc.switchTheme();
+                App.switchTheme();
               },
               title: _Text('Dark mode'.toUpperCase()),
             ),
             _Divider(),
             SwitchListTile(
-              value: data.notification,
+              value: bloc.settings.notification,
               onChanged: (value) {
-                data.notification = value;
-                settingsBloc.setSettings(data);
+                // TODO: partial argument function
+                bloc.settings.notification = value;
+                bloc.presistSettings();
               },
               title: _Text('notification'.toUpperCase()),
             ),
@@ -135,7 +128,7 @@ class _SettingBody extends StatelessWidget {
             ),
           ],
         );
-      },
+      }),
     );
   }
 }
