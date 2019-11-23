@@ -126,7 +126,7 @@ class Navigation extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: User().isAuthenticated(),
+              future: UserService().isAuthenticated(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == false) {
                   list.removeWhere((item) => item.needAuth);
@@ -152,7 +152,7 @@ class Navigation extends StatelessWidget {
             ),
           ),
           FutureBuilder(
-            future: User().isAuthenticated(),
+            future: UserService().isAuthenticated(),
             builder: (context, AsyncSnapshot<bool> snapshot) {
               Widget widget;
               if (snapshot.data == true) {

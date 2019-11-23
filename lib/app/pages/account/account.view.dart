@@ -7,12 +7,12 @@ import '../../layout/toolbar.dart';
 
 class _AccountBody extends StatelessWidget {
   _AccountBody() {
-    User().setInformation(UserModel());
+    UserService().setInformation(UserModel());
   }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: User().getInformation(),
+        stream: UserService().getInformation(),
         builder: (context, AsyncSnapshot<UserModel> snapshot) {
           return Column(
             children: <Widget>[

@@ -104,7 +104,7 @@ class _MenuPageBodyState extends State<_MenuPageBody> {
   }
 }
 
-class MenuView extends StatelessWidget {
+class MenusView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

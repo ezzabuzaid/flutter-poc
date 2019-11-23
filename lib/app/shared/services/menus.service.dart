@@ -1,6 +1,6 @@
+import 'package:learning_flutter/app/pages/menus/index.dart';
 import 'package:learning_flutter/app/shared/models/response.dart';
 import '../../core/http/index.dart';
-import 'menus.model.dart';
 
 class MenusService {
   Future<List<MenusModel>> fetchMenus() async {
@@ -17,5 +17,3 @@ serilaizeList(body, model) {
   List data = List.from(decoded.data);
   return data.map((json) => model.fromJson(json as dynamic)).toList();
 }
-
-final menusService = MenusService();

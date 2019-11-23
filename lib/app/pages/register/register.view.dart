@@ -3,137 +3,82 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/portal/portal.bloc.dart';
-import 'package:learning_flutter/app/pages/register/register.bloc.dart';
-import 'package:learning_flutter/app/pages/register/register.model.dart';
 import 'package:learning_flutter/app/partials/about.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
+import 'package:learning_flutter/app/shared/misc/current-position.dart';
+import 'package:learning_flutter/app/shared/misc/widget-utility.dart';
+import 'package:learning_flutter/app/shared/models/portal.model.dart';
+import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:learning_flutter/app/widgets/country-field.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 import 'package:form_validators/form_validators.dart' as validators;
 import 'package:geolocator/geolocator.dart';
 import 'package:libphonenumber/libphonenumber.dart' as phone;
-// import 'package:system_setting/system_setting.dart' as system;
-// await system.SystemSetting.goto(system.SettingTarget.LOCATION);
 
 class RegisterForm extends StatefulWidget {
+  RegisterForm({Key key}) : super(key: key);
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends State<RegisterForm> with WidgetUtility {
   final bloc = PortalBloc();
   final formKey = GlobalKey<FormState>();
-  final confirmPasswordKey = GlobalKey<FormFieldState>();
+  final confirmPasswordKey = GlobalKey<FormFieldState>(debugLabel: 'confirm_password');
   final payload = RegisterModel();
+  final Placemark placeDetails = Placemark(isoCountryCode: 'AUS');
+  String isoCountryCode;
+
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
   Position position;
-  List<Placemark> placeDetails;
-  String isoCountryCode;
-
-  Future<List<Placemark>> getCurrentLocation() {
-    return Geolocator()
-        .checkGeolocationPermissionStatus()
-        .then((enabled) {
-          logger.i('checkGeolocationPermissionStatus $enabled');
-          if (enabled == GeolocationStatus.granted) {
-            return Geolocator().isLocationServiceEnabled();
-          }
-          return throw Exception('Permission is denied');
-        })
-        .then((enabled) {
-          if (enabled) {
-            logger.i('isLocationServiceEnabled $enabled');
-            return Geolocator()
-                .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-          }
-          return throw Exception('Service is not enabled');
-        })
-        .then(Geolocator().placemarkFromPosition)
-        .catchError((error, trace) => [Placemark(isoCountryCode: 'AUS')]);
-  }
-
-  void initState() {
-    super.initState();
-  }
-
-  void setFocus(node) {
-    FocusScope.of(context).requestFocus(node);
-  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: FutureBuilder(
-        future: this.getCurrentLocation(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Placemark>> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          isoCountryCode = snapshot.data[0].isoCountryCode;
+      child: FutureBuilder<Placemark>(
+// TODO: find a way to test the geolocator getCurrentLocation(placeDetails)
+        future: Future.value(placeDetails),
+        initialData: placeDetails,
+        builder: (BuildContext context, AsyncSnapshot<Placemark> snapshot) {
+          isoCountryCode = snapshot?.data?.isoCountryCode;
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Column(
               children: <Widget>[
-                Logo(),
+                // TODO: assert that the logo is ready
+                // Logo(),
                 Form(
                   key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextFormField(
+                        key: Key('username'),
                         autofocus: true,
-                        decoration: InputDecoration(
-                          labelText: 'Username',
-                          isDense: true,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: .5,
-                            ),
-                          ),
-                        ),
+                        textInputAction: TextInputAction.next,
+                        decoration: inputDecoration(context, label: 'Username'),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(16),
-                          // WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-\.]+$'))
-                          // TODO prevent special char
+                          WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-\.]+$'))
                         ],
-                        onFieldSubmitted: (v) {
-                          this.setFocus(this.emailFocusNode);
-                        },
+                        onSaved: (value) => this.payload.username = value,
+                        onEditingComplete: () => this.setFocus(context),
                         validator: validators.validate([
+                          // TODO: Store the string in json (Setup localization)
                           validators.Required('This field is required'),
-                          validators.Between(
-                            'Username must be between 8 and 16 char',
-                            max: 16,
-                            min: 8,
-                          ),
                         ]),
-                        onSaved: (value) {
-                          this.payload.username = value;
-                        },
                       ),
                       SizedBox(height: 25),
                       TextFormField(
+                        key: Key('email'),
                         focusNode: emailFocusNode,
                         autovalidate: true,
-                        autofocus: true,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          isDense: true,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: .5,
-                            ),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, label: 'Email'),
                         validator: validators.validate([
                           validators.Required('This field is required'),
                           validators.Email('Please enter the email correctly'),
@@ -143,51 +88,36 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                       ),
                       SizedBox(height: 25),
-                      CountryField(
-                        onChange: (Country country) {
-                          this.isoCountryCode = country.isoCode;
-                        },
-                        isoCode: this.isoCountryCode,
-                      ),
+                      // TODO: Figure a way to give a custom widget focus node
+                      // CountryField(
+                      //   key: Key('country'),
+                      //   onChange: (Country country) {
+                      //     this.isoCountryCode = country.isoCode;
+                      //   },
+                      //   isoCode: this.isoCountryCode,
+                      // ),
                       SizedBox(height: 25),
                       TextFormField(
-                        autofocus: true,
+                        key: Key('mobile'),
                         keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          labelText: 'Mobile',
-                        isDense: true,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: .5,
-                            ),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, label: 'Mobile'),
                         // validator: validators.validate([IsPhoneNumber()]),
                         onSaved: (value) async {
                           this.payload.mobile = value;
                         },
                         onFieldSubmitted: (v) {
-                          this.setFocus(this.passwordFocusNode);
+                          this.setFocus(context);
                         },
                       ),
                       SizedBox(height: 25),
                       TextFormField(
+                        key: Key('password'),
                         focusNode: passwordFocusNode,
                         obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          helperText:
-                              'It should contain at least 8 char, and one uppercase and one lower',
-                          isDense: true,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: .5,
-                            ),
-                          ),
+                        decoration: inputDecoration(
+                          context,
+                          label: 'Password',
+                          helperText: 'It should contain at least 8 char, and one uppercase and one lower',
                         ),
                         // TODO Password char check if it has uppercase and lowercase
                         validator: validators.validate([
@@ -198,24 +128,14 @@ class _RegisterFormState extends State<RegisterForm> {
                           this.payload.password = value;
                         },
                         onFieldSubmitted: (v) {
-                          this.setFocus(this.confirmPasswordFocusNode);
+                          this.setFocus(context);
                         },
                       ),
                       SizedBox(height: 25),
                       TextFormField(
                         key: confirmPasswordKey,
                         focusNode: confirmPasswordFocusNode,
-                        decoration: InputDecoration(
-                          labelText: 'Confirm password',
-                          isDense: true,
-                          labelStyle: Theme.of(context).textTheme.body1,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: .5,
-                            ),
-                          ),
-                        ),
+                        decoration: inputDecoration(context, label: 'Confirm password'),
                         validator: validators.validate(
                           [
                             validators.Equals(
@@ -227,7 +147,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         onFieldSubmitted: (value) {
                           this.formKey.currentState.save();
                           if (this.payload.password != value) {
-                            this.setFocus(this.confirmPasswordFocusNode);
+                            this.setFocus(context, this.confirmPasswordFocusNode);
                           }
                           this.confirmPasswordKey.currentState.validate();
                         },
@@ -264,17 +184,12 @@ class _RegisterFormState extends State<RegisterForm> {
                             onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                this.payload.mobile =
-                                    await phone.PhoneNumberUtil
-                                        .normalizePhoneNumber(
-                                            isoCode: 'JO',
-                                            phoneNumber: this.payload.mobile);
-                                final response =
-                                    await registerBloc.register(payload);
+                                this.payload.mobile = await phone.PhoneNumberUtil.normalizePhoneNumber(
+                                    isoCode: 'JO', phoneNumber: this.payload.mobile);
+                                final response = await locator<UserService>().register(payload);
                                 String message =
                                     'Successfully registerd, please see you email to verify your account and then come to login';
-                                if (response.code >= 400 ||
-                                    response.code < 500) {
+                                if (response.code >= 400 || response.code < 500) {
                                   message =
                                       'Request shouldnt go to server unless email, username and mobile validated async as well you need to send verifcation to email';
                                 } else {
@@ -299,12 +214,10 @@ class _RegisterFormState extends State<RegisterForm> {
                         child: FlatButton(
                           child: Text(
                             'Already have an account? Login.',
-                            style:
-                                TextStyle(decoration: TextDecoration.underline),
+                            style: TextStyle(decoration: TextDecoration.underline),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RoutesConstants.LOGIN);
+                            Navigator.pushReplacementNamed(context, RoutesConstants.LOGIN);
                           },
                         ),
                       ),
@@ -345,10 +258,12 @@ class _RegisterFormState extends State<RegisterForm> {
 // TODO Find a way to do the async validation
 // TODO move the validation to validation module
 class IsPhoneNumber implements validators.IValidator {
+  final isoCode;
+  IsPhoneNumber(this.isoCode);
   @override
   call(String value) async {
     final belong = await phone.PhoneNumberUtil.isValidPhoneNumber(
-      isoCode: 'JO',
+      isoCode: isoCode,
       phoneNumber: value,
     );
     return !belong;
@@ -359,8 +274,10 @@ class IsPhoneNumber implements validators.IValidator {
 }
 
 class RegisterView extends StatelessWidget {
+  static final globalKey = GlobalKey<_RegisterFormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: RegisterForm());
+    return Scaffold(body: RegisterForm(key: globalKey));
   }
 }

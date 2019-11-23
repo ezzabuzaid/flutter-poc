@@ -123,7 +123,7 @@ class _SettingBody extends StatelessWidget {
               'Logout',
               route: RoutesConstants.LOGIN,
               onClick: () {
-                User().logout(context);
+                UserService().logout(context);
               },
             ),
           ],

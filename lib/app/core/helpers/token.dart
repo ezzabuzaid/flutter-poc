@@ -1,20 +1,18 @@
+import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/storage.dart';
-
-const token_key = 'token';
+import 'package:learning_flutter/app/locator.dart';
 
 class TokenHelper {
-  factory TokenHelper() => const TokenHelper._internal();
-  const TokenHelper._internal();
-
-  Future<void> removeToken() async {
-    return await Storage().remove(token_key);
+  final _storage = locator<Storage>();
+  Future<void> removeToken() {
+    return _storage.remove(AppplicationConstants.tokenKey);
   }
 
-  Future<void> addToken(String token) async {
-    return await Storage().set(token_key, token);
+  Future<void> setToken(String token) {
+    return _storage.set(AppplicationConstants.tokenKey, token);
   }
 
-  Future<String> getToken() async {
-    return await Storage().get(token_key);
+  Future<String> getToken() {
+    return _storage.get(AppplicationConstants.tokenKey);
   }
 }

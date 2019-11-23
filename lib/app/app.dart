@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/core/helpers/storage.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/home/home.view.dart';
-import 'package:learning_flutter/app/pages/meals/melas.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 import 'package:learning_flutter/app/routes.dart';
@@ -11,10 +11,11 @@ import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
+  // TODO: theme functions should be moved to another class
   static final settingBloc = locator<SettingsBloc>();
 
   App({Key key}) : super(key: key) {
-    settingBloc.getSettings();
+    // settingBloc.getSettings();
   }
 
   ThemeData lightTheme(BuildContext context) {
@@ -51,31 +52,38 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: The setting should be available after user is logged in
-    return ChangeNotifierProvider<SettingsBloc>(
-      builder: (_) => settingBloc,
-      child: Selector<SettingsBloc, bool>(
-        selector: (buildContext, bloc) {
-          // TODO: there's an error that the settings is und
-          return bloc.settings.darkMode;
-        },
-        builder: (context, darkMode, child) {
-          return MaterialApp(
-            theme: prepareTheme(context, darkMode),
-            title: AppplicationConstants.appName,
-            supportedLocales: [
-              // TODO: setup localization
-              const Locale('en'),
-              const Locale('ar'),
-            ],
-            routes: routes,
-            home: FutureBuilder(
-              future: User().isAuthenticated(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                return snapshot.data == true ? HomeView() : PortalView();
-              },
-            ),
-          );
-        },
+    // return ChangeNotifierProvider<SettingsBloc>(
+    //   builder: (_) => settingBloc,
+    //   child: Selector<SettingsBloc, bool>(
+    //     selector: (buildContext, bloc) {
+    //       return bloc.settings.darkMode;
+    //     },
+    //     builder: (context, darkMode, child) {
+
+    //     },
+    //   ),
+    // );
+    return MaterialApp(
+      theme: prepareTheme(context, false),
+      title: AppplicationConstants.appName,
+      supportedLocales: [
+        // TODO: setup localization
+        const Locale('en'),
+        const Locale('ar'),
+      ],
+      routes: routes,
+      home: Scaffold(
+        body: FutureProvider<bool>(
+          updateShouldNotify: (z, x) => true,
+          catchError: (context, error) => false,
+          initialData: false,
+          builder: (BuildContext context) => locator<UserService>().isAuthenticated(),
+          child: Consumer<bool>(
+            builder: (context, isAuthenticated, child) {
+              return isAuthenticated ? HomeView() : PortalView();
+            },
+          ),
+        ),
       ),
     );
   }

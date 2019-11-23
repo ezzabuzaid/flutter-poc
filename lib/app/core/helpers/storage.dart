@@ -1,26 +1,24 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
-  final _storage = FlutterSecureStorage();
-  factory Storage() => Storage._internal();
-  Storage._internal();
+  final _storage = SharedPreferences.getInstance();
 
   /// Get specific field
-  Future<String> get(String key) {
-    return _storage.read(key: key);
+  Future<String> get(String key) async {
+    return (await _storage).getString(key);
   }
 
-  Future<void> set(String key, String payload) {
-    return _storage.write(key: key, value: payload);
+  Future<void> set(String key, String payload) async {
+    return (await _storage).setString(key, payload);
   }
 
   /// Remove specific field
-  Future<void> remove(String key) {
-    return _storage.delete(key: key);
+  Future<void> remove(String key) async {
+    return (await _storage).remove(key);
   }
 
   /// Remove all storage
-  Future<void> clear(String key) {
-    return _storage.deleteAll();
+  Future<void> clear(String key) async {
+    return (await _storage).clear();
   }
 }

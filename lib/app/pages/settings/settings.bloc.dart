@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/pages/settings/index.dart';
 
 class SettingsBloc with ChangeNotifier {
-  SettingsModel settings;
+  SettingsModel settings = SettingsModel(darkMode: false, notification: false);
 
   void presistSettings() async {
     await settingsService.setSettings(this.settings);
@@ -18,5 +18,4 @@ class SettingsBloc with ChangeNotifier {
     settings.darkMode = !settings.darkMode;
     presistSettings();
   }
-
 }

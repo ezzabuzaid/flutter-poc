@@ -1,6 +1,6 @@
 class SettingsModel {
-  bool darkMode;
-  bool notification;
+  bool darkMode = false;
+  bool notification = false;
   SettingsModel({
     this.darkMode,
     this.notification,

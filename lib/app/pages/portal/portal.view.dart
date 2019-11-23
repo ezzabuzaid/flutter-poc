@@ -2,36 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission/permission.dart';
 
 class PortalView extends StatelessWidget {
-  void getPermissionStatus() async {
-    final permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
-    if (permission == PermissionStatus.granted) {
-    } else if (permission == PermissionStatus.denied ||
-        permission == PermissionStatus.disabled ||
-        permission == PermissionStatus.restricted) {
-      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-      getPermissionStatus();
-    }
-  }
+  // void getPermissionStatus() async {
+  //   final permission = await PermissionHandler()
+  //       .checkPermissionStatus(PermissionGroup.storage);
+  //   if (permission == PermissionStatus.granted) {
+  //   } else if (permission == PermissionStatus.denied ||
+  //       permission == PermissionStatus.disabled ||
+  //       permission == PermissionStatus.restricted) {
+  //     await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+  //     getPermissionStatus();
+  //   }
+  // }
 
   // FIXME  PlatformException(ERROR_ALREADY_REQUESTING_PERMISSIONS, A request for permissions is already running, please wait for it to finish before doing another request (note that you can request multiple permissions at the same time)., null)
   requestPermission() {
-    return PermissionHandler().requestPermissions([
-      PermissionGroup.camera,
-      PermissionGroup.location,
-      PermissionGroup.phone,
-      PermissionGroup.photos,
-      PermissionGroup.storage,
-      PermissionGroup.speech,
+    return Permission.requestPermissions([
+      PermissionName.Calendar,
+      PermissionName.Camera,
+      PermissionName.Location,
+      PermissionName.Phone,
+      PermissionName.Storage,
     ]);
+  }
+
+  PortalView({Key key}) : super(key: key) {
+    requestPermission();
   }
 
   @override
   Widget build(BuildContext context) {
-    requestPermission();
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(
@@ -75,6 +77,7 @@ class PortalView extends StatelessWidget {
               children: <Widget>[
                 FullWidth(
                   child: RaisedButton(
+                    key: Key('login_button'),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
@@ -97,6 +100,7 @@ class PortalView extends StatelessWidget {
                   children: <Widget>[
                     Text("Yoy don't have an account?"),
                     FlatButton(
+                      key: Key('register_button'),
                       padding: EdgeInsets.all(0),
                       child: Text(
                         'Register here.',
@@ -109,6 +113,7 @@ class PortalView extends StatelessWidget {
                   ],
                 ),
                 FlatButton(
+                  key: Key('visitor_button'),
                   padding: EdgeInsets.all(0),
                   child: Text(
                     'Explore the app as visitor',

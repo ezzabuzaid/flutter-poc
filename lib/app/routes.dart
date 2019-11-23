@@ -16,7 +16,7 @@ import 'pages/olhc/index.dart';
 final routes = {
   // '/': (BuildContext context) => ,
   RoutesConstants.MEALS: (BuildContext context) => MealsView(),
-  RoutesConstants.MENUS: (BuildContext context) => MenuView(),
+  RoutesConstants.MENUS: (BuildContext context) => MenusView(),
   RoutesConstants.PORTAL: (BuildContext context) => PortalView(),
   RoutesConstants.LOGIN: (BuildContext context) => LoginView(),
   RoutesConstants.REGISTER: (BuildContext context) => RegisterView(),

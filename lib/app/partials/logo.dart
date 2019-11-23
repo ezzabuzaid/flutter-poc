@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+// TODO: not tested
+// it should be tested when online and offline to see the result
 class Logo extends StatelessWidget {
   const Logo({Key key}) : super(key: key);
 

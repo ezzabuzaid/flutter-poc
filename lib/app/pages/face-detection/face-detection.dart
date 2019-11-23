@@ -4,22 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/layout/index.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission/permission.dart';
 import 'package:camera/camera.dart' as camera;
 
 final streamController = StreamController();
 
 Future<bool> checkAndRequestCameraPermissions() async {
-  final permissionHandler = PermissionHandler();
-  PermissionStatus permission = await permissionHandler.checkPermissionStatus(
-    PermissionGroup.camera,
-  );
-  if (permission != PermissionStatus.granted) {
-    final permissions = await permissionHandler.requestPermissions([
-      PermissionGroup.camera,
-    ]);
-    logger.i("permissions ${permissions.toString()}");
-    return permissions[PermissionGroup.camera] == PermissionStatus.granted;
+  final permission =
+      await Permission.getSinglePermissionStatus(PermissionName.Camera);
+  if (permission != PermissionStatus.allow) {
+    final newPermission = await Permission.requestSinglePermission(PermissionName.Camera);
+    return newPermission == PermissionStatus.allow;
   } else {
     return true;
   }

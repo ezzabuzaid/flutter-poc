@@ -1,28 +1,27 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validators/form_validators.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
-import 'package:learning_flutter/app/core/helpers/token.dart';
-import 'package:learning_flutter/app/pages/login/login.bloc.dart';
-import 'package:learning_flutter/app/pages/login/login.model.dart';
-import 'package:learning_flutter/app/partials/logo.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:learning_flutter/app/locator.dart';
+import 'package:learning_flutter/app/shared/misc/widget-utility.dart';
+import 'package:learning_flutter/app/shared/models/portal.model.dart';
+import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 
 class LoginForm extends StatefulWidget {
+  LoginForm({Key key}) : super(key: key);
   @override
   _LoginFormState createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends State<LoginForm> with WidgetUtility {
   final formKey = GlobalKey<FormState>();
   final payload = LoginModel();
   final passwordFocusNode = new FocusNode();
   bool rememberMe = true;
   void initState() {
     super.initState();
-  }
-
-  void setFocus(node) {
-    FocusScope.of(context).requestFocus(node);
   }
 
   @override
@@ -32,49 +31,29 @@ class _LoginFormState extends State<LoginForm> {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            Logo(),
+            // TODO: assert that the logo is ready
+            // Logo(),
             Form(
               key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      isDense: true,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey.shade300,
-                          width: .5,
-                        ),
-                      ),
-                    ),
-                    onSaved: (value) {
-                      this.payload.username = value;
-                    },
-                    onEditingComplete: () {
-                      this.setFocus(this.passwordFocusNode);
-                    },
+                    key: Key('username'),
+                    autofocus: true,
+                    textInputAction: TextInputAction.next,
+                    decoration: inputDecoration(context, label: 'Username'),
+                    onSaved: (value) => this.payload.username = value,
+                    onEditingComplete: () => this.setFocus(context),
+                    validator: validate([Required('This field is required')]),
                   ),
                   SizedBox(height: 25),
                   TextFormField(
+                    key: Key('password'),
                     focusNode: passwordFocusNode,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      isDense: true,
-                      labelStyle: Theme.of(context).textTheme.body1,
-                      helperStyle: TextStyle(fontSize: 10),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey.shade300,
-                          width: .5,
-                        ),
-                      ),
-                    ),
-                    onSaved: (value) {
-                      this.payload.password = value;
-                    },
+                    decoration: inputDecoration(context, label: 'Password'),
+                    onSaved: (value) => this.payload.password = value,
+                    validator: validate([Required('This field is required')]),
                     obscureText: true,
                   ),
                   SizedBox(height: 25),
@@ -119,19 +98,17 @@ class _LoginFormState extends State<LoginForm> {
                       children: <Widget>[
                         FullWidth(
                           child: FlatButton(
+                            key: Key('login_button'),
                             color: Theme.of(context).primaryColor,
                             onPressed: () async {
                               if (this.formKey.currentState.validate()) {
                                 formKey.currentState.save();
-                                loginBloc.login(this.payload).then((token) {
-                                  if (rememberMe) {
-                                    TokenHelper().addToken(token);
-                                  }
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    RoutesConstants.Home,
-                                  );
-                                });
+                                final user = locator<UserService>();
+                                await user.login(this.payload, this.rememberMe);
+                                await Navigator.pushReplacementNamed(
+                                  context,
+                                  RoutesConstants.Home,
+                                );
                               }
                             },
                             textColor: Colors.white,
@@ -140,6 +117,7 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                         FullWidth(
                           child: OutlineButton(
+                            key: Key('register_button'),
                             child: Text('Register'),
                             onPressed: () {
                               Navigator.pushNamed(
@@ -193,8 +171,9 @@ class _LoginFormState extends State<LoginForm> {
 }
 
 class LoginView extends StatelessWidget {
+  static final globalKey = GlobalKey<_LoginFormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: LoginForm());
+    return Scaffold(body: LoginForm(key: globalKey));
   }
 }
