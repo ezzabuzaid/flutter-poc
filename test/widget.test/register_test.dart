@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_test/flutter_test.dart' as prefix0;
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/register/register.view.dart';

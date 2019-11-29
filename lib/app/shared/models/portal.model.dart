@@ -15,6 +15,7 @@ class RegisterModel {
   String password;
   String email;
   String mobile;
+  int role;
 
   toJson() {
     return {
@@ -22,6 +23,7 @@ class RegisterModel {
       'password': this.password,
       'mobile': this.mobile,
       'email': this.email,
+      'role': this.role,
     };
   }
 }

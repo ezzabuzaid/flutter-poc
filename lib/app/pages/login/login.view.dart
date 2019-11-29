@@ -4,6 +4,7 @@ import 'package:form_validators/form_validators.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
 import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/locator.dart';
+import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/shared/misc/widget-utility.dart';
 import 'package:learning_flutter/app/shared/models/portal.model.dart';
 import 'package:learning_flutter/app/shared/services/user/user.service.dart';
@@ -31,7 +32,6 @@ class _LoginFormState extends State<LoginForm> with WidgetUtility {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            // TODO: assert that the logo is ready
             // Logo(),
             Form(
               key: formKey,
@@ -120,7 +120,7 @@ class _LoginFormState extends State<LoginForm> with WidgetUtility {
                             key: Key('register_button'),
                             child: Text('Register'),
                             onPressed: () {
-                              Navigator.pushNamed(
+                              Navigator.popAndPushNamed(
                                 context,
                                 RoutesConstants.REGISTER,
                               );

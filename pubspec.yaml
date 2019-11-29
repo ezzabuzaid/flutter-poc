@@ -29,7 +29,7 @@ dependencies:
   flushbar: ^1.9.0
   eva_icons_flutter: ^2.0.0
   font_awesome_flutter: ^8.0.1
-  cached_network_image: ^1.0.0
+  cached_network_image: any
   http_interceptor: ^0.0.3
   rxdart: ^0.20.0
   firebase_messaging: ^5.0.2
@@ -50,18 +50,17 @@ dependencies:
   local_auth: ^0.5.2+4
   get_it: any
   provider: any
-  test: any
   mockito: any
   shared_preferences: any
   permission: any
-
-
+  sqflite: any
 
 dev_dependencies:
   flutter_driver:
     sdk: flutter
   flutter_test:
     sdk: flutter
+  test: any
   json_serializable: ^3.0.0
   build_runner: ^1.3.0
 

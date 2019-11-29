@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +15,12 @@ import '../fixture/index.dart';
 import '../fixture/shared-preferencies.mock.dart';
 
 void main() {
+  const MethodChannel pathProviderChannel = MethodChannel('plugins.flutter.io/path_provider');
+  pathProviderChannel.setMockMethodCallHandler((MethodCall methodCall) async {
+    return ".";
+  });
+
+
   LiveTestWidgetsFlutterBinding();
   mockSharedPreferences();
   setupMockLocator();
