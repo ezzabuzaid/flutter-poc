@@ -9,9 +9,11 @@ class CountryField extends StatefulWidget {
   final Function onChange;
   CountryField({
     Key key,
-    isoCode,
+    @required isoCode,
     @required this.onChange,
-  })  : initialCountry = countryList.firstWhere((el) => el.isoCode == isoCode),
+  })  : assert(isoCode != null),
+        assert(onChange != null),
+        initialCountry = countryList.firstWhere((el) => el.isoCode == isoCode),
         super(key: key);
 
   _CountryFieldState createState() => _CountryFieldState();
@@ -36,8 +38,8 @@ class _CountryFieldState extends State<CountryField> {
       onChanged: (value) {
         setState(() {
           this._country = value;
-          final function = widget.onChange ?? (value) {};
-          function(value);
+          final callback = widget.onChange ?? (value) {};
+          callback(value);
         });
       },
       items: _buildList(),

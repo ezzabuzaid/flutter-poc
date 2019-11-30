@@ -49,8 +49,7 @@ class _RegisterFormState extends State<RegisterForm> with WidgetUtility {
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Column(
               children: <Widget>[
-                // TODO: assert that the logo is ready
-                // Logo(),
+                Logo(),
                 Form(
                   key: formKey,
                   child: Column(

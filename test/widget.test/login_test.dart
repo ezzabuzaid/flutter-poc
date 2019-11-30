@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/login/login.view.dart';
 import 'package:learning_flutter/app/pages/register/register.view.dart';
+import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/shared/models/portal.model.dart';
 import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:mockito/mockito.dart';
@@ -20,8 +21,6 @@ void main() {
     return ".";
   });
 
-
-  LiveTestWidgetsFlutterBinding();
   mockSharedPreferences();
   setupMockLocator();
   usernameField() => findByKey('username');
@@ -37,6 +36,7 @@ void main() {
     testWidgets('Should have the nessccary elements', (tester) async {
       await buildPage(tester, LoginView());
       expectOne(findByType(Form));
+      expectOne(findByType(Logo));
       expectOne(usernameField());
       expectOne(passwordField());
       expectOne(registerButton());

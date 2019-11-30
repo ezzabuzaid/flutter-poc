@@ -32,7 +32,7 @@ class _LoginFormState extends State<LoginForm> with WidgetUtility {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            // Logo(),
+            Logo(),
             Form(
               key: formKey,
               child: Column(

@@ -13,7 +13,6 @@ import '../fixture/navigation.mock.dart';
 import '../fixture/shared-preferencies.mock.dart';
 
 void main() {
-  LiveTestWidgetsFlutterBinding();
   mockSharedPreferences();
   setupLocator();
 
@@ -25,6 +24,7 @@ void main() {
     testWidgets('Should have the required fields', (tester) async {
       await buildPage(tester, RegisterView());
       expectOne(find.byType(Form));
+      expectOne(findByType(Logo));
       expectOne(findByKey('username'));
       expectOne(findByKey('email'));
       // TODO: test the country widget first then expectOne(findByKey('country'));
