@@ -2,7 +2,6 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validators/form_validators.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
 import 'package:learning_flutter/app/shared/misc/widget-utility.dart';
@@ -32,7 +31,7 @@ class _LoginFormState extends State<LoginForm> with WidgetUtility {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           children: <Widget>[
-            // Logo(),
+            Logo(),
             Form(
               key: formKey,
               child: Column(
