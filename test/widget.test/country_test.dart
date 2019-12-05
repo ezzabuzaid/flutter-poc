@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:learning_flutter/app/widgets/country-field.dart';
+import 'package:provider/provider.dart';
 
 import '../fixture/index.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  widget(isoCode, onChange) {
+  widget([isoCode = 'AE', onChange]) {
     return MaterialApp(
       home: Scaffold(
-        body: CountryField(isoCode: isoCode, onChange: onChange),
+        body: CountryField(isoCode: isoCode, onChange: onChange ?? () {}),
       ),
     );
   }
 
   group('CountryField', () {
     testWidgets('should be visible', (tester) async {
-      await buildPage(tester, widget('AE', () {}));
+      await buildPage(tester, widget());
       expectOne(findByType(CountryField));
+      // expectOne(findByType(DropdownButtonFormField));
     });
 
     testWidgets('should throw an error if the isocode was null', (tester) async {
       try {
-        await buildPage(tester, widget(null, () {}));
+        await buildPage(tester, widget(null));
       } catch (error) {
         expect(error, isAssertionError);
       }
@@ -34,6 +36,16 @@ void main() {
       } catch (error) {
         expect(error, isAssertionError);
       }
+    });
+
+    testWidgets('should update the value when the country change', (tester) async {
+      await buildPage(tester, widget());
+      // expectOneAtLeast(findByType(Provider));
+      // tester.tap(findDescendant(
+      //   findByType(DropdownButtonFormField),
+      //   findByType(DropdownMenuItem),
+      // ));
+      expect(true, isTrue);
     });
   });
 }

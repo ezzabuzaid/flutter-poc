@@ -69,66 +69,68 @@ class _SettingBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SettingsBloc>(
       builder: (_) => settingBloc,
-      child: Consumer<SettingsBloc>(builder: (context, bloc, child) {
-        return Column(
-          children: <Widget>[
-            SwitchListTile(
-              value: bloc.settings.darkMode,
-              onChanged: (value) {
-                bloc.switchTheme();
-                App.switchTheme();
-              },
-              title: _Text('Dark mode'.toUpperCase()),
-            ),
-            _Divider(),
-            SwitchListTile(
-              value: bloc.settings.notification,
-              onChanged: (value) {
-                // TODO: partial argument function
-                bloc.settings.notification = value;
-                bloc.presistSettings();
-              },
-              title: _Text('notification'.toUpperCase()),
-            ),
-            _Divider(),
-            _ButtonListTile(
-              'Auth',
-              onClick: () async {
-                logger.d('LocalAuthenticationService');
-                await locator.get<LocalAuthenticationService>().authenticate();
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 20),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                  isExpanded: true,
-                  value: 'en-us',
-                  items: <DropdownMenuItem>[
-                    DropdownMenuItem(child: _Text('Arabic'), value: 'ar-jo'),
-                    DropdownMenuItem(child: _Text('English'), value: 'en-us')
-                  ],
-                  onChanged: (value) {},
+      child: Consumer<SettingsBloc>(
+        builder: (context, bloc, child) {
+          return Column(
+            children: <Widget>[
+              SwitchListTile(
+                value: bloc.settings.darkMode,
+                onChanged: (value) {
+                  bloc.switchTheme();
+                  App.switchTheme();
+                },
+                title: _Text('Dark mode'.toUpperCase()),
+              ),
+              _Divider(),
+              SwitchListTile(
+                value: bloc.settings.notification,
+                onChanged: (value) {
+                  // TODO: partial argument function
+                  bloc.settings.notification = value;
+                  bloc.presistSettings();
+                },
+                title: _Text('notification'.toUpperCase()),
+              ),
+              _Divider(),
+              _ButtonListTile(
+                'Auth',
+                onClick: () async {
+                  logger.d('LocalAuthenticationService');
+                  await locator.get<LocalAuthenticationService>().authenticate();
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 20),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    isExpanded: true,
+                    value: 'en-us',
+                    items: <DropdownMenuItem>[
+                      DropdownMenuItem(child: _Text('Arabic'), value: 'ar-jo'),
+                      DropdownMenuItem(child: _Text('English'), value: 'en-us')
+                    ],
+                    onChanged: (value) {},
+                  ),
                 ),
               ),
-            ),
-            _Divider(),
-            _ButtonListTile(
-              'Give me your feedback',
-              route: RoutesConstants.FEEDBACK,
-            ),
-            _ButtonListTile('Contect me', route: RoutesConstants.CONTACT),
-            _ButtonListTile('About me', route: RoutesConstants.ABOUT),
-            _ButtonListTile(
-              'Logout',
-              route: RoutesConstants.LOGIN,
-              onClick: () {
-                UserService().logout(context);
-              },
-            ),
-          ],
-        );
-      }),
+              _Divider(),
+              _ButtonListTile(
+                'Give me your feedback',
+                route: RoutesConstants.FEEDBACK,
+              ),
+              _ButtonListTile('Contect me', route: RoutesConstants.CONTACT),
+              _ButtonListTile('About me', route: RoutesConstants.ABOUT),
+              _ButtonListTile(
+                'Logout',
+                route: RoutesConstants.LOGIN,
+                onClick: () {
+                  UserService().logout(context);
+                },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

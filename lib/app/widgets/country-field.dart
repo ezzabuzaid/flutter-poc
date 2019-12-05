@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/countries.dart';
 import 'package:country_pickers/country.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
+import 'package:provider/provider.dart';
 
-class CountryField extends StatefulWidget {
+class CountryField extends StatelessWidget {
   final Country initialCountry;
   final Function onChange;
   CountryField({
@@ -16,33 +18,30 @@ class CountryField extends StatefulWidget {
         initialCountry = countryList.firstWhere((el) => el.isoCode == isoCode),
         super(key: key);
 
-  _CountryFieldState createState() => _CountryFieldState();
-}
-
-class _CountryFieldState extends State<CountryField> {
-  Country _country;
-  @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      decoration: InputDecoration(
-        labelText: 'Country',
-        labelStyle: Theme.of(context).textTheme.body1,
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey.shade300,
-            width: .5,
+    Country country;
+    return Provider(
+      builder: (BuildContext context) => initialCountry,
+      child: DropdownButtonFormField(
+        decoration: InputDecoration(
+          labelText: 'Country',
+          labelStyle: Theme.of(context).textTheme.body1,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.grey.shade300,
+              width: .5,
+            ),
           ),
         ),
-      ),
-      value: _country ?? widget.initialCountry,
-      onChanged: (value) {
-        setState(() {
-          this._country = value;
-          final callback = widget.onChange ?? (value) {};
+        value: country ?? initialCountry,
+        onChanged: (value) {
+          // this.country = value;
+          logger.w('Provider.of<Country>(context) ${Provider.of<Country>(context)}');
+          final callback = onChange ?? (value) {};
           callback(value);
-        });
-      },
-      items: _buildList(),
+        },
+        items: _buildList(),
+      ),
     );
   }
 
