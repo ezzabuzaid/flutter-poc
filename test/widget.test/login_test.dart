@@ -58,7 +58,6 @@ void main() {
       final textField = tester.widget<TextField>(findDescendant(usernameField(), findByType(TextField)));
       expect(textField.autofocus, isTrue);
     });
-
     testWidgets("present a required error if the field has empty value", (tester) async {
       await buildPage(tester, LoginView());
       await tester.enterText(usernameField(), '');
