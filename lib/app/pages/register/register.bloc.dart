@@ -2,8 +2,10 @@ import 'package:country_pickers/country.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:learning_flutter/app/shared/models/portal.model.dart';
-
 class RegisterBloc extends ChangeNotifier {
+
+  // RegisterBloc(){  }
+
   Placemark placeDetails = Placemark(isoCountryCode: 'AE');
   final payload = RegisterModel();
 

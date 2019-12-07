@@ -6,7 +6,6 @@ import 'package:learning_flutter/app/core/helpers/token.dart';
 import 'package:learning_flutter/app/pages/home/home.bloc.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/settings/settings.bloc.dart';
-import 'package:learning_flutter/app/shared/models/portal.model.dart';
 import 'package:learning_flutter/app/shared/services/menus.service.dart';
 import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:mockito/mockito.dart';
@@ -31,8 +30,11 @@ void setupLocator() {
 }
 
 class MockUserService extends Mock implements UserService {}
+
 class MockMealsService extends Mock implements MealsService {}
+
 class MockStorage extends Mock implements Storage {}
+
 class MockMenusService extends Mock implements MenusService {}
 
 void setupMockLocator() {
@@ -51,3 +53,4 @@ void setupMockLocator() {
   // locator.registerSingleton(MealsBloc());
   // locator.registerSingleton(SettingsBloc());
 }
+

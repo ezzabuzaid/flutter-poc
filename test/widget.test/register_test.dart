@@ -3,25 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/register/register.bloc.dart';
 import 'package:learning_flutter/app/pages/register/register.view.dart';
 import 'package:learning_flutter/app/partials/logo.dart';
-import 'package:learning_flutter/app/shared/misc/current-position.dart';
-import 'package:provider/provider.dart';
+import 'package:mockito/mockito.dart';
 
 import '../fixture/index.dart';
-import '../fixture/navigation.mock.dart';
 import '../fixture/shared-preferencies.mock.dart';
+
+class MockRegisterBloc extends Mock implements RegisterBloc {}
 
 void main() {
   mockSharedPreferences();
   setupLocator();
 
-  setUpAll(() {
-    locator.allowReassignment = true;
-  });
+  // setUp(() {
+  //   locator.allowReassignment = true;
+  //   locator.registerSingleton<RegisterBloc>(MockRegisterBloc());
+  // });
 
   usernameField() => findByKey('username');
   passwordField() => findByKey('password');
@@ -30,11 +30,11 @@ void main() {
   group('#RegisterView', () {
     testWidgets('Should construct itself', (tester) async {
       await buildPage(tester, RegisterView());
-      expectOne(find.byType(RegisterView));
+      expectOne(findByType(RegisterView));
     });
     testWidgets('Should have the required fields', (tester) async {
       await buildPage(tester, RegisterView());
-      expectOne(find.byType(Form));
+      expectOne(findByType(Form));
       expectOne(findByType(Logo));
       expectOne(usernameField());
       expectOne(findByKey('email'));
@@ -83,6 +83,7 @@ void main() {
         await tester.enterText(usernameField(), '');
         GlobalKey<FormState> formKey = tester.widget<Form>(findByType(Form)).key;
         formKey.currentState.validate();
+        await tester.pump();
         // TODO: Replace this string with constant from json file
         expectOne(find.text('This field is required'));
       });
@@ -97,12 +98,16 @@ void main() {
           RegisterView.globalKey.currentState.emailFocusNode,
         );
       });
-      testWidgets('bind it"s to value payload model on save', (tester) async {
+      testWidgets('should trigger bloc username method on save', (tester) async {
+        locator.allowReassignment = true;
         await buildPage(tester, RegisterView());
+        locator.registerSingleton<RegisterBloc>(MockRegisterBloc());
+
         final formField = tester.widget<TextFormField>(usernameField());
         final value = 'testText';
         formField.onSaved(value);
-        expect(locator<RegisterBloc>().payload.username, value);
+        verify(locator<RegisterBloc>().username).called(1);
+        // expect(locator<RegisterBloc>().payload.username, value);
       });
     });
     group('Email field must', () {
@@ -122,6 +127,7 @@ void main() {
         await tester.enterText(emailField(), '');
         GlobalKey<FormState> formKey = tester.widget<Form>(findByType(Form)).key;
         formKey.currentState.validate();
+        await tester.pump();
         // TODO: Replace this string with constant from json file
         expectOne(find.text('This field is required'));
       });
@@ -130,12 +136,13 @@ void main() {
         await tester.enterText(emailField(), 'ezzabuzaid.com');
         GlobalKey<FormState> formKey = tester.widget<Form>(findByType(Form)).key;
         formKey.currentState.validate();
+        await tester.pump();
         // TODO: Replace this string with constant from json file
         expectOne(find.text('Please enter the email correctly'));
       });
       testWidgets('move the focus to the email field after it submittd', (tester) async {
         await buildPage(tester, RegisterView());
-        await tester.tap(usernameField());
+        await tester.tap(emailField());
         await tester.pump();
         await tester.testTextInput.receiveAction(TextInputAction.next);
         await tester.pump();
@@ -144,59 +151,57 @@ void main() {
           RegisterView.globalKey.currentState.emailFocusNode,
         );
       });
-      testWidgets('bind it"s to value payload model on save', (tester) async {
+      testWidgets('bind its to value payload model on save', (tester) async {
         await buildPage(tester, RegisterView());
-        final formField = tester.widget<TextFormField>(usernameField());
+        final formField = tester.widget<TextFormField>(emailField());
         final value = 'testText';
         formField.onSaved(value);
-        expect(locator<RegisterBloc>().payload.username, value);
+        expect(locator<RegisterBloc>().payload.email, value);
+      });
+    });
+    group('#RegisterBloc', () {
+      test('should have a place details with iniital iso code', () {
+        final bloc = RegisterBloc();
+        bloc.changeCountry(Country(isoCode: 'AE'));
+        expect(bloc.placeDetails.isoCountryCode, isNotEmpty);
+      });
+      test('should change the place details when change country triggeried', () {
+        final bloc = RegisterBloc();
+        bloc.changeCountry(Country(isoCode: 'AE'));
+        expect(bloc.placeDetails.isoCountryCode, equals('AE'));
+      });
+      test("should bind Password value to payload model", () {
+        final value = 'testText';
+        final bloc = RegisterBloc();
+        bloc.password(value);
+        expect(bloc.payload.password, value);
+      });
+      test("should bind Email value to payload model", () {
+        final value = 'testText';
+        final bloc = RegisterBloc();
+        bloc.email(value);
+        expect(bloc.payload.email, value);
+      });
+      test("should bind Mobile value to payload model", () {
+        final value = 'testText';
+        final bloc = RegisterBloc();
+        bloc.mobile(value);
+        expect(bloc.payload.mobile, value);
+      });
+      test("should bind Role value to payload model", () {
+        final value = 0;
+        final bloc = RegisterBloc();
+        bloc.role(value);
+        expect(bloc.payload.role, value);
+      });
+      test("should bind Username value to payload model", () {
+        final value = 'testText';
+        final bloc = RegisterBloc();
+        bloc.username(value);
+        expect(bloc.payload.username, value);
       });
     });
   });
-
   // TODO: the form should be invalid if any of the required field is missing
   // TODO: fill all filed then make sure that the payload have them
 }
-
-// group('#RegisterBloc', () {
-//   test('should have a place details with iniital iso code', () {
-//     final bloc = RegisterBloc();
-//     bloc.changeCountry(Country(isoCode: 'AE'));
-//     expect(bloc.placeDetails.isoCountryCode, isNotEmpty);
-//   });
-//   test('should change the place details when change country triggeried', () {
-//     final bloc = RegisterBloc();
-//     bloc.changeCountry(Country(isoCode: 'AE'));
-//     expect(bloc.placeDetails.isoCountryCode, equals('AE'));
-//   });
-//   test("should bind Username value to payload model", (tester) {
-//     final value = 'testText';
-//     final bloc = RegisterBloc();
-//     bloc.username(value);
-//     expect(bloc.payload.username, value);
-//   });
-//   test("should bind Password value to payload model", () {
-//     final value = 'testText';
-//     final bloc = RegisterBloc();
-//     bloc.password(value);
-//     expect(bloc.payload.password, value);
-//   });
-//   test("should bind Email value to payload model", () {
-//     final value = 'testText';
-//     final bloc = RegisterBloc();
-//     bloc.email(value);
-//     expect(bloc.payload.email, value);
-//   });
-//   test("should bind Mobile value to payload model", () {
-//     final value = 'testText';
-//     final bloc = RegisterBloc();
-//     bloc.mobile(value);
-//     expect(bloc.payload.mobile, value);
-//   });
-//   test("should bind Role value to payload model", () {
-//     final value = 0;
-//     final bloc = RegisterBloc();
-//     bloc.role(value);
-//     expect(bloc.payload.role, value);
-//   });
-// });

@@ -14,27 +14,30 @@ import 'package:learning_flutter/app/shared/services/user/user.service.dart';
 import 'package:learning_flutter/app/widgets/country-field.dart';
 import 'package:learning_flutter/app/widgets/full-width.dart';
 import 'package:form_validators/form_validators.dart' as validators;
-import 'package:geolocator/geolocator.dart';
 import 'package:libphonenumber/libphonenumber.dart' as phone;
 import 'package:provider/provider.dart';
 
 class RegisterForm extends StatefulWidget {
-  RegisterForm({Key key}) : super(key: key) {
-    locator.registerSingleton<RegisterBloc>(RegisterBloc());
-  }
+  RegisterForm({Key key}) : super(key: key);
+
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
 
 class _RegisterFormState extends State<RegisterForm> with WidgetUtility {
   final formKey = GlobalKey<FormState>();
-  final confirmPasswordKey = GlobalKey<FormFieldState>();
+  final confirmPasswordKey = GlobalKey<FormFieldState>(debugLabel: 'confirm_password');
   final payload = RegisterModel();
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final confirmPasswordFocusNode = FocusNode();
 
   RegisterBloc get bloc => locator<RegisterBloc>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,7 @@ class _RegisterFormState extends State<RegisterForm> with WidgetUtility {
                         LengthLimitingTextInputFormatter(16),
                         WhitelistingTextInputFormatter(RegExp(r'^[a-zA-Z0-9_\-\.]+$'))
                       ],
-                      onSaved: bloc.username,
+                      onSaved: locator<RegisterBloc>().username,
                       onEditingComplete: () => this.setFocus(context),
                       validator: validators.validate([
                         // TODO: Store the string in json (Setup localization)
@@ -76,8 +79,8 @@ class _RegisterFormState extends State<RegisterForm> with WidgetUtility {
                       keyboardType: TextInputType.emailAddress,
                       decoration: inputDecoration(context, label: 'Email'),
                       validator: validators.validate([
-                        validators.Required('This field is required'),
                         validators.Email('Please enter the email correctly'),
+                        validators.Required('This field is required'),
                       ]),
                       onSaved: bloc.email,
                     ),
@@ -268,7 +271,10 @@ class IsPhoneNumber implements validators.IValidator {
 
 class RegisterView extends StatelessWidget {
   static final globalKey = GlobalKey<_RegisterFormState>();
-
+  RegisterView() {
+    locator.registerSingleton<RegisterBloc>(RegisterBloc());
+    // RegisterBloc();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: RegisterForm(key: globalKey));
