@@ -6,6 +6,10 @@ class WidgetUtility {
         ? FocusScope.of(context).focusInDirection(TraversalDirection.down)
         : FocusScope.of(context).requestFocus(node);
   }
+
+  Widget showIf({bool condition, Widget widget, elseWidget}) {
+    return condition == true ? widget : elseWidget ?? Container();
+  }
 }
 
 inputDecoration(BuildContext context, {String label, String helperText = ''}) {

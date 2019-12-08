@@ -1,8 +1,10 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learning_flutter/app/core/auth.service.dart';
+import 'package:learning_flutter/app/core/helpers/logger.dart';
 import 'package:learning_flutter/app/core/helpers/storage.dart';
 import 'package:learning_flutter/app/core/helpers/token.dart';
+import 'package:learning_flutter/app/pages/forget-password/forget-password.bloc.dart';
 import 'package:learning_flutter/app/pages/home/home.bloc.dart';
 import 'package:learning_flutter/app/pages/meals/index.dart';
 import 'package:learning_flutter/app/pages/settings/settings.bloc.dart';
@@ -24,6 +26,7 @@ void setupLocator() {
   locator.registerSingleton(MenusService());
   locator.registerSingleton(MealsService());
 // FIXME: Bloc's shouldn't be used in get it
+  locator.registerSingleton(ForgetPasswordBloc());
   locator.registerSingleton(HomeBloc());
   locator.registerSingleton(MealsBloc());
   locator.registerSingleton(SettingsBloc());
@@ -54,3 +57,12 @@ void setupMockLocator() {
   // locator.registerSingleton(SettingsBloc());
 }
 
+// locateSingelton<T>(T instance) {
+//   try {
+//     locator.registerSingleton<T>(instance);
+//   } catch (e) {
+//     if (e is AssertionError) {
+//       logger.w(e);
+//     }
+//   }
+// }

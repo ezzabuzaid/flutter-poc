@@ -5,14 +5,14 @@ import 'package:learning_flutter/app/shared/models/response.dart';
 class MealsService {
   Future<List<MealsModel>> fetchMeals() async {
     final response = await http.get('meals');
-    final decoded = Response.fromJson(response.body);
+    final decoded = Response.fromJson(response.data);
     List data = List.from(decoded.data);
     return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
   }
 
   Future<List<MealsModel>> fetchMealsByMenuId(String menuId) async {
     final response = await http.get('meals/menu/$menuId');
-    final decoded = Response.fromJson(response.body);
+    final decoded = Response.fromJson(response.data);
     List data = List.from(decoded.data);
     return data.map((json) => MealsModel.fromJson(json as dynamic)).toList();
   }

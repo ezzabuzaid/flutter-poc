@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/app/core/constants/index.dart';
-import 'package:learning_flutter/app/core/helpers/logger.dart';
-import 'package:learning_flutter/app/core/helpers/storage.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/pages/home/home.view.dart';
 import 'package:learning_flutter/app/pages/portal/portal.view.dart';
@@ -22,6 +20,7 @@ class App extends StatelessWidget {
     return ThemeData(
       primarySwatch: Colors.red,
       brightness: Brightness.light,
+      indicatorColor: Colors.red,
     );
   }
 
@@ -33,8 +32,7 @@ class App extends StatelessWidget {
     );
   }
 
-  static Brightness get brightness =>
-      settingBloc.settings.darkMode ? Brightness.dark : Brightness.light;
+  static Brightness get brightness => settingBloc.settings.darkMode ? Brightness.dark : Brightness.light;
 
   static isLight() {
     return brightness == Brightness.light;

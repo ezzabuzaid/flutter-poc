@@ -87,7 +87,10 @@ class _LoginFormState extends State<LoginForm> with WidgetUtility {
                             decoration: TextDecoration.underline,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, RoutesConstants.FORGET_PASSWORD);
+                        },
                       )
                     ],
                   ),

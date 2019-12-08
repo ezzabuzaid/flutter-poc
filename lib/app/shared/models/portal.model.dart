@@ -27,3 +27,11 @@ class RegisterModel {
     };
   }
 }
+
+class ForgetPasswordModel {
+  String username = '';
+
+  toJson() {
+    return {'username': this.username};
+  }
+}

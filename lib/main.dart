@@ -22,11 +22,8 @@ void main() async {
 
   runZoned<Future<Null>>(
     () async {
-      logger.i("Applicaton start boostrapping | Set to portrait Up");
-      await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp],
-      );
       logger.i("Run The Applicaton");
+      await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       setupLocator();
       runApp(App());
     },

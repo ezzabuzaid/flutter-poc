@@ -6,7 +6,7 @@ class MenusService {
   Future<List<MenusModel>> fetchMenus() async {
     final response = await http.get('menus');
     // return serilaizeList(response.body, MealsModel);
-    final decoded = Response.fromJson(response.body);
+    final decoded = Response.fromJson(response.data);
     List data = List.from(decoded.data);
     return data.map((json) => MenusModel.fromJson(json as dynamic)).toList();
   }

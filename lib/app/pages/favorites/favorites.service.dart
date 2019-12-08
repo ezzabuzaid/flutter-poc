@@ -7,7 +7,7 @@ import 'package:learning_flutter/app/shared/models/response.dart';
 class _FavoritesService {
   Future fetchFavoritesMeals() async {
     final response = await http.get(ApiConstants.FAVORITES_MEALS);
-    final decoded = Response.fromJson(response.body);
+    final decoded = Response.fromJson(response.data);
     print(decoded.data);
     final data = List<FavoritesModel<MealsModel>>.from(
       decoded.data.map((x) {
@@ -20,7 +20,7 @@ class _FavoritesService {
   }
 
   Future addToFavoritesMeals(FavoritesModel payload) async {
-    return http.post(ApiConstants.FAVORITES_MEALS, body: payload.toJson());
+    return http.post(ApiConstants.FAVORITES_MEALS, data: payload.toJson());
   }
 
   Future removeFromFavoritesMeals(String id) {

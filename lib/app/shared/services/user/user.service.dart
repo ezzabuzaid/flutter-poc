@@ -5,7 +5,7 @@ import 'package:learning_flutter/app/core/helpers/token.dart';
 import 'package:learning_flutter/app/core/http/http.dart';
 import 'package:learning_flutter/app/locator.dart';
 import 'package:learning_flutter/app/shared/models/portal.model.dart';
-import 'package:learning_flutter/app/shared/services/user/user.model.dart';
+import 'package:learning_flutter/app/shared/models/user.model.dart';
 
 class UserService {
   final tokenHelper = locator<TokenHelper>();
@@ -19,8 +19,8 @@ class UserService {
 
   Future<void> login(LoginModel payload, bool rememberMe) async {
     logger.w('From Button');
-    final response = await http.post('portal/login', body: payload.toJson()).then((response) {
-      return UserModel.fromJson(response.body);
+    final response = await http.post('portal/login', data: payload.toJson()).then((response) {
+      return UserModel.fromJson(response.data);
     });
     if (rememberMe) {
       tokenHelper.setToken(response.token);
@@ -38,6 +38,10 @@ class UserService {
   setInformation(UserModel data) {}
 
   register(RegisterModel payload) {
-    return http.post('users', body: payload.toJson());
+    return http.post('users', data: payload.toJson());
+  }
+
+  Future forgotPassword(ForgetPasswordModel payload) {
+    return http.post('portal/forgetpassword', data: payload.toJson());
   }
 }
